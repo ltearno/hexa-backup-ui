@@ -276,7 +276,7 @@ async function loadLikesFiles() {
     let startIndex = 0
     while (startIndex < allShas.length) {
         let batchSize = Math.min(BATCH_SIZE, allShas.length - startIndex)
-        let partResults = await (await fetch(`/metadata/likes-sha?q=${JSON.stringify({
+        let partResults = await (await fetch(`${HEXA_BACKUP_BASE_URL}/metadata/likes-sha?q=${JSON.stringify({
             shaList: allShas.slice(startIndex, startIndex + batchSize)
         })}`)).json()
 
@@ -438,7 +438,7 @@ async function listenAudio(index) {
     el(`#audio-${index}`).style.fontWeight = 'bold'
 }
 
-async function toggleShaLike(sha, mimeType, fileName) {
+async function toggleShaLike(sha: string, mimeType: string, fileName: string) {
     let metadata = filesShaLikeMetadata[sha]
     if (!metadata) {
         metadata = {
@@ -459,7 +459,7 @@ async function toggleShaLike(sha, mimeType, fileName) {
     // we are optimistic, we do not wait for server's response !
     const headers = new Headers()
     headers.set('Content-Type', 'application/json')
-    fetch(`/metadata/likes-sha/${sha}`, {
+    fetch(`${HEXA_BACKUP_BASE_URL}/metadata/likes-sha/${sha}`, {
         headers,
         method: 'post',
         body: JSON.stringify(metadata)
@@ -500,10 +500,29 @@ async function listenToLiked(likes) {
     restartAudioPool()
 }
 
+function findPrefix(s1: string, s2: string) {
+    for (let i = 0; i < s1.length && i < s2.length; i++) {
+        if (s1.charCodeAt(i) !== s2.charCodeAt(i))
+            return i
+    }
+
+    return Math.min(s1.length, s2.length)
+}
+
 async function restartAudioPool() {
+    let prefixLength = audioPool.length ? audioPool[0].fileName.length : 0
+    for (let i = 0; i < audioPool.length - 1; i++) {
+        prefixLength = Math.min(prefixLength, findPrefix(audioPool[i].fileName, audioPool[i + 1].fileName))
+        if (!prefixLength)
+            break
+    }
+
     let html = ''
+    if (prefixLength) {
+        html += `<div>${audioPool[0].fileName.substr(0, prefixLength)}</div>`
+    }
     for (let i in audioPool) {
-        html += `<div><a id='audio-${i}' href='#' onclick='event.preventDefault() || listenAudio(${i})'>${audioPool[i].fileName}</a> <a class='like' onclick='event.preventDefault() || toggleLikeAudio(${i})'>like ♡</a></div>`
+        html += `<div><a id='audio-${i}' href='#' onclick='event.preventDefault() || listenAudio(${i})'>${audioPool[i].fileName.substr(prefixLength)}</a> <a class='like' onclick='event.preventDefault() || toggleLikeAudio(${i})'>like ♡</a></div>`
     }
     el('#audio-list').innerHTML = html
 
@@ -773,7 +792,7 @@ function fromHash() {
 async function viewLikes() {
     el("#menu").classList.remove("hide-optional")
 
-    let likes = await (await fetch(`/metadata/likes-sha`)).json()
+    let likes = await (await fetch(`${HEXA_BACKUP_BASE_URL}/metadata/likes-sha`)).json()
     if (!likes)
         likes = {}
 
