@@ -3,7 +3,7 @@
         "module": "umd",
         "target": "es2018",
         "rootDir": "src",
-        "outDir": ".",
+        "outDir": "public",
         "sourceMap": true,
         "declaration": false,
         "listFiles": false,
@@ -13,6 +13,6 @@
     },
     "exclude": [
         "node_modules",
-        "target"
+        "public"
     ]
 }

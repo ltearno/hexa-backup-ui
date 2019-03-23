@@ -1,4 +1,4 @@
-const BASE_URL = "/"
+const BASE_URL = "/public/"
 //const HEXA_BACKUP_BASE_URL = "https://home.lteconsulting.fr"
 const HEXA_BACKUP_BASE_URL = "https://192.168.0.2:5005"
 
