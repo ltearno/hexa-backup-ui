@@ -140,7 +140,7 @@ img {
     body {
         flex-flow: column;
         overflow-y: auto;
-        display: block;
+        /*display: block;*/
     }
     #images-container {
         flex-shrink: 0;
