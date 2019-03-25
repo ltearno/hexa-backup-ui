@@ -13,9 +13,6 @@
 
 <body>
     <div id="menu">
-        <button id="fullScreen">full screen</button><br />
-        <button onclick='el("#menu").classList.toggle("hide-optional")'>show/hide menu</button>
-
         <div id="optional">
             <h2>Sources</h2>
             <a href='#' onclick='event.preventDefault() || viewLikes()'>show ❤ items</a>
@@ -37,6 +34,8 @@
         </div>
     </div>
     <div id="dirs-and-files">
+        <button id="fullScreen">full screen</button>
+        <button onclick='el("#menu").classList.toggle("hide-optional")'>show/hide menu</button>
         <div id="directories"></div>
         <div id="files"></div>
     </div>
