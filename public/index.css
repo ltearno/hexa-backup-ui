@@ -34,10 +34,14 @@ body {
 
 #directories, #files, #dirs-and-files {
     font-family: monospace;
-    overflow: auto;
+    /*overflow: auto;*/
     flex-grow: 0;
     /*flex-shrink: 0;*/
     padding: .5em;
+}
+
+#directories, #files {
+    overflow: auto;
 }
 
 .small {
@@ -135,6 +139,8 @@ img {
 @media screen and (max-width: 1215px) {
     body {
         flex-flow: column;
+        overflow-y: auto;
+        display: initial;
     }
     #images-container {
         flex-shrink: 0;
