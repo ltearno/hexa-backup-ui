@@ -468,7 +468,7 @@ async function toggleShaLike(sha: string, mimeType: string, fileName: string) {
     return metadata.status
 }
 
-async function toggleLikeAudio(index) {
+async function toggleLikeAudio(index: number) {
     if (index < 0 || index >= audioPool.length)
         return
 
