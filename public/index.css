@@ -138,9 +138,9 @@ img {
 
 @media screen and (max-width: 1215px) {
     body {
-        flex-flow: column;
-        overflow-y: auto;
-        /*display: block;*/
+        /*flex-flow: column;
+        overflow-y: auto;*/
+        display: block;
     }
     #menu {
         overflow-y: unset;
