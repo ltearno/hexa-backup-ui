@@ -476,9 +476,9 @@ async function toggleLikeAudio(index) {
     let status = await toggleShaLike(sha, mimeType, fileName)
 
     if (status)
-        el('#audio-list').children.item(index).classList.add('liked')
+        el(`#audio-${index}`).classList.add('liked')
     else
-        el('#audio-list').children.item(index).classList.remove('liked')
+        el(`#audio-${index}`).classList.remove('liked')
 }
 
 async function listenNext() {
@@ -522,7 +522,7 @@ async function restartAudioPool() {
         html += `<div>${audioPool[0].fileName.substr(0, prefixLength)}</div>`
     }
     for (let i in audioPool) {
-        html += `<div><a id='audio-${i}' href='#' onclick='event.preventDefault() || listenAudio(${i})'>${audioPool[i].fileName.substr(prefixLength)}</a> <a class='like' onclick='event.preventDefault() || toggleLikeAudio(${i})'>like ♡</a></div>`
+        html += `<div id='audio-${i}'><a href='#' onclick='event.preventDefault() || listenAudio(${i})'>${audioPool[i].fileName.substr(prefixLength)}</a> <a class='like' onclick='event.preventDefault() || toggleLikeAudio(${i})'>like ♡</a></div>`
     }
     el('#audio-list').innerHTML = html
 
@@ -542,7 +542,7 @@ async function loadLikesAudio() {
         let metadata = filesShaLikeMetadata[audioPool[i].sha]
         // TODO since we only use 'status', maybe an option to only fetch that
         if (metadata && metadata.status)
-            el('#audio-list').children.item(i).classList.add('liked')
+            el(`#audio-${i}`).classList.add('liked')
         i++
     }
 }
