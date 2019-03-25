@@ -67,7 +67,7 @@ const publishHistoryState = () => {
 }
 
 async function goDirectory(directoryDescriptorSha) {
-    el("#menu").classList.add("hide-optional")
+    el("#menu").classList.add("is-hidden")
 
     currentPictureIndex = -1
     currentDirectoryDescriptorSha = directoryDescriptorSha
@@ -77,7 +77,7 @@ async function goDirectory(directoryDescriptorSha) {
 }
 
 async function goRef(ref) {
-    el("#menu").classList.add("hide-optional")
+    el("#menu").classList.add("is-hidden")
 
     currentClientId = ref
     currentDirectoryDescriptorSha = await getClientDefaultDirectoryDescriptorSha(ref)
@@ -741,7 +741,7 @@ window.onpopstate = function (event) {
         currentPictureIndex = event.state.currentPictureIndex || 0
 
         if (!currentClientId)
-            el("#menu").classList.remove("hide-optional")
+            el("#menu").classList.remove("is-hidden")
 
         syncUi()
     }
@@ -758,7 +758,7 @@ if (history.state) {
     currentPictureIndex = history.state.currentPictureIndex || 0
 
     if (currentClientId)
-        el("#menu").classList.add("hide-optional")
+        el("#menu").classList.add("is-hidden")
 
     syncUi()
 }
@@ -766,9 +766,6 @@ else {
     fromHash()
 
     publishHistoryState()
-
-    if (window.location.hash && window.location.hash.startsWith('#') && window.location.hash.length > 10 && window.location.hash != '#null')
-        el('#optional').classList.add('optional')
 
     syncUi()
 }
@@ -785,12 +782,12 @@ function fromHash() {
             currentDirectoryDescriptorSha = currentDirectoryDescriptorSha.substr(0, dashIndex)
         }
 
-        el("#menu").classList.add("hide-optional")
+        el("#menu").classList.add("is-hidden")
     }
 }
 
 async function viewLikes() {
-    el("#menu").classList.remove("hide-optional")
+    el("#menu").classList.remove("is-hidden")
 
     let likes = await (await fetch(`${HEXA_BACKUP_BASE_URL}/metadata/likes-sha`)).json()
     if (!likes)

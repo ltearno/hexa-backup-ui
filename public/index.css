@@ -3,19 +3,18 @@ html {
 }
 
 body {
-    background-color: aquamarine;
     position: absolute;
-    top: 0px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     margin: 0;
     padding: 0;
     display: flex;
+    justify-content: center;
     overflow-x: auto;
     background-color: white;
     font-family: monospace;
-    justify-content: center;
 }
 
 #directoryContent {
@@ -27,10 +26,6 @@ body {
     flex-grow: 0;
     flex-shrink: 0;
     padding: .5em;
-}
-
-#menu.hide-optional>#optional {
-    display: none;
 }
 
 #directories, #files, #dirs-and-files {

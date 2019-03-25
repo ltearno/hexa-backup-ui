@@ -13,29 +13,27 @@
 
 <body>
     <div id="menu">
-        <div id="optional">
-            <h2>Sources</h2>
-            <a href='#' onclick='event.preventDefault() || viewLikes()'>show ❤ items</a>
-            <div id="refs-list"></div>
+        <h2>Sources</h2>
+        <a href='#' onclick='event.preventDefault() || viewLikes()'>show ❤ items</a>
+        <div id="refs-list"></div>
 
-            <h2>Current</h2>
-            <b><span id=refName></span></b><br><br>
-            commit history
-            <div id="commitHistory"></div>
+        <h2>Current</h2>
+        <b><span id=refName></span></b><br><br>
+        commit history
+        <div id="commitHistory"></div>
 
-            <h2>Settings</h2>
-            <label><input type="checkbox" id="show-full-commit-history"> show full commit history</label><br />
-            <label><input type="checkbox" id="extended"> extended display</label><br />
-            <label><input type="checkbox" id="stream-raw-video"> stream raw video</label><br />
-            <label><input type="checkbox" id="show-unliked-items"> show unliked items</label><br />
+        <h2>Settings</h2>
+        <label><input type="checkbox" id="show-full-commit-history"> show full commit history</label><br />
+        <label><input type="checkbox" id="extended"> extended display</label><br />
+        <label><input type="checkbox" id="stream-raw-video"> stream raw video</label><br />
+        <label><input type="checkbox" id="show-unliked-items"> show unliked items</label><br />
 
-            <h2>Status</h2>
-            <span id="status"></span>
-        </div>
+        <h2>Status</h2>
+        <span id="status"></span>
     </div>
     <div id="dirs-and-files">
         <button id="fullScreen">full screen</button>
-        <button onclick='el("#menu").classList.toggle("hide-optional")'>show/hide menu</button>
+        <button onclick='el("#menu").classList.toggle("is-hidden")'>show/hide menu</button>
         <div id="directories"></div>
         <div id="files"></div>
     </div>
