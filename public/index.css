@@ -177,3 +177,7 @@ img {
 .is-hidden, body:-webkit-full-screen #directories, body:-webkit-full-screen #files, body:-webkit-full-screen #menu, body:-webkit-full-screen #videos-container, body:-webkit-full-screen #audio-container {
     display: none;
 }
+
+.is-hidden {
+    display: none !important;
+}
