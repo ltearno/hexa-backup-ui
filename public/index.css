@@ -30,9 +30,7 @@ body {
 
 #directories, #files, #dirs-and-files {
     font-family: monospace;
-    /*overflow: auto;*/
     flex-grow: 0;
-    /*flex-shrink: 0;*/
     padding: .5em;
 }
 
