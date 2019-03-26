@@ -288,7 +288,7 @@ async function restartImagesPool() {
     }
     if (imagesPool.length) {
         el('#images').innerHTML = '';
-        infiniteScrollerStop = infiniteScroll(imagesPool, ({ sha, mimeType, fileName }, index) => `< div > <img onclick='goPicture(${index})' src = "${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}" /> </div>`, el('#images-container'), el('#images'));
+        infiniteScrollerStop = infiniteScroll(imagesPool, ({ sha, mimeType, fileName }, index) => `<div><img onclick='goPicture(${index})' src="${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}"/></div>`, el('#images-container'), el('#images'));
     }
     else {
         el('#images').innerHTML = '<br/><i class="small">no picture in this folder</i>';
@@ -399,7 +399,6 @@ async function listenToLiked(likes) {
             mimeType: like.value.knownAs.mimeType
         };
     });
-    restartAudioPool();
 }
 function findPrefix(s1, s2) {
     for (let i = 0; i < s1.length && i < s2.length; i++) {

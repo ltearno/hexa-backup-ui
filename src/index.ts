@@ -381,7 +381,7 @@ async function restartImagesPool() {
     if (imagesPool.length) {
         el('#images').innerHTML = ''
         infiniteScrollerStop = infiniteScroll(imagesPool,
-            ({ sha, mimeType, fileName }, index) => `< div > <img onclick='goPicture(${index})' src = "${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}" /> </div>`,
+            ({ sha, mimeType, fileName }, index) => `<div><img onclick='goPicture(${index})' src="${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}"/></div>`,
             el('#images-container'),
             el('#images'))
     }
@@ -519,8 +519,6 @@ async function listenToLiked(likes) {
             mimeType: like.value.knownAs.mimeType
         }
     })
-
-    restartAudioPool()
 }
 
 function findPrefix(s1: string, s2: string) {
