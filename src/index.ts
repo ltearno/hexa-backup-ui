@@ -1,6 +1,5 @@
 const BASE_URL = "/public/"
-const HEXA_BACKUP_BASE_URL = "https://home.lteconsulting.fr"
-//const HEXA_BACKUP_BASE_URL = "https://192.168.0.2:5005"
+const HEXA_BACKUP_BASE_URL = window.location.hostname == "home.lteconsulting.fr" ? "https://home.lteconsulting.fr" : "https://192.168.0.2:5005"
 
 const el = document.querySelector.bind(document)
 
