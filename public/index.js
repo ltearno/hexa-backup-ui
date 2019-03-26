@@ -103,7 +103,6 @@ async function showDirectory(directoryDescriptorSha) {
     el('#files').innerHTML = '';
     el('#images').innerHTML = '';
     el('#video-list').innerHTML = '';
-    el('#audio-list').innerHTML = '';
     if (!directoryDescriptorSha)
         return;
     let finishLoading = startLoading(`loading directory descriptor ${directoryDescriptorSha.substr(0, 7)}`);
@@ -228,10 +227,6 @@ async function restartFilePool() {
     else {
         el('#files').classList.add('is-hidden');
     }
-    if (audioPool.length)
-        el('#audio-container').classList.remove('is-hidden');
-    else
-        el('#audio-container').classList.add('is-hidden');
     await viewLikesFiles();
 }
 async function loadLikesFiles() {
@@ -413,7 +408,7 @@ async function showPicture(index) {
     if (index < 0)
         return;
     let { sha, mimeType, fileName } = imagesPool[index];
-    el('#image-full-aligner').innerHTML += `<a style='width:100%;height:100%;display:flex;align-items:center;justify-content: center;' href='${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}'><img class='image-full' src='/sha/${sha}/plugins/image/medium?type=${mimeType}'/></a>`;
+    el('#image-full-aligner').innerHTML += `<a style='width:100%;height:100%;display:flex;align-items:center;justify-content: center;' href='${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}'><img class='image-full' src='${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/medium?type=${mimeType}'/></a>`;
 }
 async function getClientDefaultDirectoryDescriptorSha(ref) {
     if (!ref)
@@ -597,7 +592,6 @@ async function viewLikes() {
     // TODO manage liked directories
     el('#directories').classList.add('is-hidden');
     el('#videos-container').classList.remove('is-hidden');
-    el('#audio-container').classList.remove('is-hidden');
     // TODO manage liked images
     el('#images-container').classList.add('is-hidden');
     let likesArray = Object.getOwnPropertyNames(likes).map(sha => ({ sha, value: likes[sha] }));
@@ -632,10 +626,6 @@ async function syncUi() {
         el('#videos-container').classList.remove('is-hidden');
     else
         el('#videos-container').classList.add('is-hidden');
-    if (audioPool.length)
-        el('#audio-container').classList.remove('is-hidden');
-    else
-        el('#audio-container').classList.add('is-hidden');
     if (!imagesPool.length)
         el('#images-container').classList.add('is-hidden');
     if (currentPictureIndex != displayedPictureIndex)

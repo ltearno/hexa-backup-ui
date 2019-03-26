@@ -34,6 +34,7 @@
     <div id="dirs-and-files">
         <button id="fullScreen">full screen</button>
         <button onclick='el("#menu").classList.toggle("is-hidden")'>show/hide menu</button>
+        <audio id="audio-player" controls preload="metadata"></audio>
         <div id="directories"></div>
         <div id="files"></div>
     </div>
@@ -41,11 +42,6 @@
         <h2>Videos</h2>
         <video id="video-player" controls preload="metadata"></video>
         <div id="video-list"></div>
-    </div>
-    <div id="audio-container">
-        <h2>Audio files</h2>
-        <audio id="audio-player" controls preload="metadata"></audio>
-        <div id="audio-list"></div>
     </div>
     <div id="images-container">
         <div id="images"></div>
