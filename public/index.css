@@ -54,6 +54,7 @@ body {
     max-height: 100vh;
     position: relative;
     max-width: 50%;
+    overflow-y: auto;
 }
 
 body:-webkit-full-screen #images-container {
