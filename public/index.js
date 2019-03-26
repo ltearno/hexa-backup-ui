@@ -191,14 +191,15 @@ async function restartFilePool() {
     let currentPrefix = '';
     for (let index = 0; index < filesPool.length; index++) {
         const file = filesPool[index];
-        if (index < filesPool.length - 1) {
-            let pl = findPrefix(filesPool[index].fileName, filesPool[index + 1].fileName);
-            let maybeNewPrefix = filesPool[index].fileName.substr(0, pl);
+        /*if (index < filesPool.length - 1) {
+            let pl = findPrefix(filesPool[index].fileName, filesPool[index + 1].fileName)
+            let maybeNewPrefix = filesPool[index].fileName.substr(0, pl)
+
             if (maybeNewPrefix != currentPrefix && (!maybeNewPrefix.match(/^[0-9]+$/)) && (!currentPrefix.length || !maybeNewPrefix.startsWith(currentPrefix))) {
-                currentPrefix = maybeNewPrefix;
-                filesContent += `<div><b>${currentPrefix.trim()}</b></div>`;
+                currentPrefix = maybeNewPrefix
+                filesContent += `<div><b>${currentPrefix.trim()}</b></div>`
             }
-        }
+        }*/
         let mimeTypes = ['application/octet-stream'];
         if (file.mimeType != 'application/octet-stream')
             mimeTypes.push(file.mimeType);

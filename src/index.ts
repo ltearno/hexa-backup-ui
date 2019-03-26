@@ -249,7 +249,7 @@ async function restartFilePool() {
     for (let index = 0; index < filesPool.length; index++) {
         const file = filesPool[index]
 
-        if (index < filesPool.length - 1) {
+        /*if (index < filesPool.length - 1) {
             let pl = findPrefix(filesPool[index].fileName, filesPool[index + 1].fileName)
             let maybeNewPrefix = filesPool[index].fileName.substr(0, pl)
 
@@ -257,7 +257,7 @@ async function restartFilePool() {
                 currentPrefix = maybeNewPrefix
                 filesContent += `<div><b>${currentPrefix.trim()}</b></div>`
             }
-        }
+        }*/
 
         let mimeTypes = ['application/octet-stream']
         if (file.mimeType != 'application/octet-stream')
