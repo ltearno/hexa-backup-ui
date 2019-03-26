@@ -167,7 +167,6 @@ async function showDirectory(directoryDescriptorSha) {
     await restartFilePool();
     finishLoading();
     await wait(1);
-    //await restartAudioPool()
     imagesPool = images;
     await restartImagesPool();
     currentVideoIndex = -1;
@@ -189,8 +188,17 @@ function getMimeType(fileName) {
 async function restartFilePool() {
     let audioIndex = 0;
     let filesContent = '';
-    for (let index in filesPool) {
+    let currentPrefix = '';
+    for (let index = 0; index < filesPool.length; index++) {
         const file = filesPool[index];
+        if (index < filesPool.length - 1) {
+            let pl = findPrefix(filesPool[index].fileName, filesPool[index + 1].fileName);
+            let maybeNewPrefix = filesPool[index].fileName.substr(0, pl);
+            if (maybeNewPrefix != currentPrefix && (!maybeNewPrefix.match(/^[0-9]+$/)) && (!currentPrefix.length || !maybeNewPrefix.startsWith(currentPrefix))) {
+                currentPrefix = maybeNewPrefix;
+                filesContent += `<div><b>${currentPrefix.trim()}</b></div>`;
+            }
+        }
         let mimeTypes = ['application/octet-stream'];
         if (file.mimeType != 'application/octet-stream')
             mimeTypes.push(file.mimeType);
@@ -203,7 +211,7 @@ async function restartFilePool() {
             html = `${date} ${file.fileName} <span class='small'>${file.size} ${links}</span>`;
         }
         else {
-            html = `${file.fileName} <span class='small'>${links} ${likeHtml}</span>`;
+            html = `${file.fileName.substr(currentPrefix.length)} <span class='small'>${links} ${likeHtml}</span>`;
         }
         if (file.mimeType.startsWith('audio/')) {
             classes.push(`audio-${audioIndex}`);
@@ -214,7 +222,7 @@ async function restartFilePool() {
     }
     if (filesContent.length) {
         el('#files').classList.remove('is-hidden');
-        el('#files').innerHTML = `<h2>${filesContent.length} Files</h2><div>${filesContent}</div> `;
+        el('#files').innerHTML = `<h2>${filesPool.length} Files</h2><div>${filesContent}</div> `;
     }
     else {
         el('#files').classList.add('is-hidden');
@@ -351,7 +359,7 @@ async function listenAudio(index) {
     el('#audio-player').setAttribute('src', `${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`);
     el('#audio-player').setAttribute('type', mimeType);
     el('#audio-player').play();
-    el(`#audio-${index}`).style.fontWeight = 'bold';
+    el(`.audio-${index}`).style.fontWeight = 'bold';
 }
 async function toggleShaLike(sha, mimeType, fileName) {
     let metadata = filesShaLikeMetadata[sha];
@@ -378,16 +386,6 @@ async function toggleShaLike(sha, mimeType, fileName) {
     });
     return metadata.status;
 }
-async function toggleLikeAudio(index) {
-    if (index < 0 || index >= audioPool.length)
-        return;
-    let { sha, mimeType, fileName } = audioPool[index];
-    let status = await toggleShaLike(sha, mimeType, fileName);
-    if (status)
-        el(`#audio-${index}`).classList.add('liked');
-    else
-        el(`#audio-${index}`).classList.remove('liked');
-}
 async function listenNext() {
     listenAudio(currentAudioIndex + 1);
 }
@@ -409,26 +407,6 @@ function findPrefix(s1, s2) {
             return i;
     }
     return Math.min(s1.length, s2.length);
-}
-async function restartAudioPool() {
-    let prefixLength = audioPool.length ? audioPool[0].fileName.length : 0;
-    for (let i = 0; i < audioPool.length - 1; i++) {
-        prefixLength = Math.min(prefixLength, findPrefix(audioPool[i].fileName, audioPool[i + 1].fileName));
-        if (!prefixLength)
-            break;
-    }
-    let html = '';
-    if (prefixLength) {
-        html += `<div>${audioPool[0].fileName.substr(0, prefixLength)}</div>`;
-    }
-    for (let i in audioPool) {
-        html += `<div id='audio-${i}'><a href='#' onclick='event.preventDefault() || listenAudio(${i})'>${audioPool[i].fileName.substr(prefixLength)}</a> <a class='like' onclick='event.preventDefault() || toggleLikeAudio(${i})'>like ♡</a></div>`;
-    }
-    el('#audio-list').innerHTML = html;
-    if (audioPool.length)
-        el('#audio-container').classList.remove('is-hidden');
-    else
-        el('#audio-container').classList.add('is-hidden');
 }
 async function showPicture(index) {
     el('#image-full-aligner').innerHTML = '';
