@@ -208,10 +208,15 @@ async function showDirectory(directoryDescriptorSha) {
             audios.push(file)
     })
 
+    currentAudioIndex = -1
+    audioPool = audios
+
     await restartFilePool()
     finishLoading()
 
     await wait(1)
+
+    //await restartAudioPool()
 
     imagesPool = images
     await restartImagesPool()
@@ -219,10 +224,6 @@ async function showDirectory(directoryDescriptorSha) {
     currentVideoIndex = -1
     videosPool = videos
     await restartVideosPool()
-
-    currentAudioIndex = -1
-    audioPool = audios
-    await restartAudioPool()
 }
 
 const maxImagesSeen = 100
@@ -242,27 +243,53 @@ function getMimeType(fileName) {
 }
 
 async function restartFilePool() {
-    let filesContent = filesPool.map((file, index) => {
+    let audioIndex = 0
+    let filesContent = ''
+
+    for (let index in filesPool) {
+        const file = filesPool[index]
+
         let mimeTypes = ['application/octet-stream']
         if (file.mimeType != 'application/octet-stream')
             mimeTypes.push(file.mimeType)
 
         let links = mimeTypes.map((mimeType, index) => `[<a href='${HEXA_BACKUP_BASE_URL}/sha/${file.sha}/content?type=${mimeType}${index == 0 ? `&fileName=${file.fileName}` : ''}' >${EXTENDED ? mimeType : (index == 0 ? 'dl' : (mimeType.indexOf('/') ? mimeType.substr(mimeType.indexOf('/') + 1) : mimeType))}</a>]`).join(' ')
 
-        let imageHtml = EXTENDED ?
-            `<span class='small'>${displayDate(file.lastWrite)} ${file.sha ? file.sha.substr(0, 7) : '-'}</span> ${file.fileName} <span class='small'>${file.size} ${links}</span>` :
-            `${file.fileName} <span class='small'>${links} <a class='like' onclick='event.preventDefault() || toggleLikeFile(${index})'>like ♡</a></span>`
+        let html = ''
+        let classes = []
 
-        return `<div>${imageHtml}</div>`
-    })
+        let likeHtml = `<a class='like' onclick='event.preventDefault() || toggleLikeFile(${index})'>like ♡</a>`
+
+        if (EXTENDED) {
+            let date = `<span class='small'>${displayDate(file.lastWrite)} ${file.sha ? file.sha.substr(0, 7) : '-'}</span>`
+            html = `${date} ${file.fileName} <span class='small'>${file.size} ${links}</span>`
+        }
+        else {
+            html = `${file.fileName} <span class='small'>${links} ${likeHtml}</span>`
+        }
+
+        if (file.mimeType.startsWith('audio/')) {
+            classes.push(`audio-${audioIndex}`)
+            html = `<a href='#' onclick='event.preventDefault() || listenAudio(${audioIndex})'>▶️</a> ${html}`
+
+            audioIndex++
+        }
+
+        filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${html}</div>`
+    }
 
     if (filesContent.length) {
         el('#files').classList.remove('is-hidden')
-        el('#files').innerHTML = `<h2>${filesContent.length} Files</h2><div id='files-list'>${filesContent.join('')}</div>`
+        el('#files').innerHTML = `<h2>${filesContent.length} Files</h2><div>${filesContent}</div> `
     }
     else {
         el('#files').classList.add('is-hidden')
     }
+
+    if (audioPool.length)
+        el('#audio-container').classList.remove('is-hidden')
+    else
+        el('#audio-container').classList.add('is-hidden')
 
     await viewLikesFiles()
 }
@@ -293,7 +320,7 @@ async function viewLikesFiles() {
         let file = filesPool[i]
         let metadata = filesShaLikeMetadata[file.sha]
         if (metadata && metadata.status)
-            el('#files-list').children.item(i).classList.add('liked')
+            el(`#file-${i}`).classList.add('liked')
     }
 }
 
@@ -327,9 +354,9 @@ async function toggleLikeFile(index) {
     let status = await toggleShaLike(file.sha, file.mimeType, file.fileName)
 
     if (status)
-        el('#files-list').children.item(index).classList.add('liked')
+        el(`#file-${index}`).classList.add('liked')
     else
-        el('#files-list').children.item(index).classList.remove('liked')
+        el(`#file-${index}`).classList.remove('liked')
 }
 
 
@@ -344,7 +371,7 @@ async function restartImagesPool() {
     if (imagesPool.length) {
         el('#images').innerHTML = ''
         infiniteScrollerStop = infiniteScroll(imagesPool,
-            ({ sha, mimeType, fileName }, index) => `<div><img onclick='goPicture(${index})' src="${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}"/></div>`,
+            ({ sha, mimeType, fileName }, index) => `< div > <img onclick='goPicture(${index})' src = "${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}" /> </div>`,
             el('#images-container'),
             el('#images'))
     }
@@ -528,22 +555,7 @@ async function restartAudioPool() {
     if (audioPool.length)
         el('#audio-container').classList.remove('is-hidden')
     else
-        el('#videos-container').classList.add('is-hidden')
-
-    loadLikesAudio()
-}
-
-async function loadLikesAudio() {
-    let i = 0
-    // TODO fetch by batch
-    // TODO fetch only once (files, videos, audios and images)
-    while (i < audioPool.length) {
-        let metadata = filesShaLikeMetadata[audioPool[i].sha]
-        // TODO since we only use 'status', maybe an option to only fetch that
-        if (metadata && metadata.status)
-            el(`#audio-${i}`).classList.add('liked')
-        i++
-    }
+        el('#audio-container').classList.add('is-hidden')
 }
 
 async function showPicture(index) {
