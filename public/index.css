@@ -99,6 +99,16 @@ body {
     padding-bottom: .2em;
 }
 
+#refs-list>div {
+    padding-top: 0.2em;
+    padding-bottom: .2em;
+}
+
+#video-list>div {
+    padding-top: 0.2em;
+    padding-bottom: .2em;
+}
+
 .small {
     font-size: .8em;
     color: #333;

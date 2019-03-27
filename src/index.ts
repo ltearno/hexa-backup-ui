@@ -668,7 +668,7 @@ function infiniteScroll(db, domCreator, scrollContainer, scrollContent) {
 window.addEventListener('load', async () => {
     let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/refs`)
     let refs = (await resp.json()).filter(e => e.startsWith('CLIENT_')).map(e => e.substr(7))
-    el('#refs-list').innerHTML = refs.map(ref => `<a href='#' onclick='event.preventDefault() || goRef("${ref}")'>${ref}</a>`).join('<br/>')
+    el('#refs-list').innerHTML = refs.map(ref => `<div><a href='#' onclick='event.preventDefault() || goRef("${ref}")'>${ref}</a></div>`).join('')
 })
 
 el('#fullScreen').addEventListener('click', () => {
