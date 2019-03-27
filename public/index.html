@@ -12,13 +12,6 @@
 </head>
 
 <body>
-    <div id="banner">
-        <div>
-            <button id="fullScreen">full screen</button>
-            <button onclick='el("#menu").classList.toggle("is-hidden")'>show/hide menu</button>
-        </div>
-        <audio id="audio-player" controls preload="metadata"></audio>
-    </div>
     <div id="main">
         <div id="banner-placeholder"></div>
         <div id="menu">
@@ -60,6 +53,14 @@
                     style='font-size: 2em;' onclick='goNoPicture()'>X</button><button style='font-size: 2em;'
                     onclick='goNextPicture()'>&gt;</button></div>
         </div>
+    </div>
+
+    <div id="banner">
+        <div>
+            <button id="fullScreen">full screen</button>
+            <button onclick='el("#menu").classList.toggle("is-hidden")'>show/hide menu</button>
+        </div>
+        <audio id="audio-player" controls preload="metadata"></audio>
     </div>
 
     <script src="index.js"></script>
