@@ -289,7 +289,7 @@ async function restartFilePool() {
 
     if (filesContent.length) {
         el('#files').classList.remove('is-hidden')
-        el('#files').innerHTML = `<h2>${filesPool.length} Files</h2><div>${filesContent}</div> `
+        el('#files').innerHTML = `<h2>${filesPool.length} Files</h2><div id="files-container">${filesContent}</div> `
     }
     else {
         el('#files').classList.add('is-hidden')
