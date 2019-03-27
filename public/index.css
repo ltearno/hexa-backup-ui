@@ -75,6 +75,7 @@ body {
     flex-flow: column nowrap;
     justify-content: center;
     position: relative;
+    line-height: 1.5em;
 }
 
 #directoryContent {
