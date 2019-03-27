@@ -91,9 +91,16 @@ img {
     image-orientation: from-image;
 }
 
+#banner {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
 #audio-player {
-    width: 100%;
+    /*width: 100%;*/
     flex-shrink: 0;
+    min-width: 50vh;
 }
 
 #videos-container {

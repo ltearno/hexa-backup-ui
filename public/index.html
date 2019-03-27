@@ -12,6 +12,13 @@
 </head>
 
 <body>
+    <div id="banner">
+        <div>
+            <button id="fullScreen">full screen</button>
+            <button onclick='el("#menu").classList.toggle("is-hidden")'>show/hide menu</button>
+        </div>
+        <audio id="audio-player" controls preload="metadata"></audio>
+    </div>
     <div id="main">
         <div id="menu">
             <h2>Sources</h2>
@@ -33,9 +40,6 @@
             <span id="status"></span>
         </div>
         <div id="dirs-and-files">
-            <button id="fullScreen">full screen</button>
-            <button onclick='el("#menu").classList.toggle("is-hidden")'>show/hide menu</button>
-            <audio id="audio-player" controls preload="metadata"></audio>
             <div id="directories"></div>
             <div id="files"></div>
         </div>
