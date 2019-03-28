@@ -37,10 +37,6 @@
             <div id="directories"></div>
             <div id="files"></div>
         </div>
-        <div id="videos-container">
-            <h2>Video player</h2>
-            <video id="video-player" controls preload="metadata"></video>
-        </div>
         <div id="images-container">
             <div id="images"></div>
         </div>
@@ -58,8 +54,10 @@
         <div>
             <button id="fullScreen">full screen</button>
             <button onclick='el("#menu").classList.toggle("is-hidden")'>show/hide menu</button>
+            <button onclick='el("#video-player").classList.toggle("is-hidden")'>show/hide video</button>
         </div>
         <audio id="audio-player" controls preload="metadata"></audio>
+        <video id="video-player" class="is-hidden" controls preload="metadata"></video>
     </div>
 
     <script src="index.js"></script>

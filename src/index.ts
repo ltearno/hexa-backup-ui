@@ -219,7 +219,6 @@ async function showDirectory(directoryDescriptorSha) {
 
     currentVideoIndex = -1
     videosPool = videos
-    await restartVideosPool()
 }
 
 const maxImagesSeen = 100
@@ -239,6 +238,8 @@ function getMimeType(fileName) {
 }
 
 async function restartFilePool() {
+    el('#video-player').classList.add('is-hidden')
+
     let audioIndex = 0
     let videoIndex = 0
     let filesContent = ''
@@ -395,6 +396,8 @@ async function showVideo(index) {
     if (index < 0 || index >= videosPool.length)
         return
 
+    el('#video-player').classList.remove('is-hidden')
+
     currentVideoIndex = index
     let { sha, mimeType, fileName } = videosPool[index]
     el('#video-player').setAttribute('src', STREAM_RAW_VIDEO ? `${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}` : `${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/video/small?type=${mimeType}`)
@@ -408,13 +411,6 @@ async function showNextVideo() {
     showVideo(currentVideoIndex + 1)
 }
 
-async function restartVideosPool() {
-    if (videosPool.length)
-        el('#videos-container').classList.remove('is-hidden')
-    else
-        el('#videos-container').classList.add('is-hidden')
-}
-
 async function viewLikedVideos(likes) {
     if (!likes)
         likes = []
@@ -426,8 +422,6 @@ async function viewLikedVideos(likes) {
             mimeType: like.value.knownAs.mimeType
         }
     })
-
-    restartVideosPool()
 }
 
 async function listenAudio(index) {
@@ -747,7 +741,7 @@ async function viewLikes() {
 
     // TODO manage liked directories
     el('#directories').classList.add('is-hidden')
-    el('#videos-container').classList.remove('is-hidden')
+    el('#videos-player').classList.add('is-hidden')
     // TODO manage liked images
     el('#images-container').classList.add('is-hidden')
 
@@ -789,10 +783,7 @@ async function syncUi() {
     if (showUnlikedItemsChange || extChange || fullHistoryChange || currentClientId != displayedClientId)
         await showRef(currentClientId)
 
-    if (videosPool.length)
-        el('#videos-container').classList.remove('is-hidden')
-    else
-        el('#videos-container').classList.add('is-hidden')
+    el('#videos-player').classList.add('is-hidden')
 
     if (!imagesPool.length)
         el('#images-container').classList.add('is-hidden')
