@@ -161,7 +161,7 @@ async function showDirectory(directoryDescriptorSha) {
         })
         .map(file => EXTENDED ?
             `<div><span class='small'>${displayDate(file.lastWrite)} ${file.contentSha ? file.contentSha.substr(0, 7) : '-'}</span> <a href='#' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a></div>` :
-            `<div><a href='#' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a></div>`)
+            `<div><a href='${BASE_URL}#${file.contentSha}' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a></div>`)
     if (directoriesContent.length) {
         el('#directories').classList.remove('is-hidden')
         el('#directories').innerHTML = `<h2>${directoriesContent.length} Directories</h2><div id='directories-container'>${directoriesContent.join('')}</div>`
@@ -279,7 +279,7 @@ async function restartFilePool() {
 
         if (file.mimeType.startsWith('audio/')) {
             classes.push(`audio-${audioIndex}`)
-            html = `<a href='#' onclick='event.preventDefault() || listenAudio(${audioIndex})'>▶️</a> ${html}`
+            html = `<a href='#' onclick='event.preventDefault() || listenAudio(${audioIndex})'>🎶 ▶</a> ${html}`
 
             audioIndex++
         }
