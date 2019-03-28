@@ -232,6 +232,13 @@ img {
     }
 }
 
+@media screen and (min-width: 1215px) {
+    #main {
+        max-width: 40%;
+        margin: 0 auto;
+    }
+}
+
 .is-hidden, body:-webkit-full-screen #directories, body:-webkit-full-screen #files, body:-webkit-full-screen #menu, body:-webkit-full-screen #videos-container, body:-webkit-full-screen #audio-player {
     display: none;
 }
