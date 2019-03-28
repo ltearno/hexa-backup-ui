@@ -241,6 +241,7 @@ function getMimeType(fileName) {
 
 async function restartFilePool() {
     let audioIndex = 0
+    let videoIndex = 0
     let filesContent = ''
 
     let currentPrefix = ''
@@ -282,6 +283,12 @@ async function restartFilePool() {
             html = `<a href='#' onclick='event.preventDefault() || listenAudio(${audioIndex})'>🎶 ▶</a> ${html}`
 
             audioIndex++
+        }
+        else if (file.mimeType.startsWith('video/')) {
+            classes.push(`video-${audioIndex}`)
+            html = `<a href='#' onclick='event.preventDefault() || showVideo(${videoIndex})'>🎞️ ▶</a> ${html}`
+
+            videoIndex++
         }
 
         filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${html}</div>`
@@ -396,6 +403,7 @@ async function showVideo(index) {
     el('#video-player').play()
 
     el(`#video-${index}`).style.fontWeight = 'bold'
+    el(`.video-${index}`).style.fontWeight = 'bold'
 }
 
 async function showNextVideo() {
