@@ -565,7 +565,7 @@ async function viewLikes() {
         likes = {};
     // TODO manage liked directories
     el('#directories').classList.add('is-hidden');
-    el('#videos-player').classList.add('is-hidden');
+    el('#video-player').classList.add('is-hidden');
     // TODO manage liked images
     el('#images-container').classList.add('is-hidden');
     let likesArray = Object.getOwnPropertyNames(likes).map(sha => ({ sha, value: likes[sha] }));
@@ -596,7 +596,7 @@ async function syncUi() {
         await showDirectory(currentDirectoryDescriptorSha);
     if (showUnlikedItemsChange || extChange || fullHistoryChange || currentClientId != displayedClientId)
         await showRef(currentClientId);
-    el('#videos-player').classList.add('is-hidden');
+    el('#video-player').classList.add('is-hidden');
     if (!imagesPool.length)
         el('#images-container').classList.add('is-hidden');
     if (currentPictureIndex != displayedPictureIndex)

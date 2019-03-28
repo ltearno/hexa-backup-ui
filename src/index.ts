@@ -741,7 +741,7 @@ async function viewLikes() {
 
     // TODO manage liked directories
     el('#directories').classList.add('is-hidden')
-    el('#videos-player').classList.add('is-hidden')
+    el('#video-player').classList.add('is-hidden')
     // TODO manage liked images
     el('#images-container').classList.add('is-hidden')
 
@@ -783,7 +783,7 @@ async function syncUi() {
     if (showUnlikedItemsChange || extChange || fullHistoryChange || currentClientId != displayedClientId)
         await showRef(currentClientId)
 
-    el('#videos-player').classList.add('is-hidden')
+    el('#video-player').classList.add('is-hidden')
 
     if (!imagesPool.length)
         el('#images-container').classList.add('is-hidden')
