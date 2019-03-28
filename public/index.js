@@ -102,7 +102,6 @@ async function showDirectory(directoryDescriptorSha) {
     el('#directories').innerHTML = '';
     el('#files').innerHTML = '';
     el('#images').innerHTML = '';
-    el('#video-list').innerHTML = '';
     if (!directoryDescriptorSha)
         return;
     let finishLoading = startLoading(`loading directory descriptor ${directoryDescriptorSha.substr(0, 7)}`);
@@ -220,7 +219,7 @@ async function restartFilePool() {
             audioIndex++;
         }
         else if (file.mimeType.startsWith('video/')) {
-            classes.push(`video-${audioIndex}`);
+            classes.push(`video-${videoIndex}`);
             html = `<a href='#' onclick='event.preventDefault() || showVideo(${videoIndex})'>🎞️ ▶</a> ${html}`;
             videoIndex++;
         }
@@ -305,42 +304,16 @@ async function showVideo(index) {
     el('#video-player').setAttribute('src', STREAM_RAW_VIDEO ? `${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}` : `${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/video/small?type=${mimeType}`);
     el('#video-player').setAttribute('type', mimeType);
     el('#video-player').play();
-    el(`#video-${index}`).style.fontWeight = 'bold';
     el(`.video-${index}`).style.fontWeight = 'bold';
 }
 async function showNextVideo() {
     showVideo(currentVideoIndex + 1);
 }
-async function toggleLikeVideo(index) {
-    if (index < 0 || index >= videosPool.length)
-        return;
-    let { sha, mimeType, fileName } = videosPool[index];
-    let status = await toggleShaLike(sha, mimeType, fileName);
-    if (status)
-        el('#video-list').children.item(index).classList.add('liked');
-    else
-        el('#video-list').children.item(index).classList.remove('liked');
-}
 async function restartVideosPool() {
-    let html = '';
-    for (let i in videosPool) {
-        html += `<div><a id='video-${i}' href='#' onclick='event.preventDefault(), showVideo(${i})'>${videosPool[i].fileName}</a> <a class='like' onclick='event.preventDefault() || toggleLikeVideo(${i})'>like ♡</a></div></div>`;
-    }
-    el('#video-list').innerHTML = html;
     if (videosPool.length)
         el('#videos-container').classList.remove('is-hidden');
     else
         el('#videos-container').classList.add('is-hidden');
-    loadLikesVideo();
-}
-async function loadLikesVideo() {
-    let i = 0;
-    while (i < videosPool.length) {
-        let metadata = filesShaLikeMetadata[videosPool[i].sha]; //await (await fetch(`/metadata/likes-sha/${videosPool[i].sha}`)).json()
-        if (metadata && metadata.status)
-            el('#video-list').children.item(i).classList.add('liked');
-        i++;
-    }
 }
 async function viewLikedVideos(likes) {
     if (!likes)
