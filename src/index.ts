@@ -733,7 +733,7 @@ function fromHash() {
 }
 
 async function viewLikes() {
-    el("#menu").classList.remove("is-hidden")
+    el("#menu").classList.add("is-hidden")
 
     let likes = await (await fetch(`${HEXA_BACKUP_BASE_URL}/metadata/likes-sha`)).json()
     if (!likes)
