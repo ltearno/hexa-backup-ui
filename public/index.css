@@ -213,6 +213,9 @@ img {
         flex-wrap: wrap;
         justify-content: space-around;
     }
+    #audio-player {
+        width: 100%;
+    }
 }
 
 @media screen and (min-width: 1215px) {
