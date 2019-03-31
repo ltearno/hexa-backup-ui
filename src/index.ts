@@ -674,10 +674,13 @@ async function submitSearch() {
             mimeType: i.mimeType,
             size: 0
         }))
+        imagesPool = filesPool.filter(i => i.mimeType.startsWith('image/'))
+        imagesPool.length && el('#images-container').classList.remove('is-hidden')
         audioPool = filesPool.filter(i => i.mimeType.startsWith('audio/'))
         videosPool = filesPool.filter(i => i.mimeType.startsWith('video/'))
         await loadLikesFiles()
         await restartFilePool()
+        await restartImagesPool()
     }
     catch (err) {
         console.error(err)
