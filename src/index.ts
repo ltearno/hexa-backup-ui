@@ -644,14 +644,38 @@ window.addEventListener('load', async () => {
 
         const headers = new Headers()
         headers.set('Content-Type', 'application/json')
-        await fetch(`${HEXA_BACKUP_BASE_URL}/search`, {
+        const resp = await fetch(`${HEXA_BACKUP_BASE_URL}/search`, {
             headers,
             method: 'post',
             body: JSON.stringify({
-                text: el('#search-text').value,
+                name: el('#search-text').value,
                 mimeType: 'audio/%'
             })
         })
+        console.log(resp)
+        const respJson = await resp.json()
+        console.log(respJson)
+        let { resultDirectories, resultFilesddd } = respJson
+
+        console.log(resultFilesddd)
+
+        // sha fileName mimeType size
+        // TODO manage liked directories
+        el('#directories').classList.add('is-hidden')
+        el('#video-player').classList.add('is-hidden')
+        el('#images-container').classList.add('is-hidden')
+
+        filesPool = resultFilesddd.map(i => ({
+            sha: i.sha,
+            fileName: i.name,
+            mimeType: i.mimeType,
+            size: 0
+        }))
+        console.log(filesPool)
+        audioPool = filesPool.filter(i => i.mimeType.startsWith('audio/'))
+        videosPool = filesPool.filter(i => i.mimeType.startsWith('video/'))
+        await loadLikesFiles()
+        await restartFilePool()
     })
 })
 
