@@ -641,7 +641,10 @@ window.addEventListener('load', async () => {
     let refs = (await resp.json()).filter(e => e.startsWith('CLIENT_')).map(e => e.substr(7))
     el('#refs-list').innerHTML = refs.map(ref => `<div><a href='#' onclick='event.preventDefault() || goRef("${ref}")'>${ref}</a></div>`).join('')
 
-    el('#search-button').addEventListener('click', async () => {
+    el('#search-form').addEventListener('submit', async event => {
+        event.preventDefault()
+        el("#menu").classList.add("is-hidden")
+
         const searchText = el('#search-text').value || ''
 
         let finishLoading = startLoading(`searching '${searchText}'...`)
@@ -677,7 +680,6 @@ window.addEventListener('load', async () => {
                 mimeType: i.mimeType,
                 size: 0
             }))
-            console.log(filesPool)
             audioPool = filesPool.filter(i => i.mimeType.startsWith('audio/'))
             videosPool = filesPool.filter(i => i.mimeType.startsWith('video/'))
             await loadLikesFiles()
