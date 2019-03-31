@@ -100,7 +100,6 @@ let startLoading = (text) => {
 };
 async function viewDirectories(directories) {
     el('#directories').innerHTML = '';
-    let finishLoading = startLoading(`listing directories`);
     let directoriesContent = directories.sort((a, b) => {
         let sa = a.name.toLocaleLowerCase();
         let sb = b.name.toLocaleLowerCase();
@@ -116,7 +115,6 @@ async function viewDirectories(directories) {
     else {
         el('#directories').classList.add('is-hidden');
     }
-    finishLoading();
 }
 async function showDirectory(directoryDescriptorSha) {
     el('#directories').innerHTML = '';
@@ -124,7 +122,7 @@ async function showDirectory(directoryDescriptorSha) {
     el('#images').innerHTML = '';
     if (!directoryDescriptorSha)
         return;
-    let finishLoading = startLoading(`loading directory descriptor ${directoryDescriptorSha.substr(0, 7)}`);
+    let finishLoading = startLoading(`loading directory descriptor ${directoryDescriptorSha.substr(0, 7)}...`);
     let directoryDescriptor = await fetchDirectoryDescriptor(directoryDescriptorSha);
     finishLoading();
     if (!directoryDescriptor || !directoryDescriptor.files) {
@@ -138,7 +136,6 @@ async function showDirectory(directoryDescriptorSha) {
     let images = [];
     let videos = [];
     let audios = [];
-    finishLoading = startLoading(`listing files`);
     filesPool = files
         .filter(file => !file.isDirectory)
         .sort((a, b) => {
@@ -167,7 +164,6 @@ async function showDirectory(directoryDescriptorSha) {
     currentAudioIndex = -1;
     audioPool = audios;
     await restartFilePool();
-    finishLoading();
     await wait(1);
     imagesPool = images;
     await restartImagesPool();
@@ -397,7 +393,7 @@ async function getClientDefaultDirectoryDescriptorSha(ref) {
     let commitSha = clientState.currentCommitSha;
     if (commitSha == null)
         return null;
-    let finishLoading = startLoading(`loading commit ${commitSha.substr(0, 7)} for default directory descriptor`);
+    let finishLoading = startLoading(`loading commit ${commitSha.substr(0, 7)}...`);
     let commit = await fetchCommit(commitSha);
     finishLoading();
     if (!commit)
@@ -414,7 +410,7 @@ async function showRef(ref) {
         return null;
     let commitSha = clientState.currentCommitSha;
     let firstDirectoryDescriptorSha = null;
-    let finishLoading = startLoading(`loading commit history`);
+    let finishLoading = startLoading(`loading commit history...`);
     while (commitSha != null) {
         let commit = await fetchCommit(commitSha);
         if (!commit)
@@ -493,40 +489,46 @@ window.addEventListener('load', async () => {
     let refs = (await resp.json()).filter(e => e.startsWith('CLIENT_')).map(e => e.substr(7));
     el('#refs-list').innerHTML = refs.map(ref => `<div><a href='#' onclick='event.preventDefault() || goRef("${ref}")'>${ref}</a></div>`).join('');
     el('#search-button').addEventListener('click', async () => {
-        console.log(`coucouc ${el('#search-text').value}`);
-        const headers = new Headers();
-        headers.set('Content-Type', 'application/json');
-        const resp = await fetch(`${HEXA_BACKUP_BASE_URL}/search`, {
-            headers,
-            method: 'post',
-            body: JSON.stringify({
-                name: el('#search-text').value,
-                mimeType: el('#search-mimeType').value + '%'
-            })
-        });
-        const respJson = await resp.json();
-        let { resultDirectories, resultFilesddd } = respJson;
-        // sha fileName mimeType size
-        // TODO manage liked directories
-        el('#directories').classList.add('is-hidden');
-        el('#video-player').classList.add('is-hidden');
-        el('#images-container').classList.add('is-hidden');
-        await viewDirectories(resultDirectories.map(i => ({
-            name: i.name,
-            lastWrite: 0,
-            contentSha: i.sha
-        })));
-        filesPool = resultFilesddd.map(i => ({
-            sha: i.sha,
-            fileName: i.name,
-            mimeType: i.mimeType,
-            size: 0
-        }));
-        console.log(filesPool);
-        audioPool = filesPool.filter(i => i.mimeType.startsWith('audio/'));
-        videosPool = filesPool.filter(i => i.mimeType.startsWith('video/'));
-        await loadLikesFiles();
-        await restartFilePool();
+        const searchText = el('#search-text').value || '';
+        let finishLoading = startLoading(`searching '${searchText}'...`);
+        try {
+            const headers = new Headers();
+            headers.set('Content-Type', 'application/json');
+            const resp = await fetch(`${HEXA_BACKUP_BASE_URL}/search`, {
+                headers,
+                method: 'post',
+                body: JSON.stringify({
+                    name: searchText,
+                    mimeType: el('#search-mimeType').value + '%'
+                })
+            });
+            const respJson = await resp.json();
+            let { resultDirectories, resultFilesddd } = respJson;
+            // TODO manage liked directories
+            el('#directories').classList.add('is-hidden');
+            el('#video-player').classList.add('is-hidden');
+            el('#images-container').classList.add('is-hidden');
+            await viewDirectories(resultDirectories.map(i => ({
+                name: i.name,
+                lastWrite: 0,
+                contentSha: i.sha
+            })));
+            filesPool = resultFilesddd.map(i => ({
+                sha: i.sha,
+                fileName: i.name,
+                mimeType: i.mimeType,
+                size: 0
+            }));
+            console.log(filesPool);
+            audioPool = filesPool.filter(i => i.mimeType.startsWith('audio/'));
+            videosPool = filesPool.filter(i => i.mimeType.startsWith('video/'));
+            await loadLikesFiles();
+            await restartFilePool();
+        }
+        catch (err) {
+            console.error(err);
+        }
+        finishLoading();
     });
 });
 el('#fullScreen').addEventListener('click', () => {
