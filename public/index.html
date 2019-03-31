@@ -15,11 +15,7 @@
     <div id="main">
         <div id="banner-placeholder"></div>
         <div id="search-form">
-            <form id="search-form">
-                <input type="text" id="search-text">
-                <input type="text" id="search-mimeType" value="audio">
-                <button role="submit">search</button>
-            </form>
+
         </div>
         <div id="menu">
             <h2>Sources</h2>
@@ -62,6 +58,16 @@
         </div>
         <audio id="audio-player" controls preload="metadata"></audio>
         <video id="video-player" class="is-hidden" controls preload="metadata"></video>
+        <form id="search-form">
+            <input type="text" id="search-text">
+            <select id="search-mimeType">
+                <option value="">any</option>
+                <option value="audio" selected>audio</option>
+                <option value="image">image</option>
+                <option value="video">video</option>
+            </select>
+            <button role="submit">search</button>
+        </form>
         <div id="status"></div>
     </div>
 
