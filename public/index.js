@@ -484,53 +484,53 @@ function infiniteScroll(db, domCreator, scrollContainer, scrollContent) {
     run();
     return stop;
 }
+async function submitSearch() {
+    el("#menu").classList.add("is-hidden");
+    const searchText = el('#search-text').value || '';
+    let finishLoading = startLoading(`searching '${searchText}'...`);
+    try {
+        const headers = new Headers();
+        headers.set('Content-Type', 'application/json');
+        const resp = await fetch(`${HEXA_BACKUP_BASE_URL}/search`, {
+            headers,
+            method: 'post',
+            body: JSON.stringify({
+                name: searchText,
+                mimeType: el('#search-mimeType').value + '%'
+            })
+        });
+        const respJson = await resp.json();
+        let { resultDirectories, resultFilesddd } = respJson;
+        // TODO manage liked directories
+        el('#directories').classList.add('is-hidden');
+        el('#video-player').classList.add('is-hidden');
+        el('#images-container').classList.add('is-hidden');
+        await viewDirectories(resultDirectories.map(i => ({
+            name: i.name,
+            lastWrite: 0,
+            contentSha: i.sha
+        })));
+        filesPool = resultFilesddd.map(i => ({
+            sha: i.sha,
+            fileName: i.name,
+            mimeType: i.mimeType,
+            size: 0
+        }));
+        audioPool = filesPool.filter(i => i.mimeType.startsWith('audio/'));
+        videosPool = filesPool.filter(i => i.mimeType.startsWith('video/'));
+        await loadLikesFiles();
+        await restartFilePool();
+    }
+    catch (err) {
+        console.error(err);
+    }
+    finishLoading();
+    return false;
+}
 window.addEventListener('load', async () => {
     let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/refs`);
     let refs = (await resp.json()).filter(e => e.startsWith('CLIENT_')).map(e => e.substr(7));
     el('#refs-list').innerHTML = refs.map(ref => `<div><a href='#' onclick='event.preventDefault() || goRef("${ref}")'>${ref}</a></div>`).join('');
-    el('#search-form').addEventListener('submit', async (event) => {
-        event.preventDefault();
-        el("#menu").classList.add("is-hidden");
-        const searchText = el('#search-text').value || '';
-        let finishLoading = startLoading(`searching '${searchText}'...`);
-        try {
-            const headers = new Headers();
-            headers.set('Content-Type', 'application/json');
-            const resp = await fetch(`${HEXA_BACKUP_BASE_URL}/search`, {
-                headers,
-                method: 'post',
-                body: JSON.stringify({
-                    name: searchText,
-                    mimeType: el('#search-mimeType').value + '%'
-                })
-            });
-            const respJson = await resp.json();
-            let { resultDirectories, resultFilesddd } = respJson;
-            // TODO manage liked directories
-            el('#directories').classList.add('is-hidden');
-            el('#video-player').classList.add('is-hidden');
-            el('#images-container').classList.add('is-hidden');
-            await viewDirectories(resultDirectories.map(i => ({
-                name: i.name,
-                lastWrite: 0,
-                contentSha: i.sha
-            })));
-            filesPool = resultFilesddd.map(i => ({
-                sha: i.sha,
-                fileName: i.name,
-                mimeType: i.mimeType,
-                size: 0
-            }));
-            audioPool = filesPool.filter(i => i.mimeType.startsWith('audio/'));
-            videosPool = filesPool.filter(i => i.mimeType.startsWith('video/'));
-            await loadLikesFiles();
-            await restartFilePool();
-        }
-        catch (err) {
-            console.error(err);
-        }
-        finishLoading();
-    });
 });
 el('#fullScreen').addEventListener('click', () => {
     el('body').webkitRequestFullScreen();
