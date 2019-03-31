@@ -501,7 +501,7 @@ window.addEventListener('load', async () => {
             method: 'post',
             body: JSON.stringify({
                 name: el('#search-text').value,
-                mimeType: 'audio/%'
+                mimeType: el('#search-mimeType').value + '%'
             })
         });
         const respJson = await resp.json();
