@@ -488,6 +488,19 @@ window.addEventListener('load', async () => {
     let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/refs`);
     let refs = (await resp.json()).filter(e => e.startsWith('CLIENT_')).map(e => e.substr(7));
     el('#refs-list').innerHTML = refs.map(ref => `<div><a href='#' onclick='event.preventDefault() || goRef("${ref}")'>${ref}</a></div>`).join('');
+    el('#search-button').addEventListener('click', async () => {
+        console.log(`coucouc ${el('#search-text').value}`);
+        const headers = new Headers();
+        headers.set('Content-Type', 'application/json');
+        await fetch(`${HEXA_BACKUP_BASE_URL}/search`, {
+            headers,
+            method: 'post',
+            body: JSON.stringify({
+                text: el('#search-text').value,
+                mimeType: 'audio/%'
+            })
+        });
+    });
 });
 el('#fullScreen').addEventListener('click', () => {
     el('body').webkitRequestFullScreen();
