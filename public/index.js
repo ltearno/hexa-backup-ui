@@ -98,24 +98,10 @@ let startLoading = (text) => {
         el('#status').innerHTML = loaders.join('<br>');
     };
 };
-async function showDirectory(directoryDescriptorSha) {
+async function viewDirectories(directories) {
     el('#directories').innerHTML = '';
-    el('#files').innerHTML = '';
-    el('#images').innerHTML = '';
-    if (!directoryDescriptorSha)
-        return;
-    let finishLoading = startLoading(`loading directory descriptor ${directoryDescriptorSha.substr(0, 7)}`);
-    let directoryDescriptor = await fetchDirectoryDescriptor(directoryDescriptorSha);
-    finishLoading();
-    if (!directoryDescriptor || !directoryDescriptor.files) {
-        el('#directories').innerHTML = `error fetching ${directoryDescriptorSha}`;
-        return;
-    }
-    let files = directoryDescriptor.files;
-    finishLoading = startLoading(`listing directories`);
-    let directoriesContent = files
-        .filter(file => file.isDirectory)
-        .sort((a, b) => {
+    let finishLoading = startLoading(`listing directories`);
+    let directoriesContent = directories.sort((a, b) => {
         let sa = a.name.toLocaleLowerCase();
         let sb = b.name.toLocaleLowerCase();
         return sa.localeCompare(sb);
@@ -131,6 +117,24 @@ async function showDirectory(directoryDescriptorSha) {
         el('#directories').classList.add('is-hidden');
     }
     finishLoading();
+}
+async function showDirectory(directoryDescriptorSha) {
+    el('#directories').innerHTML = '';
+    el('#files').innerHTML = '';
+    el('#images').innerHTML = '';
+    if (!directoryDescriptorSha)
+        return;
+    let finishLoading = startLoading(`loading directory descriptor ${directoryDescriptorSha.substr(0, 7)}`);
+    let directoryDescriptor = await fetchDirectoryDescriptor(directoryDescriptorSha);
+    finishLoading();
+    if (!directoryDescriptor || !directoryDescriptor.files) {
+        el('#directories').innerHTML = `error fetching ${directoryDescriptorSha}`;
+        return;
+    }
+    let files = directoryDescriptor.files;
+    let directories = files
+        .filter(file => file.isDirectory);
+    viewDirectories(directories);
     let images = [];
     let videos = [];
     let audios = [];
@@ -500,16 +504,18 @@ window.addEventListener('load', async () => {
                 mimeType: 'audio/%'
             })
         });
-        console.log(resp);
         const respJson = await resp.json();
-        console.log(respJson);
         let { resultDirectories, resultFilesddd } = respJson;
-        console.log(resultFilesddd);
         // sha fileName mimeType size
         // TODO manage liked directories
         el('#directories').classList.add('is-hidden');
         el('#video-player').classList.add('is-hidden');
         el('#images-container').classList.add('is-hidden');
+        await viewDirectories(resultDirectories.map(i => ({
+            name: i.name,
+            lastWrite: 0,
+            contentSha: i.sha
+        })));
         filesPool = resultFilesddd.map(i => ({
             sha: i.sha,
             fileName: i.name,

@@ -131,6 +131,28 @@ let startLoading = (text) => {
     }
 }
 
+async function viewDirectories(directories: { name: string; lastWrite: number; contentSha: string }[]) {
+    el('#directories').innerHTML = ''
+
+    let finishLoading = startLoading(`listing directories`)
+    let directoriesContent = directories.sort((a, b) => {
+        let sa = a.name.toLocaleLowerCase()
+        let sb = b.name.toLocaleLowerCase()
+        return sa.localeCompare(sb)
+    })
+        .map(file => EXTENDED ?
+            `<div><span class='small'>${displayDate(file.lastWrite)} ${file.contentSha ? file.contentSha.substr(0, 7) : '-'}</span> <a href='#' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a></div>` :
+            `<div><a href='${BASE_URL}#${file.contentSha}' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a></div>`)
+    if (directoriesContent.length) {
+        el('#directories').classList.remove('is-hidden')
+        el('#directories').innerHTML = `<h2>${directoriesContent.length} Directories</h2><div id='directories-container'>${directoriesContent.join('')}</div>`
+    }
+    else {
+        el('#directories').classList.add('is-hidden')
+    }
+    finishLoading()
+}
+
 async function showDirectory(directoryDescriptorSha) {
     el('#directories').innerHTML = ''
     el('#files').innerHTML = ''
@@ -150,25 +172,9 @@ async function showDirectory(directoryDescriptorSha) {
 
     let files = directoryDescriptor.files
 
-    finishLoading = startLoading(`listing directories`)
-    let directoriesContent = files
+    let directories = files
         .filter(file => file.isDirectory)
-        .sort((a, b) => {
-            let sa = a.name.toLocaleLowerCase()
-            let sb = b.name.toLocaleLowerCase()
-            return sa.localeCompare(sb)
-        })
-        .map(file => EXTENDED ?
-            `<div><span class='small'>${displayDate(file.lastWrite)} ${file.contentSha ? file.contentSha.substr(0, 7) : '-'}</span> <a href='#' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a></div>` :
-            `<div><a href='${BASE_URL}#${file.contentSha}' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a></div>`)
-    if (directoriesContent.length) {
-        el('#directories').classList.remove('is-hidden')
-        el('#directories').innerHTML = `<h2>${directoriesContent.length} Directories</h2><div id='directories-container'>${directoriesContent.join('')}</div>`
-    }
-    else {
-        el('#directories').classList.add('is-hidden')
-    }
-    finishLoading()
+    viewDirectories(directories)
 
     let images = []
     let videos = []
@@ -652,18 +658,20 @@ window.addEventListener('load', async () => {
                 mimeType: 'audio/%'
             })
         })
-        console.log(resp)
         const respJson = await resp.json()
-        console.log(respJson)
         let { resultDirectories, resultFilesddd } = respJson
-
-        console.log(resultFilesddd)
 
         // sha fileName mimeType size
         // TODO manage liked directories
         el('#directories').classList.add('is-hidden')
         el('#video-player').classList.add('is-hidden')
         el('#images-container').classList.add('is-hidden')
+
+        await viewDirectories(resultDirectories.map(i => ({
+            name: i.name,
+            lastWrite: 0,
+            contentSha: i.sha
+        })))
 
         filesPool = resultFilesddd.map(i => ({
             sha: i.sha,
