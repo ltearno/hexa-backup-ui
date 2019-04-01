@@ -26,12 +26,6 @@
             <b><span id=refName></span></b><br><br>
             commit history
             <div id="commitHistory"></div>
-
-            <h2>Settings</h2>
-            <label><input type="checkbox" id="show-full-commit-history"> show full commit history</label><br />
-            <label><input type="checkbox" id="extended"> extended display</label><br />
-            <label><input type="checkbox" id="stream-raw-video"> stream raw video</label><br />
-            <label><input type="checkbox" id="show-unliked-items"> show unliked items</label><br />
         </div>
         <div id="dirs-and-files">
             <div id="directories"></div>
@@ -56,6 +50,7 @@
             <a id="fullScreen" href="#">🖵</a>
             <a href="#" onclick='event.preventDefault() || el("#video-player").classList.toggle("is-hidden")'>🎞️</a>
             <a href="#" onclick='event.preventDefault() || el("#audio-player").classList.toggle("is-hidden")'>🎶</a>
+            <a href="#" onclick='event.preventDefault() || el("#settings").classList.toggle("is-hidden")'>⚙️</a>
         </div>
         <audio id="audio-player" class="is-hidden" controls preload="metadata"></audio>
         <video id="video-player" class="is-hidden" controls preload="metadata"></video>
@@ -69,6 +64,13 @@
             </select>
             <button role="submit">search</button>
         </form>
+        <div id="settings" class="is-hidden">
+            <h2>Settings</h2>
+            <label><input type="checkbox" id="show-full-commit-history"> show full commit history</label><br />
+            <label><input type="checkbox" id="extended"> extended display</label><br />
+            <label><input type="checkbox" id="stream-raw-video"> stream raw video</label><br />
+            <label><input type="checkbox" id="show-unliked-items"> show unliked items</label><br />
+        </div>
         <div id="status"></div>
     </div>
 
