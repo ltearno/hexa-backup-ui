@@ -72,6 +72,8 @@ a {
     justify-content: center;
     position: relative;
     /*line-height: 1.5em;*/
+    align-items: center;
+    align-content: center;
 }
 
 #directoryContent {
@@ -243,7 +245,7 @@ img {
 
 @media screen and (min-width: 1215px) {
     #main {
-        max-width: 40%;
+        max-width: 60%;
         margin: 0 auto;
     }
 }
