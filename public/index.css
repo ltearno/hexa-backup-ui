@@ -165,7 +165,7 @@ img {
     flex-flow: column nowrap;
     align-items: center;
     justify-content: space-around;
-    background-color: rgba(232, 170, 29, .68);
+    background-color: rgb(245, 183, 43);
     padding: .5em;
 }
 
