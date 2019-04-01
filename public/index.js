@@ -120,7 +120,7 @@ async function viewDirectories(directories) {
         `<div><a href='${BASE_URL}#${file.contentSha}' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a></div>`);
     if (directoriesContent.length) {
         el('#directories').classList.remove('is-hidden');
-        el('#directories').innerHTML = `<h2>${directoriesContent.length} Directories</h2><div id='directories-container'>${directoriesContent.join('')}</div>`;
+        el('#directories').innerHTML = `<h2>Directories <small>(${directoriesContent.length})</small></h2><div id='directories-container'>${directoriesContent.join('')}</div>`;
     }
     else {
         el('#directories').classList.add('is-hidden');
@@ -249,7 +249,7 @@ async function restartFilePool() {
     }
     if (filesContent.length) {
         el('#files').classList.remove('is-hidden');
-        el('#files').innerHTML = `<h2>${filesPool.length} Files</h2><div id="files-container">${filesContent}</div> `;
+        el('#files').innerHTML = `<h2>Files <small>(${filesPool.length})</small></h2><div id="files-container">${filesContent}</div> `;
     }
     else {
         el('#files').classList.add('is-hidden');
