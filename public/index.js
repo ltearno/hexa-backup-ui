@@ -238,9 +238,11 @@ async function restartFilePool() {
         }
         else {
             let displayedName = file.fileName.substr(currentPrefix.length);
-            let ie = displayedName.lastIndexOf('.');
-            if (ie)
-                displayedName = displayedName.substr(0, ie);
+            if (action) {
+                let ie = displayedName.lastIndexOf('.');
+                if (ie)
+                    displayedName = displayedName.substr(0, ie);
+            }
             html = `<a href='#' onclick='event.preventDefault() || ${action}'>${displayedName}</a> <span class='small'>${likeHtml}</span>`;
         }
         filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${htmlPrefix}${html}</div>`;
