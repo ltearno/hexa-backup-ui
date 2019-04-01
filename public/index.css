@@ -198,6 +198,10 @@ img {
     background-color: #dedfcb;
 }
 
+.icon-bar {
+    padding-bottom: .5em;
+}
+
 @media screen and (max-width: 1215px) {
     body {
         display: block;

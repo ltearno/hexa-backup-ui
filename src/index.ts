@@ -433,6 +433,7 @@ async function viewLikedVideos(likes) {
 
 async function listenAudio(index) {
     els(".playing").forEach(e => (e as HTMLElement).classList.remove("playing"))
+    el("#audio-player").classList.remove("is-hidden")
 
     if (index < 0 || index >= audioPool.length)
         return
@@ -705,7 +706,8 @@ window.addEventListener('load', async () => {
     el('#refs-list').innerHTML = refs.map(ref => `<div><a href='#' onclick='event.preventDefault() || goRef("${ref}")'>${ref}</a></div>`).join('')
 })
 
-el('#fullScreen').addEventListener('click', () => {
+el('#fullScreen').addEventListener('click', event => {
+    event.preventDefault();
     (el('body') as any).webkitRequestFullScreen()
 })
 

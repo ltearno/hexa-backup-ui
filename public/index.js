@@ -328,6 +328,7 @@ async function viewLikedVideos(likes) {
 }
 async function listenAudio(index) {
     els(".playing").forEach(e => e.classList.remove("playing"));
+    el("#audio-player").classList.remove("is-hidden");
     if (index < 0 || index >= audioPool.length)
         return;
     currentAudioIndex = index;
@@ -542,7 +543,8 @@ window.addEventListener('load', async () => {
     let refs = (await resp.json()).filter(e => e.startsWith('CLIENT_')).map(e => e.substr(7));
     el('#refs-list').innerHTML = refs.map(ref => `<div><a href='#' onclick='event.preventDefault() || goRef("${ref}")'>${ref}</a></div>`).join('');
 });
-el('#fullScreen').addEventListener('click', () => {
+el('#fullScreen').addEventListener('click', event => {
+    event.preventDefault();
     el('body').webkitRequestFullScreen();
 });
 el('#extended').addEventListener('change', () => {

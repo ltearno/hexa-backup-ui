@@ -51,12 +51,13 @@
     </div>
 
     <div id="banner">
-        <div>
-            <button id="fullScreen">full screen</button>
-            <button onclick='el("#menu").classList.toggle("is-hidden")'>show/hide menu</button>
-            <button onclick='el("#video-player").classList.toggle("is-hidden")'>show/hide video</button>
+        <div class="icon-bar">
+            <a href="#" onclick='event.preventDefault() || el("#menu").classList.toggle("is-hidden")'>🏠</a>
+            <a id="fullScreen" href="#">🖵</a>
+            <a href="#" onclick='event.preventDefault() || el("#video-player").classList.toggle("is-hidden")'>🎞️</a>
+            <a href="#" onclick='event.preventDefault() || el("#audio-player").classList.toggle("is-hidden")'>🎶</a>
         </div>
-        <audio id="audio-player" controls preload="metadata"></audio>
+        <audio id="audio-player" class="is-hidden" controls preload="metadata"></audio>
         <video id="video-player" class="is-hidden" controls preload="metadata"></video>
         <form id="search-form" onsubmit="event.preventDefault(); submitSearch()">
             <input type="text" id="search-text" placeholder="search">
