@@ -166,7 +166,7 @@ img {
     flex-flow: column nowrap;
     align-items: center;
     justify-content: space-around;
-    background-color: rgb(245, 183, 43);
+    background-color: rgb(252, 159, 159);
     padding: .5em;
 }
 
@@ -234,7 +234,7 @@ img {
         justify-content: space-around;
     }
     #audio-player {
-        width: 100%;
+        width: 90%;
     }
     #banner {
         position: fixed;
