@@ -248,7 +248,7 @@ async function restartFilePool() {
         }
         filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${htmlPrefix}${html}</div>`;
         if (index % 200 == 199)
-            await wait(4);
+            await wait(15);
     }
     if (filesContent.length) {
         el('#files').classList.remove('is-hidden');
