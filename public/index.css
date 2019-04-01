@@ -57,6 +57,7 @@ body {
     padding: 0;
     background-color: white;
     font-family: Roboto, monospace;
+    font-size: 9pt;
     overflow-y: auto;
 }
 
@@ -85,7 +86,6 @@ a {
 }
 
 #directories, #files {
-    font-family: Roboto, monospace;
     flex-grow: 0;
     padding: .5em;
 }
