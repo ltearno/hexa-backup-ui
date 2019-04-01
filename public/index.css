@@ -209,6 +209,9 @@ img {
         display: block;
         font-size: 9pt;
     }
+    .icon-bar {
+        font-size: 1.5em;
+    }
     #images-container {
         flex-shrink: 0;
         max-width: 100%;
