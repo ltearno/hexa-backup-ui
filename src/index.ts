@@ -313,7 +313,7 @@ async function restartFilePool() {
         }
         else {
             let displayedName: string = file.fileName.substr(currentPrefix.length)
-            if (action) {
+            if (action != 'false') {
                 let ie = displayedName.lastIndexOf('.')
                 if (ie)
                     displayedName = displayedName.substr(0, ie)
