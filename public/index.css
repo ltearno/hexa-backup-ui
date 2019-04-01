@@ -194,6 +194,10 @@ img {
     color: red;
 }
 
+.playing {
+    background-color: #dedfcb;
+}
+
 @media screen and (max-width: 1215px) {
     body {
         display: block;

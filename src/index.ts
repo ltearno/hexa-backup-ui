@@ -1,19 +1,20 @@
 const BASE_URL = "/public/"
 const HEXA_BACKUP_BASE_URL = window.location.hostname == "home.lteconsulting.fr" ? "https://home.lteconsulting.fr" : "https://192.168.0.2:5005"
 
-const el = document.querySelector.bind(document)
+const el: <T extends HTMLElement> (selector: string) => T = document.querySelector.bind(document)
+const els: <T extends HTMLElement> (selector: string) => NodeListOf<T> = document.querySelectorAll.bind(document)
 
 let EXTENDED = localStorage.getItem('EXTENDED') === 'true'
-el('#extended').checked = EXTENDED
+el<HTMLInputElement>('#extended').checked = EXTENDED
 
 let STREAM_RAW_VIDEO = localStorage.getItem('STREAM_RAW_VIDEO') === 'true'
-el('#stream-raw-video').checked = STREAM_RAW_VIDEO
+el<HTMLInputElement>('#stream-raw-video').checked = STREAM_RAW_VIDEO
 
 let SHOW_FULL_COMMIT_HISTORY = localStorage.getItem('SHOW_FULL_COMMIT_HISTORY') === 'true'
-el('#show-full-commit-history').checked = SHOW_FULL_COMMIT_HISTORY
+el<HTMLInputElement>('#show-full-commit-history').checked = SHOW_FULL_COMMIT_HISTORY
 
 let SHOW_UNLIKED_ITEMS = localStorage.getItem('SHOW_UNLIKED_ITEMS') === 'true'
-el('#show-unliked-items').checked = SHOW_UNLIKED_ITEMS
+el<HTMLInputElement>('#show-unliked-items').checked = SHOW_UNLIKED_ITEMS
 
 let currentClientId = null
 let currentDirectoryDescriptorSha = null
@@ -408,7 +409,7 @@ async function showVideo(index) {
     let { sha, mimeType, fileName } = videosPool[index]
     el('#video-player').setAttribute('src', STREAM_RAW_VIDEO ? `${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}` : `${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/video/small?type=${mimeType}`)
     el('#video-player').setAttribute('type', mimeType)
-    el('#video-player').play()
+    el<HTMLAudioElement>('#video-player').play()
 
     el(`.video-${index}`).style.fontWeight = 'bold'
 }
@@ -431,6 +432,8 @@ async function viewLikedVideos(likes) {
 }
 
 async function listenAudio(index) {
+    els(".playing").forEach(e => (e as HTMLElement).classList.remove("playing"))
+
     if (index < 0 || index >= audioPool.length)
         return
 
@@ -438,9 +441,10 @@ async function listenAudio(index) {
     let { sha, mimeType, fileName } = audioPool[index]
     el('#audio-player').setAttribute('src', `${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`)
     el('#audio-player').setAttribute('type', mimeType)
-    el('#audio-player').play()
+    el<HTMLAudioElement>('#audio-player').play()
 
     el(`.audio-${index}`).style.fontWeight = 'bold'
+    el(`.audio-${index}`).classList.add('playing')
 }
 
 async function toggleShaLike(sha: string, mimeType: string, fileName: string) {
@@ -643,7 +647,7 @@ function infiniteScroll(db, domCreator, scrollContainer, scrollContent) {
 async function submitSearch() {
     el("#menu").classList.add("is-hidden")
 
-    const searchText = el('#search-text').value || ''
+    const searchText = el<HTMLInputElement>('#search-text').value || ''
 
     let finishLoading = startLoading(`searching '${searchText}'...`)
 
@@ -655,7 +659,7 @@ async function submitSearch() {
             method: 'post',
             body: JSON.stringify({
                 name: searchText,
-                mimeType: el('#search-mimeType').value + '%'
+                mimeType: el<HTMLInputElement>('#search-mimeType').value + '%'
             })
         })
         const respJson = await resp.json()
@@ -702,32 +706,32 @@ window.addEventListener('load', async () => {
 })
 
 el('#fullScreen').addEventListener('click', () => {
-    el('body').webkitRequestFullScreen()
+    (el('body') as any).webkitRequestFullScreen()
 })
 
 el('#extended').addEventListener('change', () => {
-    EXTENDED = !!el('#extended').checked
+    EXTENDED = !!el<HTMLInputElement>('#extended').checked
     localStorage.setItem('EXTENDED', `${EXTENDED}`)
 
     syncUi()
 })
 
 el('#stream-raw-video').addEventListener('change', () => {
-    STREAM_RAW_VIDEO = !!el('#stream-raw-video').checked
+    STREAM_RAW_VIDEO = !!el<HTMLInputElement>('#stream-raw-video').checked
     localStorage.setItem('STREAM_RAW_VIDEO', `${STREAM_RAW_VIDEO}`)
 
     syncUi()
 })
 
 el('#show-unliked-items').addEventListener('change', () => {
-    SHOW_UNLIKED_ITEMS = !!el('#show-unliked-items').checked
+    SHOW_UNLIKED_ITEMS = !!el<HTMLInputElement>('#show-unliked-items').checked
     localStorage.setItem('SHOW_UNLIKED_ITEMS', `${SHOW_UNLIKED_ITEMS}`)
 
     syncUi()
 })
 
 el('#show-full-commit-history').addEventListener('change', () => {
-    SHOW_FULL_COMMIT_HISTORY = !!el('#show-full-commit-history').checked
+    SHOW_FULL_COMMIT_HISTORY = !!el<HTMLInputElement>('#show-full-commit-history').checked
     localStorage.setItem('SHOW_FULL_COMMIT_HISTORY', `${SHOW_FULL_COMMIT_HISTORY}`)
 
     syncUi()

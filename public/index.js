@@ -1,6 +1,7 @@
 ﻿const BASE_URL = "/public/";
 const HEXA_BACKUP_BASE_URL = window.location.hostname == "home.lteconsulting.fr" ? "https://home.lteconsulting.fr" : "https://192.168.0.2:5005";
 const el = document.querySelector.bind(document);
+const els = document.querySelectorAll.bind(document);
 let EXTENDED = localStorage.getItem('EXTENDED') === 'true';
 el('#extended').checked = EXTENDED;
 let STREAM_RAW_VIDEO = localStorage.getItem('STREAM_RAW_VIDEO') === 'true';
@@ -326,6 +327,7 @@ async function viewLikedVideos(likes) {
     });
 }
 async function listenAudio(index) {
+    els(".playing").forEach(e => e.classList.remove("playing"));
     if (index < 0 || index >= audioPool.length)
         return;
     currentAudioIndex = index;
@@ -334,6 +336,7 @@ async function listenAudio(index) {
     el('#audio-player').setAttribute('type', mimeType);
     el('#audio-player').play();
     el(`.audio-${index}`).style.fontWeight = 'bold';
+    el(`.audio-${index}`).classList.add('playing');
 }
 async function toggleShaLike(sha, mimeType, fileName) {
     let metadata = filesShaLikeMetadata[sha];
