@@ -96,6 +96,7 @@ let startLoading = (text) => {
     let isDisplayed = false;
     let timeout = setTimeout(() => {
         loaders.push(text);
+        isDisplayed = true;
         refreshLoadersHtml();
     }, 500);
     return () => {

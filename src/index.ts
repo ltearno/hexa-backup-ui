@@ -130,6 +130,7 @@ let startLoading = (text) => {
 
     let timeout = setTimeout(() => {
         loaders.push(text)
+        isDisplayed = true
         refreshLoadersHtml()
     }, 500)
 
