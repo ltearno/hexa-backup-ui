@@ -415,6 +415,7 @@ async function restartImagesPool() {
     }
 
     if (imagesPool.length) {
+        el('#images-container').classList.remove('is-hidden')
         el('#images').innerHTML = ''
         infiniteScrollerStop = infiniteScroll(imagesPool,
             ({ sha, mimeType, fileName }, index) => `<div><img onclick='goPicture(${index})' src="${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}"/></div>`,
@@ -422,7 +423,8 @@ async function restartImagesPool() {
             el('#images'))
     }
     else {
-        el('#images').innerHTML = '<br/><i class="small">no picture in this folder</i>'
+        el('#images-container').classList.add('is-hidden')
+        el('#images').innerHTML = ''
         // <a href='/sha/${sha}/content?type=${mimeType}'></a>
     }
 }
@@ -712,7 +714,6 @@ async function submitSearch() {
             size: 0
         }))
         imagesPool = filesPool.filter(i => i.mimeType.startsWith('image/'))
-        imagesPool.length && el('#images-container').classList.remove('is-hidden')
         audioPool = filesPool.filter(i => i.mimeType.startsWith('audio/'))
         videosPool = filesPool.filter(i => i.mimeType.startsWith('video/'))
         await loadLikesFiles()
@@ -854,10 +855,14 @@ async function syncUi() {
     if (currentPictureIndex < 0) {
         el('#image-full-container').classList.add('is-hidden')
         el('#images-container').classList.remove('is-hidden')
+        el('#banner').classList.remove('is-hidden')
+        el('#main').classList.remove('is-hidden')
     }
     else {
         el('#image-full-container').classList.remove('is-hidden')
         el('#images-container').classList.add('is-hidden')
+        el('#banner').classList.add('is-hidden')
+        el('#main').classList.add('is-hidden')
     }
 
     const extChange = displayedExtended != EXTENDED
