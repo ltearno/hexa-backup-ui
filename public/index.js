@@ -203,27 +203,31 @@ async function restartFilePool() {
         if (file.mimeType != 'application/octet-stream')
             mimeTypes.push(file.mimeType);
         let links = mimeTypes.map((mimeType, index) => `[<a href='${HEXA_BACKUP_BASE_URL}/sha/${file.sha}/content?type=${mimeType}${index == 0 ? `&fileName=${file.fileName}` : ''}' >${EXTENDED ? mimeType : (index == 0 ? 'dl' : (mimeType.indexOf('/') ? mimeType.substr(mimeType.indexOf('/') + 1) : mimeType))}</a>]`).join(' ');
+        let htmlPrefix = '';
         let html = '';
         let classes = [];
-        let likeHtml = `<a class='like' onclick='event.preventDefault() || toggleLikeFile(${index})'>like ♡</a>`;
-        if (EXTENDED) {
-            let date = `<span class='small'>${displayDate(file.lastWrite)} ${file.sha ? file.sha.substr(0, 7) : '-'}</span>`;
-            html = `${date} ${file.fileName} <span class='small'>${file.size} ${links}</span>`;
-        }
-        else {
-            html = `${file.fileName.substr(currentPrefix.length)} <span class='small'>${links} ${likeHtml}</span>`;
-        }
+        let action = 'false';
         if (file.mimeType.startsWith('audio/')) {
             classes.push(`audio-${audioIndex}`);
-            html = `<a href='#' onclick='event.preventDefault() || listenAudio(${audioIndex})'>🎶 ▶</a> ${html}`;
+            action = `listenAudio(${audioIndex})`;
+            htmlPrefix = `<a href='#' onclick='event.preventDefault() || listenAudio(${audioIndex})'>🎶 ▶</a> `;
             audioIndex++;
         }
         else if (file.mimeType.startsWith('video/')) {
             classes.push(`video-${videoIndex}`);
-            html = `<a href='#' onclick='event.preventDefault() || showVideo(${videoIndex})'>🎞️ ▶</a> ${html}`;
+            action = `showVideo(${videoIndex})`;
+            htmlPrefix = `<a href='#' onclick='event.preventDefault() || showVideo(${videoIndex})'>🎞️ ▶</a> `;
             videoIndex++;
         }
-        filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${html}</div>`;
+        let likeHtml = `<a class='like' onclick='event.preventDefault() || toggleLikeFile(${index})'>like ♡</a>`;
+        if (EXTENDED) {
+            let date = `<span class='small'>${displayDate(file.lastWrite)} ${file.sha ? file.sha.substr(0, 7) : '-'}</span>`;
+            html = `${date} <a href='#' onclick='event.preventDefault() || ${action}'>${file.fileName}</a> <span class='small'>${file.size} ${links}</span>`;
+        }
+        else {
+            html = `<a href='#' onclick='event.preventDefault() || ${action}'>${file.fileName.substr(currentPrefix.length)}</a> <span class='small'>${links} ${likeHtml}</span>`;
+        }
+        filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${htmlPrefix}${html}</div>`;
     }
     if (filesContent.length) {
         el('#files').classList.remove('is-hidden');
