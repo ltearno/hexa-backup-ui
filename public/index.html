@@ -14,9 +14,6 @@
 <body>
     <div id="main">
         <div id="banner-placeholder"></div>
-        <div id="search-form">
-
-        </div>
         <div id="menu">
             <h2>Sources</h2>
             <div><a href='#' onclick='event.preventDefault() || viewLikes()'>show ❤ items</a></div>
@@ -51,6 +48,7 @@
             <a href="#" onclick='event.preventDefault() || el("#video-player").classList.toggle("is-hidden")'>🎞️</a>
             <a href="#" onclick='event.preventDefault() || el("#audio-player").classList.toggle("is-hidden")'>🎶</a>
             <a href="#" onclick='event.preventDefault() || el("#settings").classList.toggle("is-hidden")'>⚙️</a>
+            <a href="#" onclick='event.preventDefault() || el("#search-form").classList.toggle("is-hidden")'>🔍</a>
         </div>
         <audio id="audio-player" class="is-hidden" controls preload="metadata"></audio>
         <video id="video-player" class="is-hidden" controls preload="metadata"></video>
