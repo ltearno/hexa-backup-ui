@@ -237,7 +237,11 @@ async function restartFilePool() {
             html = `${date} <a href='#' onclick='event.preventDefault() || ${action}'>${file.fileName}</a> <span class='small'>${file.size} ${links}</span>`;
         }
         else {
-            html = `<a href='#' onclick='event.preventDefault() || ${action}'>${file.fileName.substr(currentPrefix.length)}</a> <span class='small'>${links} ${likeHtml}</span>`;
+            let displayedName = file.fileName.substr(currentPrefix.length);
+            let ie = displayedName.lastIndexOf('.');
+            if (ie)
+                displayedName = displayedName.substr(0, ie);
+            html = `<a href='#' onclick='event.preventDefault() || ${action}'>${displayedName}</a> <span class='small'>${likeHtml}</span>`;
         }
         filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${htmlPrefix}${html}</div>`;
         if (index % 200 == 199)
