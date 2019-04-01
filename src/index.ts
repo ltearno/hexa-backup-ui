@@ -124,16 +124,29 @@ async function goNoPicture() {
 let loaders = []
 
 let startLoading = (text) => {
-    loaders.push(text)
-    el('#status').innerHTML = loaders.join('<br>')
+    const refreshLoadersHtml = () => el('#status').innerHTML = loaders.join('<br>')
+
+    let isDisplayed = false
+
+    let timeout = setTimeout(() => {
+        loaders.push(text)
+        refreshLoadersHtml()
+    }, 500)
+
     return () => {
-        loaders.splice(loaders.indexOf(text), 1)
-        el('#status').innerHTML = loaders.join('<br>')
+        clearTimeout(timeout)
+        if (isDisplayed) {
+            loaders = loaders.filter(l => l != text)
+            refreshLoadersHtml()
+            isDisplayed = false
+        }
     }
 }
 
 async function viewDirectories(directories: { name: string; lastWrite: number; contentSha: string }[]) {
     el('#directories').innerHTML = ''
+
+    let finishLoading = startLoading(`refreshing ${directories.length} directories...`)
 
     let directoriesContent = directories.sort((a, b) => {
         let sa = a.name.toLocaleLowerCase()
@@ -150,6 +163,8 @@ async function viewDirectories(directories: { name: string; lastWrite: number; c
     else {
         el('#directories').classList.add('is-hidden')
     }
+
+    finishLoading()
 }
 
 async function showDirectory(directoryDescriptorSha) {
@@ -249,6 +264,8 @@ async function restartFilePool() {
 
     let currentPrefix = ''
 
+    let finishLoading = startLoading(`refreshing ${filesPool.length} files...`)
+
     for (let index = 0; index < filesPool.length; index++) {
         const file = filesPool[index]
 
@@ -299,6 +316,9 @@ async function restartFilePool() {
         }
 
         filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${htmlPrefix}${html}</div>`
+
+        if (index % 200 == 199)
+            await wait(4)
     }
 
     if (filesContent.length) {
@@ -310,6 +330,8 @@ async function restartFilePool() {
     }
 
     await viewLikesFiles()
+
+    finishLoading()
 }
 
 async function loadLikesFiles() {
