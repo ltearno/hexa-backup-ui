@@ -784,6 +784,7 @@ el('#show-full-commit-history').addEventListener('change', () => {
 })
 
 el('#display-order').addEventListener('change', () => {
+    console.log(`LDJKHDLKZJHDZLKJZHLKJH`)
     syncUi()
 })
 
