@@ -24,6 +24,7 @@ let displayedDirectoryDescriptorSha = null;
 let displayedClientId = null;
 let displayedPictureIndex = null;
 let displayedExtended = EXTENDED;
+let displayedSortOrder = "name";
 let displayedStreamRawVideo = STREAM_RAW_VIDEO;
 let displayedShowFullCommitHistory = SHOW_FULL_COMMIT_HISTORY;
 let displayedShowUnlikedItems = SHOW_UNLIKED_ITEMS;
@@ -149,8 +150,9 @@ async function showDirectory(directoryDescriptorSha) {
     let videos = [];
     let audios = [];
     let sorter = null;
-    switch (el('#display-order').value) {
+    switch (displayedSortOrder) {
         case "name":
+            console.log(`sort by name`);
             sorter = (a, b) => {
                 let sa = a.name.toLocaleLowerCase();
                 let sb = b.name.toLocaleLowerCase();
@@ -158,6 +160,7 @@ async function showDirectory(directoryDescriptorSha) {
             };
             break;
         case "date":
+            console.log(`sort by date`);
             sorter = (a, b) => {
                 if (a.lastWrite == b.lastWrite)
                     return 0;
@@ -258,6 +261,10 @@ async function restartFilePool() {
                     displayedName = displayedName.substr(0, ie);
             }
             html = `<a href='#' onclick='event.preventDefault() || ${action}'>${displayedName}</a> <span class='small'>${likeHtml}</span>`;
+            if (displayedSortOrder == 'date') {
+                let date = `<span class='small'>${displayDate(file.lastWrite)}</span>`;
+                html = date + ' ' + html;
+            }
         }
         filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${htmlPrefix}${html}</div>`;
         if (index % 200 == 199)
@@ -603,7 +610,7 @@ el('#show-full-commit-history').addEventListener('change', () => {
     syncUi();
 });
 el('#display-order').addEventListener('change', () => {
-    console.log(`LDJKHDLKZJHDZLKJZHLKJH`);
+    console.log(`yo ${el('#display-order').value}`);
     syncUi();
 });
 el('#audio-player').addEventListener('ended', () => {
@@ -682,6 +689,8 @@ async function syncUi() {
         el('#banner').classList.add('is-hidden');
         el('#main').classList.add('is-hidden');
     }
+    const orderChange = displayedSortOrder != el('#display-order').value;
+    displayedSortOrder = el('#display-order').value;
     const extChange = displayedExtended != EXTENDED;
     displayedExtended = EXTENDED;
     const streamRawVideoChange = displayedStreamRawVideo != STREAM_RAW_VIDEO;
@@ -690,7 +699,7 @@ async function syncUi() {
     displayedShowFullCommitHistory = SHOW_FULL_COMMIT_HISTORY;
     const showUnlikedItemsChange = displayedShowUnlikedItems != SHOW_UNLIKED_ITEMS;
     displayedShowUnlikedItems = SHOW_UNLIKED_ITEMS;
-    if (showUnlikedItemsChange || streamRawVideoChange || extChange || currentDirectoryDescriptorSha != displayedDirectoryDescriptorSha)
+    if (showUnlikedItemsChange || streamRawVideoChange || extChange || orderChange || currentDirectoryDescriptorSha != displayedDirectoryDescriptorSha)
         await showDirectory(currentDirectoryDescriptorSha);
     if (showUnlikedItemsChange || extChange || fullHistoryChange || currentClientId != displayedClientId)
         await showRef(currentClientId);
