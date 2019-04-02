@@ -50,7 +50,7 @@ const DATE_DISPLAY_OPTIONS = {
     hour: '2-digit',
     minute: '2-digit'
 }
-const displayDate = date => (typeof date === 'number' ? new Date(date) : date).toLocaleString('fr', DATE_DISPLAY_OPTIONS)
+const displayDate = date => date ? (typeof date === 'number' ? new Date(date) : date).toLocaleString('fr', DATE_DISPLAY_OPTIONS) : null
 
 let lastPushedHistoryState = null
 const publishHistoryState = () => {
