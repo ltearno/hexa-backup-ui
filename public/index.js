@@ -343,6 +343,7 @@ async function restartImagesPool() {
     }
 }
 async function showVideo(index) {
+    els(".playing").forEach(e => e.classList.remove("playing"));
     if (index < 0 || index >= videosPool.length)
         return;
     el('#video-player').classList.remove('is-hidden');
@@ -352,6 +353,7 @@ async function showVideo(index) {
     el('#video-player').setAttribute('type', mimeType);
     el('#video-player').play();
     el(`.video-${index}`).style.fontWeight = 'bold';
+    el(`.video-${index}`).classList.add('playing');
 }
 async function showNextVideo() {
     showVideo(currentVideoIndex + 1);

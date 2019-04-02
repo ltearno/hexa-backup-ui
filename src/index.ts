@@ -451,6 +451,7 @@ async function restartImagesPool() {
 }
 
 async function showVideo(index) {
+    els(".playing").forEach(e => (e as HTMLElement).classList.remove("playing"))
     if (index < 0 || index >= videosPool.length)
         return
 
@@ -463,6 +464,7 @@ async function showVideo(index) {
     el<HTMLAudioElement>('#video-player').play()
 
     el(`.video-${index}`).style.fontWeight = 'bold'
+    el(`.video-${index}`).classList.add('playing')
 }
 
 async function showNextVideo() {
