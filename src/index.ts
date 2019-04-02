@@ -199,21 +199,28 @@ async function showDirectory(directoryDescriptorSha) {
     let videos = []
     let audios = []
 
+    const lexicalSorter = (a, b) => {
+        let sa = a.name.toLocaleLowerCase()
+        let sb = b.name.toLocaleLowerCase()
+        let res = sa.localeCompare(sb)
+        if (!res)
+            return dateSorter(a, b)
+        return res
+    }
+
+    const dateSorter = (a, b) => {
+        if (a.lastWrite == b.lastWrite)
+            return lexicalSorter(a, b)
+        return a.lastWrite > b.lastWrite ? 1 : -1
+    }
+
     let sorter = null
     switch (displayedSortOrder) {
         case "name":
-            sorter = (a, b) => {
-                let sa = a.name.toLocaleLowerCase()
-                let sb = b.name.toLocaleLowerCase()
-                return sa.localeCompare(sb)
-            }
+            sorter = lexicalSorter
             break
         case "date":
-            sorter = (a, b) => {
-                if (a.lastWrite == b.lastWrite)
-                    return 0
-                return a.lastWrite > b.lastWrite ? 1 : -1
-            }
+            sorter = dateSorter
             break
     }
 
