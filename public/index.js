@@ -148,13 +148,26 @@ async function showDirectory(directoryDescriptorSha) {
     let images = [];
     let videos = [];
     let audios = [];
+    let sorter = null;
+    switch (el('#display-order').value) {
+        case "name":
+            sorter = (a, b) => {
+                let sa = a.name.toLocaleLowerCase();
+                let sb = b.name.toLocaleLowerCase();
+                return sa.localeCompare(sb);
+            };
+            break;
+        case "date":
+            sorter = (a, b) => {
+                if (a.lastWrite == b.lastWrite)
+                    return 0;
+                return a.lastWrite > b.lastWrite ? 1 : -1;
+            };
+            break;
+    }
     filesPool = files
         .filter(file => !file.isDirectory)
-        .sort((a, b) => {
-        let sa = a.name.toLocaleLowerCase();
-        let sb = b.name.toLocaleLowerCase();
-        return sa.localeCompare(sb);
-    })
+        .sort(sorter)
         .map((file, index) => {
         return {
             sha: file.contentSha,
