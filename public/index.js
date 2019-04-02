@@ -602,6 +602,9 @@ el('#show-full-commit-history').addEventListener('change', () => {
     localStorage.setItem('SHOW_FULL_COMMIT_HISTORY', `${SHOW_FULL_COMMIT_HISTORY}`);
     syncUi();
 });
+el('#display-order').addEventListener('change', () => {
+    syncUi();
+});
 el('#audio-player').addEventListener('ended', () => {
     listenNext();
 });

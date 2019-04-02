@@ -783,6 +783,10 @@ el('#show-full-commit-history').addEventListener('change', () => {
     syncUi()
 })
 
+el('#display-order').addEventListener('change', () => {
+    syncUi()
+})
+
 el('#audio-player').addEventListener('ended', () => {
     listenNext()
 })
