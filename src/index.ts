@@ -199,7 +199,6 @@ async function showDirectory(directoryDescriptorSha) {
     let sorter = null
     switch (displayedSortOrder) {
         case "name":
-            console.log(`sort by name`)
             sorter = (a, b) => {
                 let sa = a.name.toLocaleLowerCase()
                 let sb = b.name.toLocaleLowerCase()
@@ -207,7 +206,6 @@ async function showDirectory(directoryDescriptorSha) {
             }
             break
         case "date":
-            console.log(`sort by date`)
             sorter = (a, b) => {
                 if (a.lastWrite == b.lastWrite)
                     return 0
@@ -792,7 +790,6 @@ el('#show-full-commit-history').addEventListener('change', () => {
 })
 
 el('#display-order').addEventListener('change', () => {
-    console.log(`yo ${el<HTMLInputElement>('#display-order').value}`)
     syncUi()
 })
 
