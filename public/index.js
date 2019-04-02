@@ -10,6 +10,8 @@ let SHOW_FULL_COMMIT_HISTORY = localStorage.getItem('SHOW_FULL_COMMIT_HISTORY') 
 el('#show-full-commit-history').checked = SHOW_FULL_COMMIT_HISTORY;
 let SHOW_UNLIKED_ITEMS = localStorage.getItem('SHOW_UNLIKED_ITEMS') === 'true';
 el('#show-unliked-items').checked = SHOW_UNLIKED_ITEMS;
+let SORT_ORDER = localStorage.getItem('SORT_ORDER') || "name";
+el('#display-order').value = SORT_ORDER;
 let currentClientId = null;
 let currentDirectoryDescriptorSha = null;
 let currentPictureIndex = -1;
@@ -24,7 +26,7 @@ let displayedDirectoryDescriptorSha = null;
 let displayedClientId = null;
 let displayedPictureIndex = null;
 let displayedExtended = EXTENDED;
-let displayedSortOrder = "name";
+let displayedSortOrder = SORT_ORDER;
 let displayedStreamRawVideo = STREAM_RAW_VIDEO;
 let displayedShowFullCommitHistory = SHOW_FULL_COMMIT_HISTORY;
 let displayedShowUnlikedItems = SHOW_UNLIKED_ITEMS;
@@ -690,6 +692,7 @@ async function syncUi() {
     }
     const orderChange = displayedSortOrder != el('#display-order').value;
     displayedSortOrder = el('#display-order').value;
+    localStorage.setItem('SORT_ORDER', `${displayedSortOrder}`);
     const extChange = displayedExtended != EXTENDED;
     displayedExtended = EXTENDED;
     const streamRawVideoChange = displayedStreamRawVideo != STREAM_RAW_VIDEO;
