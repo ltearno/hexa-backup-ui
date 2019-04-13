@@ -342,7 +342,7 @@ async function restartImagesPool() {
     if (imagesPool.length) {
         el('#images-container').classList.remove('is-hidden');
         el('#images').innerHTML = '';
-        infiniteScrollerStop = infiniteScroll(imagesPool, ({ sha, mimeType, fileName }, index) => `<div><img onclick='goPicture(${index})' src="${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}"/></div>`, el('#images-container'), el('#images'));
+        infiniteScrollerStop = infiniteScroll(imagesPool, ({ sha, mimeType, fileName }, index) => `<div><img loading="lazy" onclick='goPicture(${index})' src="${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}"/></div>`, el('#images-container'), el('#images'));
     }
     else {
         el('#images-container').classList.add('is-hidden');
@@ -441,7 +441,7 @@ async function showPicture(index) {
     if (index < 0)
         return;
     let { sha, mimeType, fileName } = imagesPool[index];
-    el('#image-full-aligner').innerHTML += `<a style='width:100%;height:100%;display:flex;align-items:center;justify-content: center;' href='${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}'><img class='image-full' src='${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/medium?type=${mimeType}'/></a>`;
+    el('#image-full-aligner').innerHTML += `<a style='width:100%;height:100%;display:flex;align-items:center;justify-content: center;' href='${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}'><img loading="lazy" class='image-full' src='${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/medium?type=${mimeType}'/></a>`;
 }
 async function getClientDefaultDirectoryDescriptorSha(ref) {
     if (!ref)
