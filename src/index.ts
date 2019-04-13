@@ -1,5 +1,6 @@
 const BASE_URL = "/public/"
 const HEXA_BACKUP_BASE_URL = window.location.hostname == "home.lteconsulting.fr" ? "https://home.lteconsulting.fr" : "https://192.168.0.2:5005"
+const PUBLIC_BASE_URL = "https://home.lteconsulting.fr"
 
 const el: <T extends HTMLElement> (selector: string) => T = document.querySelector.bind(document)
 const els: <T extends HTMLElement> (selector: string) => NodeListOf<T> = document.querySelectorAll.bind(document)
@@ -766,6 +767,9 @@ window.addEventListener('load', async () => {
     let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/refs`)
     let refs = (await resp.json()).filter(e => e.startsWith('CLIENT_')).map(e => e.substr(7))
     el('#refs-list').innerHTML = refs.map(ref => `<div><a href='#' onclick='event.preventDefault() || goRef("${ref}")'>${ref}</a></div>`).join('')
+
+    let user = await fetch(`${PUBLIC_BASE_URL}/well-known/v1/me`)
+    el('#userId').innerText = (await user.json()).uuid
 })
 
 el('#fullScreen').addEventListener('click', event => {

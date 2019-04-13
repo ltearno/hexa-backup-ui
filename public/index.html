@@ -49,6 +49,7 @@
             <a href="#" onclick='event.preventDefault() || el("#audio-player").classList.toggle("is-hidden")'>🎶</a>
             <a href="#" onclick='event.preventDefault() || el("#settings").classList.toggle("is-hidden")'>⚙️</a>
             <a href="#" onclick='event.preventDefault() || el("#search-form").classList.toggle("is-hidden")'>🔍</a>
+            <span id="userId"></span>
         </div>
         <audio id="audio-player" class="is-hidden" controls preload="metadata"></audio>
         <video id="video-player" class="is-hidden" controls preload="metadata"></video>
@@ -69,9 +70,9 @@
             <label><input type="checkbox" id="stream-raw-video"> stream raw video</label><br />
             <label><input type="checkbox" id="show-unliked-items"> show unliked items</label><br />
             <label><select id="display-order">
-                <option value="name" selected>by name</option>
-                <option value="date">by date</option>
-            </select> display order</label>
+                    <option value="name" selected>by name</option>
+                    <option value="date">by date</option>
+                </select> display order</label>
         </div>
         <div id="status"></div>
     </div>
