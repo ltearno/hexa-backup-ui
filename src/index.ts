@@ -573,7 +573,8 @@ async function showPicture(index) {
     if (index < 0)
         return
     let { sha, mimeType, fileName } = imagesPool[index]
-    el('#image-full-aligner').innerHTML += `<a style='width:100%;height:100%;display:flex;align-items:center;justify-content: center;' href='${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}'><img loading="lazy" class='image-full' src='${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/medium?type=${mimeType}'/></a>`
+    let displayedUrl = displayedStreamRawVideo ? `${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}` : `${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/medium?type=${mimeType}`
+    el('#image-full-aligner').innerHTML += `<a style='width:100%;height:100%;display:flex;align-items:center;justify-content: center;' href='${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}'><img loading="lazy" class='image-full' src='${displayedUrl}'/></a>`
 }
 
 async function getClientDefaultDirectoryDescriptorSha(ref) {
