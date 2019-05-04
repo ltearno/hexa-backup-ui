@@ -544,6 +544,7 @@ function infiniteScroll(db, domCreator, scrollContainer, scrollContent) {
     run();
     return stop;
 }
+let geoSearchBox = null;
 var mymap = L.map('mapid').setView([45.065374, 1.236009], 13);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -555,13 +556,10 @@ let mapCb = (event) => {
     let bounds = mymap.getBounds();
     let nw = bounds.getNorthWest();
     let se = bounds.getSouthEast();
-    let latitude = (nw.lat + se.lat) / 2;
-    let longitude = (nw.lng + se.lng) / 2;
-    let zoom = Math.abs(nw.lat - se.lat) / 2;
-    el('#latitude').value = latitude.toString();
-    el('#longitude').value = longitude.toString();
-    el('#zoom').value = zoom.toString();
-    console.log(`${latitude} ${longitude} ${zoom}`);
+    geoSearchBox = {
+        nw: { lat: nw.lat, lng: nw.lng },
+        se: { lat: se.lat, lng: se.lng }
+    };
 };
 mymap.on('zoom', mapCb);
 mymap.on('move', mapCb);
@@ -581,15 +579,8 @@ async function submitSearch() {
             name: searchText,
             mimeType: el('#search-mimeType').value + '%'
         };
-        let latitude = el('#latitude').value;
-        let longitude = el('#longitude').value;
-        let zoom = el('#zoom').value;
-        if (latitude && longitude && zoom) {
-            searchSpec.geoSearch = {
-                latitude,
-                longitude,
-                zoom
-            };
+        if (geoSearchBox) {
+            searchSpec.geoSearch = geoSearchBox;
         }
         const headers = new Headers();
         headers.set('Content-Type', 'application/json');

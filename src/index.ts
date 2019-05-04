@@ -711,6 +711,7 @@ function infiniteScroll(db, domCreator, scrollContainer, scrollContent) {
 }
 
 declare let L: any;
+let geoSearchBox = null
 
 var mymap = L.map('mapid').setView([45.065374, 1.236009], 13);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -725,15 +726,10 @@ let mapCb = (event) => {
     let nw = bounds.getNorthWest()
     let se = bounds.getSouthEast()
 
-    let latitude = (nw.lat + se.lat) / 2
-    let longitude = (nw.lng + se.lng) / 2
-    let zoom = Math.abs(nw.lat - se.lat) / 2
-
-    el<HTMLInputElement>('#latitude').value = latitude.toString()
-    el<HTMLInputElement>('#longitude').value = longitude.toString()
-    el<HTMLInputElement>('#zoom').value = zoom.toString()
-
-    console.log(`${latitude} ${longitude} ${zoom}`)
+    geoSearchBox = {
+        nw: { lat: nw.lat, lng: nw.lng },
+        se: { lat: se.lat, lng: se.lng }
+    }
 }
 
 mymap.on('zoom', mapCb)
@@ -760,16 +756,8 @@ async function submitSearch() {
             mimeType: el<HTMLInputElement>('#search-mimeType').value + '%'
         }
 
-        let latitude = el<HTMLInputElement>('#latitude').value
-        let longitude = el<HTMLInputElement>('#longitude').value
-        let zoom = el<HTMLInputElement>('#zoom').value
-
-        if (latitude && longitude && zoom) {
-            searchSpec.geoSearch = {
-                latitude,
-                longitude,
-                zoom
-            }
+        if (geoSearchBox) {
+            searchSpec.geoSearch = geoSearchBox
         }
 
         const headers = new Headers()
