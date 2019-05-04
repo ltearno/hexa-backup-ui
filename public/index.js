@@ -580,8 +580,8 @@ async function submitSearch() {
         }
         let searchDate = el('#search-date').value || null;
         if (searchDate) {
-            searchSpec.date = new Date(searchDate).getTime();
-            searchSpec.dateInterval = ((1 * el('#search-date-day-interval').value) || 0) * 1000 * 60 * 60 * 24;
+            searchSpec.date = new Date(searchDate).getTime() + 1000 * 60 * 60 * 12;
+            searchSpec.dateInterval = (parseInt(el('#search-date-day-interval').value || '0')) * 1000 * 60 * 60 * 12;
         }
         const headers = new Headers();
         headers.set('Content-Type', 'application/json');
