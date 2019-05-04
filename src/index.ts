@@ -735,6 +735,8 @@ let mapCb = (event) => {
 mymap.on('zoom', mapCb)
 mymap.on('move', mapCb)
 
+let markersToRemove = []
+
 async function submitSearch() {
     el("#menu").classList.add("is-hidden")
 
@@ -742,15 +744,10 @@ async function submitSearch() {
 
     let finishLoading = startLoading(`searching '${searchText}'...`)
 
-    try {
-        let coords = {
-            barthe: [43.63, 1.44],
-            rangueil: [43.577350, 1.452790],
-            prairie: [(43.573736 + 43.572459) / 2, (1.456811 + 1.458816) / 2],
-            mansac: [45.065374, 1.236009],
-            bonifatu: [42.499378, 8.807921]
-        }
+    markersToRemove.forEach(marker => marker.remove())
+    markersToRemove = []
 
+    try {
         let searchSpec: any = {
             name: searchText,
             mimeType: el<HTMLInputElement>('#search-mimeType').value + '%'
@@ -793,6 +790,23 @@ async function submitSearch() {
         await loadLikesFiles()
         await restartFilePool()
         await restartImagesPool()
+
+        if (geoSearchBox && !el('#extSearch').classList.contains('is-hidden')) {
+            resultFilesddd.forEach(file => {
+                if (file.lat && file.lng) {
+                    let marker = L.marker([file.lat, file.lng])
+                    marker.addTo(mymap)
+                    markersToRemove.push(marker)
+                }
+            })
+        }
+
+        if (searchSpec.mimeType.startsWith('image')) {
+            // little hacky
+            el('#images-container').scrollIntoView(true)
+            setTimeout(() => el('#images-container').scrollIntoView(true), 500)
+            setTimeout(() => el('#images-container').scrollIntoView(true), 1500)
+        }
     }
     catch (err) {
         console.error(err)
@@ -855,6 +869,12 @@ el('#audio-player').addEventListener('ended', () => {
 
 el('#video-player').addEventListener('ended', () => {
     showNextVideo()
+})
+
+el('#toggleExtSearch').addEventListener('click', e => {
+    el('#extSearch').classList.toggle('is-hidden')
+    mymap.invalidateSize(true)
+    e.preventDefault()
 })
 
 window.onpopstate = function (event) {
