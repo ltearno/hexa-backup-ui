@@ -581,7 +581,7 @@ async function submitSearch() {
         let searchDate = el('#search-date').value || null;
         if (searchDate) {
             searchSpec.date = new Date(searchDate).getTime();
-            searchSpec.dateInterval = el('#search-date-day-interval').value || 0;
+            searchSpec.dateInterval = ((1 * el('#search-date-day-interval').value) || 0) * 1000 * 60 * 60 * 24;
         }
         const headers = new Headers();
         headers.set('Content-Type', 'application/json');
