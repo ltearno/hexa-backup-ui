@@ -736,7 +736,7 @@ async function submitSearch() {
                 geoSearch: {
                     latitude: coords.rangueil[0],
                     longitude: coords.rangueil[1],
-                    zoom: Math.abs(43.573736 - 43.572459) / 2
+                    zoom: 0.0006385
                 }
             })
         })
