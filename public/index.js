@@ -98,7 +98,7 @@ async function goNoPicture() {
 }
 function stopSlideshow() {
     if (slideshowTimer) {
-        clearTimeout(slideshowTimer);
+        clearInterval(slideshowTimer);
         slideshowTimer = null;
     }
     el('#toggle-picture-slideshow').innerText = 'Play';
@@ -109,7 +109,7 @@ async function togglePictureSlideshow() {
         stopSlideshow();
     }
     else {
-        slideshowTimer = setTimeout(goNextPicture, 3000);
+        slideshowTimer = setInterval(goNextPicture, 3000);
         el('#toggle-picture-slideshow').innerText = 'Stop';
     }
 }
