@@ -720,6 +720,7 @@ async function submitSearch() {
     try {
         let coords = {
             barthe: [43.63, 1.44],
+            rangueil: [43.577350, 1.452790],
             prairie: [(43.573736 + 43.572459) / 2, (1.456811 + 1.458816) / 2],
             mansac: [45.065374, 1.236009]
         }
@@ -733,8 +734,8 @@ async function submitSearch() {
                 name: searchText,
                 mimeType: el<HTMLInputElement>('#search-mimeType').value + '%',
                 geoSearch: {
-                    latitude: coords.prairie[0],
-                    longitude: coords.prairie[1],
+                    latitude: coords.rangueil[0],
+                    longitude: coords.rangueild[1],
                     zoom: Math.abs(43.573736 - 43.572459) / 2
                 }
             })
