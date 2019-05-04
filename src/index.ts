@@ -718,6 +718,12 @@ async function submitSearch() {
     let finishLoading = startLoading(`searching '${searchText}'...`)
 
     try {
+        let coords = {
+            barthe: [43.63, 1.44],
+            prairie: [43.572914, 1.457197],
+            mansac: [45.065374, 1.236009]
+        }
+
         const headers = new Headers()
         headers.set('Content-Type', 'application/json')
         const resp = await fetch(`${HEXA_BACKUP_BASE_URL}/search`, {
@@ -725,7 +731,12 @@ async function submitSearch() {
             method: 'post',
             body: JSON.stringify({
                 name: searchText,
-                mimeType: el<HTMLInputElement>('#search-mimeType').value + '%'
+                mimeType: el<HTMLInputElement>('#search-mimeType').value + '%',
+                geoSearch: {
+                    latitude: coords.prairie[0],
+                    longitude: coords.prairie[1],
+                    zoom: 0.01
+                }
             })
         })
         const respJson = await resp.json()
