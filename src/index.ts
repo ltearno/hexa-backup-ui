@@ -735,7 +735,7 @@ async function submitSearch() {
                 geoSearch: {
                     latitude: coords.prairie[0],
                     longitude: coords.prairie[1],
-                    zoom: 0.01
+                    zoom: 0.001
                 }
             })
         })
