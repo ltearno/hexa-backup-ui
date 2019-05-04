@@ -565,7 +565,7 @@ async function submitSearch() {
                 geoSearch: {
                     latitude: coords.prairie[0],
                     longitude: coords.prairie[1],
-                    zoom: 0.05
+                    zoom: 0.01
                 }
             })
         });
