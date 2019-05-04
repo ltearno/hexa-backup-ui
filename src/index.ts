@@ -723,7 +723,7 @@ async function submitSearch() {
             rangueil: [43.577350, 1.452790],
             prairie: [(43.573736 + 43.572459) / 2, (1.456811 + 1.458816) / 2],
             mansac: [45.065374, 1.236009],
-            bonifatu: [42.433943, 8.888533]
+            bonifatu: [42.499378, 8.807921]
         }
 
         const headers = new Headers()
