@@ -622,8 +622,8 @@ async function submitSearch() {
                 }
             });
         }
-        if (geoSearchBox || searchSpec.date)
-            el('#extSearch').classList.add('is-hidden');
+        //if (geoSearchBox || searchSpec.date)
+        //el('#extSearch').classList.add('is-hidden')
         if (searchSpec.mimeType.startsWith('image')) {
             // little hacky
             el('#after-images-container').scrollIntoView(true);
