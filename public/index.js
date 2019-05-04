@@ -580,7 +580,7 @@ async function submitSearch() {
         }
         let searchDate = el('#search-date').value || null;
         if (searchDate) {
-            searchSpec.date = new Date(searchDate).getTime() / 1000;
+            searchSpec.date = new Date(searchDate).getTime();
             searchSpec.dateInterval = el('#search-date-day-interval').value || 0;
         }
         const headers = new Headers();
