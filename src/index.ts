@@ -720,7 +720,7 @@ async function submitSearch() {
     try {
         let coords = {
             barthe: [43.63, 1.44],
-            prairie: [43.572914, 1.457197],
+            prairie: [(43.573736 + 43.572459) / 2, (1.456811 + 1.458816) / 2],
             mansac: [45.065374, 1.236009]
         }
 
@@ -735,7 +735,7 @@ async function submitSearch() {
                 geoSearch: {
                     latitude: coords.prairie[0],
                     longitude: coords.prairie[1],
-                    zoom: 0.001
+                    zoom: Math.abs(43.573736 - 43.572459) / 2
                 }
             })
         })
