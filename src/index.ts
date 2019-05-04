@@ -722,7 +722,8 @@ async function submitSearch() {
             barthe: [43.63, 1.44],
             rangueil: [43.577350, 1.452790],
             prairie: [(43.573736 + 43.572459) / 2, (1.456811 + 1.458816) / 2],
-            mansac: [45.065374, 1.236009]
+            mansac: [45.065374, 1.236009],
+            bonifatu: [42.433943, 8.888533]
         }
 
         const headers = new Headers()
@@ -734,8 +735,8 @@ async function submitSearch() {
                 name: searchText,
                 mimeType: el<HTMLInputElement>('#search-mimeType').value + '%',
                 geoSearch: {
-                    latitude: coords.rangueil[0],
-                    longitude: coords.rangueil[1],
+                    latitude: coords.bonifatu[0],
+                    longitude: coords.bonifatu[1],
                     zoom: 0.0006385
                 }
             })
