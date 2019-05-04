@@ -544,6 +544,27 @@ function infiniteScroll(db, domCreator, scrollContainer, scrollContent) {
     run();
     return stop;
 }
+var mymap = L.map('mapid').setView([45.065374, 1.236009], 13);
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: 'pk.eyJ1IjoibHRlYXJubyIsImEiOiJjanY5ZXJqb2UwbzlyNGVtanpwMWRjMWJoIn0.vNNsUQ_cnIDfBLU3QHsuGQ'
+}).addTo(mymap);
+let mapCb = (event) => {
+    let bounds = mymap.getBounds();
+    let nw = bounds.getNorthWest();
+    let se = bounds.getSouthEast();
+    let latitude = (nw.lat + se.lat) / 2;
+    let longitude = (nw.lng + se.lng) / 2;
+    let zoom = Math.abs(nw.lat - se.lat) / 2;
+    el('#latitude').value = latitude.toString();
+    el('#longitude').value = longitude.toString();
+    el('#zoom').value = zoom.toString();
+    console.log(`${latitude} ${longitude} ${zoom}`);
+};
+mymap.on('zoom', mapCb);
+mymap.on('move', mapCb);
 async function submitSearch() {
     el("#menu").classList.add("is-hidden");
     const searchText = el('#search-text').value || '';
@@ -556,20 +577,26 @@ async function submitSearch() {
             mansac: [45.065374, 1.236009],
             bonifatu: [42.499378, 8.807921]
         };
+        let searchSpec = {
+            name: searchText,
+            mimeType: el('#search-mimeType').value + '%'
+        };
+        let latitude = el('#latitude').value;
+        let longitude = el('#longitude').value;
+        let zoom = el('#zoom').value;
+        if (latitude && longitude && zoom) {
+            searchSpec.geoSearch = {
+                latitude,
+                longitude,
+                zoom
+            };
+        }
         const headers = new Headers();
         headers.set('Content-Type', 'application/json');
         const resp = await fetch(`${HEXA_BACKUP_BASE_URL}/search`, {
             headers,
             method: 'post',
-            body: JSON.stringify({
-                name: searchText,
-                mimeType: el('#search-mimeType').value + '%',
-                geoSearch: {
-                    latitude: coords.bonifatu[0],
-                    longitude: coords.bonifatu[1],
-                    zoom: 0.0006385
-                }
-            })
+            body: JSON.stringify(searchSpec)
         });
         const respJson = await resp.json();
         let { resultDirectories, resultFilesddd } = respJson;

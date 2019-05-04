@@ -261,3 +261,7 @@ img {
 .is-hidden {
     display: none !important;
 }
+
+#mapid {
+    height: 25em;
+}

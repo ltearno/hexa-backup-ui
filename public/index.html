@@ -7,6 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Hexa-Backup Store</title>
     <base href="public">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+        integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+        integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+        crossorigin=""></script>
     <script src="mime-types.js"></script>
     <link rel="stylesheet" href="index.css">
 </head>
@@ -62,6 +68,10 @@
                 <option value="video">video</option>
             </select>
             <button role="submit">search</button>
+            <div id="mapid"></div>
+            <input type="text" id="latitude" placeholder="latitude">
+            <input type="text" id="longitude" placeholder="longitude">
+            <input type="text" id="zoom" placeholder="zoom">
         </form>
         <div id="settings" class="is-hidden">
             <h2>Settings</h2>
