@@ -151,26 +151,7 @@ async function viewDirectories(directories) {
     }
     finishLoading();
 }
-async function showDirectory(directoryDescriptorSha) {
-    el('#directories').innerHTML = '';
-    el('#files').innerHTML = '';
-    el('#images').innerHTML = '';
-    if (!directoryDescriptorSha)
-        return;
-    let finishLoading = startLoading(`loading directory descriptor ${directoryDescriptorSha.substr(0, 7)}...`);
-    let directoryDescriptor = await fetchDirectoryDescriptor(directoryDescriptorSha);
-    finishLoading();
-    if (!directoryDescriptor || !directoryDescriptor.files) {
-        el('#directories').innerHTML = `error fetching ${directoryDescriptorSha}`;
-        return;
-    }
-    let files = directoryDescriptor.files;
-    let directories = files
-        .filter(file => file.isDirectory);
-    viewDirectories(directories);
-    let images = [];
-    let videos = [];
-    let audios = [];
+function sortFiles(files) {
     const lexicalSorter = (a, b) => {
         let sa = a.name.toLocaleLowerCase();
         let sb = b.name.toLocaleLowerCase();
@@ -193,9 +174,30 @@ async function showDirectory(directoryDescriptorSha) {
             sorter = dateSorter;
             break;
     }
+    return files.sort(sorter);
+}
+async function showDirectory(directoryDescriptorSha) {
+    el('#directories').innerHTML = '';
+    el('#files').innerHTML = '';
+    el('#images').innerHTML = '';
+    if (!directoryDescriptorSha)
+        return;
+    let finishLoading = startLoading(`loading directory descriptor ${directoryDescriptorSha.substr(0, 7)}...`);
+    let directoryDescriptor = await fetchDirectoryDescriptor(directoryDescriptorSha);
+    finishLoading();
+    if (!directoryDescriptor || !directoryDescriptor.files) {
+        el('#directories').innerHTML = `error fetching ${directoryDescriptorSha}`;
+        return;
+    }
+    let files = directoryDescriptor.files;
+    let directories = files
+        .filter(file => file.isDirectory);
+    viewDirectories(directories);
+    let images = [];
+    let videos = [];
+    let audios = [];
     filesPool = files
         .filter(file => !file.isDirectory)
-        .sort(sorter)
         .map((file, index) => {
         return {
             sha: file.contentSha,
@@ -205,6 +207,7 @@ async function showDirectory(directoryDescriptorSha) {
             size: file.size
         };
     });
+    filesPool = sortFiles(filesPool);
     await loadLikesFiles();
     filesPool.forEach(file => {
         if (file.mimeType.startsWith('image/'))
@@ -625,8 +628,10 @@ async function submitSearch() {
             sha: i.sha,
             fileName: i.name,
             mimeType: i.mimeType,
-            size: 0
+            size: 0,
+            lastWrite: i.lastWrite
         }));
+        filesPool = sortFiles(filesPool);
         imagesPool = filesPool.filter(i => i.mimeType.startsWith('image/'));
         audioPool = filesPool.filter(i => i.mimeType.startsWith('audio/'));
         videosPool = filesPool.filter(i => i.mimeType.startsWith('video/'));

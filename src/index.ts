@@ -194,6 +194,35 @@ async function viewDirectories(directories: { name: string; lastWrite: number; c
     finishLoading()
 }
 
+function sortFiles(files) {
+    const lexicalSorter = (a, b) => {
+        let sa = a.name.toLocaleLowerCase()
+        let sb = b.name.toLocaleLowerCase()
+        let res = sa.localeCompare(sb)
+        if (!res)
+            return dateSorter(a, b)
+        return res
+    }
+
+    const dateSorter = (a, b) => {
+        if (a.lastWrite == b.lastWrite)
+            return lexicalSorter(a, b)
+        return a.lastWrite > b.lastWrite ? 1 : -1
+    }
+
+    let sorter = null
+    switch (displayedSortOrder) {
+        case "name":
+            sorter = lexicalSorter
+            break
+        case "date":
+            sorter = dateSorter
+            break
+    }
+
+    return files.sort(sorter)
+}
+
 async function showDirectory(directoryDescriptorSha) {
     el('#directories').innerHTML = ''
     el('#files').innerHTML = ''
@@ -221,34 +250,8 @@ async function showDirectory(directoryDescriptorSha) {
     let videos = []
     let audios = []
 
-    const lexicalSorter = (a, b) => {
-        let sa = a.name.toLocaleLowerCase()
-        let sb = b.name.toLocaleLowerCase()
-        let res = sa.localeCompare(sb)
-        if (!res)
-            return dateSorter(a, b)
-        return res
-    }
-
-    const dateSorter = (a, b) => {
-        if (a.lastWrite == b.lastWrite)
-            return lexicalSorter(a, b)
-        return a.lastWrite > b.lastWrite ? 1 : -1
-    }
-
-    let sorter = null
-    switch (displayedSortOrder) {
-        case "name":
-            sorter = lexicalSorter
-            break
-        case "date":
-            sorter = dateSorter
-            break
-    }
-
     filesPool = files
         .filter(file => !file.isDirectory)
-        .sort(sorter)
         .map((file, index) => {
             return {
                 sha: file.contentSha,
@@ -259,6 +262,8 @@ async function showDirectory(directoryDescriptorSha) {
                 size: file.size
             }
         })
+
+    filesPool = sortFiles(filesPool)
 
     await loadLikesFiles()
 
@@ -810,8 +815,10 @@ async function submitSearch() {
             sha: i.sha,
             fileName: i.name,
             mimeType: i.mimeType,
-            size: 0
+            size: 0,
+            lastWrite: i.lastWrite
         }))
+        filesPool = sortFiles(filesPool)
         imagesPool = filesPool.filter(i => i.mimeType.startsWith('image/'))
         audioPool = filesPool.filter(i => i.mimeType.startsWith('audio/'))
         videosPool = filesPool.filter(i => i.mimeType.startsWith('video/'))
