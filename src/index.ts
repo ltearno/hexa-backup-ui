@@ -759,8 +759,9 @@ async function submitSearch() {
 
         let searchDate = el<HTMLInputElement>('#search-date').value || null
         if (searchDate) {
-            searchSpec.dateMin = new Date(searchDate).getTime()
-            searchSpec.dateMax = new Date(searchDate).getTime() + (parseInt(el<HTMLInputElement>('#search-date-day-interval').value || '0')) * 1000 * 60 * 60 * 24
+            let interval = (parseInt(el<HTMLInputElement>('#search-date-day-interval').value || '0')) * 1000 * 60 * 60 * 24
+            searchSpec.dateMin = new Date(searchDate).getTime() - interval
+            searchSpec.dateMax = new Date(searchDate).getTime() + interval
         }
 
         const headers = new Headers()
