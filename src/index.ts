@@ -109,8 +109,10 @@ async function goPreviousPicture() {
 }
 
 async function goNextPicture() {
-    if (currentPictureIndex < 0 || !imagesPool || !imagesPool.length || currentPictureIndex == imagesPool.length - 1)
+    if (currentPictureIndex < 0 || !imagesPool || !imagesPool.length || currentPictureIndex == imagesPool.length - 1) {
+        stopSlideshow()
         return
+    }
 
     currentPictureIndex++
     publishHistoryState()
@@ -124,6 +126,25 @@ async function goNoPicture() {
     publishHistoryState()
 
     await syncUi()
+}
+
+function stopSlideshow() {
+    if (slideshowTimer) {
+        clearTimeout(slideshowTimer)
+        slideshowTimer = null
+    }
+    el('#toggle-picture-slideshow').innerText = 'Play'
+}
+
+let slideshowTimer = null
+async function togglePictureSlideshow() {
+    if (slideshowTimer) {
+        stopSlideshow()
+    }
+    else {
+        slideshowTimer = setTimeout(goNextPicture, 3000)
+        el('#toggle-picture-slideshow').innerText = 'Stop'
+    }
 }
 
 let loaders = []

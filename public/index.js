@@ -83,8 +83,10 @@ async function goPreviousPicture() {
     await syncUi();
 }
 async function goNextPicture() {
-    if (currentPictureIndex < 0 || !imagesPool || !imagesPool.length || currentPictureIndex == imagesPool.length - 1)
+    if (currentPictureIndex < 0 || !imagesPool || !imagesPool.length || currentPictureIndex == imagesPool.length - 1) {
+        stopSlideshow();
         return;
+    }
     currentPictureIndex++;
     publishHistoryState();
     await syncUi();
@@ -93,6 +95,23 @@ async function goNoPicture() {
     currentPictureIndex = -1;
     publishHistoryState();
     await syncUi();
+}
+function stopSlideshow() {
+    if (slideshowTimer) {
+        clearTimeout(slideshowTimer);
+        slideshowTimer = null;
+    }
+    el('#toggle-picture-slideshow').innerText = 'Play';
+}
+let slideshowTimer = null;
+async function togglePictureSlideshow() {
+    if (slideshowTimer) {
+        stopSlideshow();
+    }
+    else {
+        slideshowTimer = setTimeout(goNextPicture, 3000);
+        el('#toggle-picture-slideshow').innerText = 'Stop';
+    }
 }
 let loaders = [];
 let startLoading = (text) => {
