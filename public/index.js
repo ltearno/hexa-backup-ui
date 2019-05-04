@@ -153,8 +153,8 @@ async function viewDirectories(directories) {
 }
 function sortFiles(files) {
     const lexicalSorter = (a, b) => {
-        let sa = a.name.toLocaleLowerCase();
-        let sb = b.name.toLocaleLowerCase();
+        let sa = a.fileName.toLocaleLowerCase();
+        let sb = b.fileName.toLocaleLowerCase();
         let res = sa.localeCompare(sb);
         if (!res)
             return dateSorter(a, b);
