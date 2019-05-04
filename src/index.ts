@@ -803,9 +803,9 @@ async function submitSearch() {
 
         if (searchSpec.mimeType.startsWith('image')) {
             // little hacky
-            el('#images-container').scrollIntoView(true)
-            setTimeout(() => el('#images-container').scrollIntoView(true), 500)
-            setTimeout(() => el('#images-container').scrollIntoView(true), 1500)
+            el('#after-images-container').scrollIntoView(true)
+            setTimeout(() => el('#after-images-container').scrollIntoView(true), 500)
+            setTimeout(() => el('#after-images-container').scrollIntoView(true), 1500)
         }
     }
     catch (err) {
