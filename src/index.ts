@@ -757,6 +757,12 @@ async function submitSearch() {
             searchSpec.geoSearch = geoSearchBox
         }
 
+        let searchDate = el<HTMLInputElement>('#search-date').value || null
+        if (searchDate) {
+            searchSpec.date = new Date(searchDate).getTime() / 1000
+            searchSpec.dateInterval = el<HTMLInputElement>('#search-date-day-interval').value || 0
+        }
+
         const headers = new Headers()
         headers.set('Content-Type', 'application/json')
         const resp = await fetch(`${HEXA_BACKUP_BASE_URL}/search`, {
