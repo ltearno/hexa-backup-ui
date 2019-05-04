@@ -735,7 +735,7 @@ async function submitSearch() {
                 mimeType: el<HTMLInputElement>('#search-mimeType').value + '%',
                 geoSearch: {
                     latitude: coords.rangueil[0],
-                    longitude: coords.rangueild[1],
+                    longitude: coords.rangueil[1],
                     zoom: Math.abs(43.573736 - 43.572459) / 2
                 }
             })
