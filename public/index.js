@@ -361,7 +361,8 @@ async function viewLikedFiles(likes) {
 }
 async function showParents(sha) {
     let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/parents/${sha}`);
-    console.log((await resp.json()).join(', '));
+    let parents = await resp.json();
+    el('#parents').innerHTML = `<h2>Parents</h2><ul>${parents.map(sha => `<li><a href='#' onclick='event.preventDefault() || goDirectory("${sha}")'>${sha.substr(0, 7)}</a></li>`).join('')}</ul>`;
 }
 async function toggleLikeFile(index) {
     if (!filesPool || index < 0 || index >= filesPool.length)

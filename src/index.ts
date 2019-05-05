@@ -468,8 +468,9 @@ async function viewLikedFiles(likes) {
 
 async function showParents(sha: string) {
     let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/parents/${sha}`)
+    let parents = await resp.json()
 
-    console.log((await resp.json()).join(', '))
+    el('#parents').innerHTML = `<h2>Parents</h2><ul>${parents.map(sha => `<li><a href='#' onclick='event.preventDefault() || goDirectory("${sha}")'>${sha.substr(0, 7)}</a></li>`).join('')}</ul>`
 }
 
 
