@@ -195,19 +195,30 @@ async function viewDirectories(directories: { name: string; lastWrite: number; c
 }
 
 function sortFiles(files) {
-    const lexicalSorter = (a, b) => {
+    const lexicalCompare = (a, b) => {
         let sa = a.fileName.toLocaleLowerCase()
         let sb = b.fileName.toLocaleLowerCase()
-        let res = sa.localeCompare(sb)
+        return sa.localeCompare(sb)
+    }
+
+    const dateCompare = (a, b) => {
+        if (a.lastWrite == b.lastWrite)
+            return 0
+        return a.lastWrite > b.lastWrite ? 1 : -1
+    }
+
+    const lexicalSorter = (a, b) => {
+        let res = lexicalCompare(a, b)
         if (!res)
-            return dateSorter(a, b)
+            return dateCompare(a, b)
         return res
     }
 
     const dateSorter = (a, b) => {
-        if (a.lastWrite == b.lastWrite)
-            return lexicalSorter(a, b)
-        return a.lastWrite > b.lastWrite ? 1 : -1
+        let res = dateCompare(a, b)
+        if (!res)
+            return lexicalCompare(a, b)
+        return res
     }
 
     let sorter = null
