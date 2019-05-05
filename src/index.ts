@@ -926,6 +926,7 @@ el('#toggleExtSearch').addEventListener('click', e => {
 })
 
 el('#banner').addEventListener('resize', () => {
+    console.log(`resized banner`)
     refreshBannerPlaceholderSize()
 })
 

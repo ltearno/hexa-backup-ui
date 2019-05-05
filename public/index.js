@@ -717,6 +717,7 @@ el('#toggleExtSearch').addEventListener('click', e => {
     e.preventDefault();
 });
 el('#banner').addEventListener('resize', () => {
+    console.log(`resized banner`);
     refreshBannerPlaceholderSize();
 });
 window.onpopstate = function (event) {
