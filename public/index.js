@@ -291,7 +291,7 @@ async function restartFilePool() {
         let likeHtml = `<a class='like' onclick='event.preventDefault() || toggleLikeFile(${index})'>like ♡</a>`;
         if (EXTENDED) {
             let date = `<span class='small'>${displayDate(file.lastWrite)} ${file.sha ? file.sha.substr(0, 7) : '-'}</span>`;
-            html = `${date} <a href='#' onclick='event.preventDefault() || ${action}'>${file.fileName}</a> <span class='small'>${file.size} ${links}</span>`;
+            html = `${date} <a href='#' onclick='event.preventDefault() || ${action}'>${file.fileName}</a> <span class='small'>${file.size} ${links} ${likeHtml}</span>`;
         }
         else {
             let displayedName = file.fileName.substr(currentPrefix.length);
