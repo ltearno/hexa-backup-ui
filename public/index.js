@@ -143,7 +143,7 @@ async function viewDirectories(directories) {
         let htmlParents = `<a href='#' class='small' onclick='event.preventDefault() || showParents("${file.contentSha}")'>[..]</a>`;
         return EXTENDED ?
             `<div><span class='small'>${displayDate(file.lastWrite)} ${file.contentSha ? file.contentSha.substr(0, 7) : '-'}</span> <a href='#' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a>${htmlParents}</div>` :
-            `<div><a href='${BASE_URL}#${file.contentSha}' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a>${htmlParents}</div>`;
+            `<div><a href='${BASE_URL}#${file.contentSha}' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a> ${htmlParents}</div>`;
     });
     if (directoriesContent.length) {
         el('#directories').classList.remove('is-hidden');
@@ -307,7 +307,7 @@ async function restartFilePool() {
             }
         }
         let htmlParents = `<a href='#' class='small' onclick='event.preventDefault() || showParents("${file.sha}")'>[..]</a>`;
-        filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${htmlPrefix}${html}${htmlParents}</div>`;
+        filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${htmlPrefix}${html} ${htmlParents}</div>`;
         if (index % 200 == 199)
             await wait(15);
     }
