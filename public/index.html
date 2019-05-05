@@ -51,12 +51,12 @@
 
     <div id="banner">
         <div class="icon-bar">
-            <a href="#" onclick='event.preventDefault() || el("#menu").classList.toggle("is-hidden")'>🏠</a>
+            <a href="#" onclick='event.preventDefault() || el("#menu").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🏠</a>
             <a id="fullScreen" href="#">🖵</a>
-            <a href="#" onclick='event.preventDefault() || el("#video-player").classList.toggle("is-hidden")'>🎞️</a>
-            <a href="#" onclick='event.preventDefault() || el("#audio-player").classList.toggle("is-hidden")'>🎶</a>
-            <a href="#" onclick='event.preventDefault() || el("#settings").classList.toggle("is-hidden")'>⚙️</a>
-            <a href="#" onclick='event.preventDefault() || el("#search-form").classList.toggle("is-hidden")'>🔍</a>
+            <a href="#" onclick='event.preventDefault() || el("#video-player").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🎞️</a>
+            <a href="#" onclick='event.preventDefault() || el("#audio-player").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🎶</a>
+            <a href="#" onclick='event.preventDefault() || el("#settings").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>⚙️</a>
+            <a href="#" onclick='event.preventDefault() || el("#search-form").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🔍</a>
             <span id="userId"></span>
         </div>
         <audio id="audio-player" class="is-hidden" controls preload="metadata"></audio>

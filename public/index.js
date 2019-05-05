@@ -715,9 +715,6 @@ el('#toggleExtSearch').addEventListener('click', e => {
     el('#extSearch').classList.toggle('is-hidden');
     mymap.invalidateSize(true);
     e.preventDefault();
-});
-el('#banner').addEventListener('resize', () => {
-    console.log(`resized banner`);
     refreshBannerPlaceholderSize();
 });
 window.onpopstate = function (event) {
@@ -818,6 +815,6 @@ async function syncUi() {
     displayedDirectoryDescriptorSha = currentDirectoryDescriptorSha;
     displayedClientId = currentClientId;
     displayedPictureIndex = currentPictureIndex;
-    //refreshBannerPlaceholderSize()
+    refreshBannerPlaceholderSize();
 }
 //# sourceMappingURL=index.js.map

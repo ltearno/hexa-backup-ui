@@ -923,10 +923,6 @@ el('#toggleExtSearch').addEventListener('click', e => {
     el('#extSearch').classList.toggle('is-hidden')
     mymap.invalidateSize(true)
     e.preventDefault()
-})
-
-el('#banner').addEventListener('resize', () => {
-    console.log(`resized banner`)
     refreshBannerPlaceholderSize()
 })
 
@@ -1059,5 +1055,5 @@ async function syncUi() {
     displayedClientId = currentClientId
     displayedPictureIndex = currentPictureIndex
 
-    //refreshBannerPlaceholderSize()
+    refreshBannerPlaceholderSize()
 }
