@@ -850,10 +850,7 @@ async function submitSearch() {
         //el('#extSearch').classList.add('is-hidden')
 
         if (searchSpec.mimeType.startsWith('image')) {
-            // little hacky
-            el('#after-images-container').scrollIntoView(true)
-            setTimeout(() => el('#after-images-container').scrollIntoView(true), 500)
-            setTimeout(() => el('#after-images-container').scrollIntoView(true), 1500)
+            el('html').scrollTop = 1000000
         }
     }
     catch (err) {
