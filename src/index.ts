@@ -372,13 +372,12 @@ async function restartFilePool() {
             videoIndex++
         }
 
-
-
         let likeHtml = `<a class='like' onclick='event.preventDefault() || toggleLikeFile(${index})'>like ♡</a>`
+        let htmlParents = `<a href='#' onclick='event.preventDefault() || showParents("${file.sha}")'>[..]</a>`
 
         if (EXTENDED) {
             let date = `<span class='small'>${displayDate(file.lastWrite)} ${file.sha ? file.sha.substr(0, 7) : '-'}</span>`
-            html = `${date} <a href='#' onclick='event.preventDefault() || ${action}'>${file.fileName}</a> <span class='small'>${file.size} ${links} ${likeHtml}</span>`
+            html = `${date} <a href='#' onclick='event.preventDefault() || ${action}'>${file.fileName}</a> <span class='small'>${file.size} ${links} ${htmlParents} ${likeHtml}</span>`
         }
         else {
             let displayedName: string = file.fileName.substr(currentPrefix.length)
@@ -387,7 +386,7 @@ async function restartFilePool() {
                 if (ie)
                     displayedName = displayedName.substr(0, ie)
             }
-            html = `<a href='#' onclick='event.preventDefault() || ${action}'>${displayedName}</a> <span class='small'>${likeHtml}</span>`
+            html = `<a href='#' onclick='event.preventDefault() || ${action}'>${displayedName}</a> <span class='small'>${htmlParents} ${likeHtml}</span>`
 
             if (displayedSortOrder == 'date') {
                 let date = `<span class='small'>${displayDate(file.lastWrite)}</span>`
@@ -395,9 +394,7 @@ async function restartFilePool() {
             }
         }
 
-        let htmlParents = `<a href='#' class='small' onclick='event.preventDefault() || showParents("${file.sha}")'>[..]</a>`
-
-        filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${htmlPrefix}${html} ${htmlParents}</div>`
+        filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${htmlPrefix}${html}</div>`
 
         if (index % 200 == 199)
             await wait(15)
