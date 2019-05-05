@@ -207,13 +207,13 @@ async function showDirectory(directoryDescriptorSha) {
     let audios = [];
     filesPool = files
         .filter(file => !file.isDirectory)
-        .map((file, index) => {
+        .map(file => {
         return {
             sha: file.contentSha,
             mimeType: getMimeType(file.name),
             fileName: file.name,
-            lastWrite: file.lastWrite,
-            size: file.size
+            lastWrite: file.lastWrite * 1,
+            size: file.size * 1
         };
     });
     filesPool = sortFiles(filesPool);
@@ -638,7 +638,7 @@ async function submitSearch() {
             fileName: i.name,
             mimeType: i.mimeType,
             size: 0,
-            lastWrite: i.lastWrite
+            lastWrite: i.lastWrite * 1
         }));
         filesPool = sortFiles(filesPool);
         imagesPool = filesPool.filter(i => i.mimeType.startsWith('image/'));
@@ -715,6 +715,7 @@ el('#toggleExtSearch').addEventListener('click', e => {
     el('#extSearch').classList.toggle('is-hidden');
     mymap.invalidateSize(true);
     e.preventDefault();
+    refreshBannerPlaceholderSize();
 });
 window.onpopstate = function (event) {
     if (event.state) {
@@ -773,6 +774,11 @@ async function viewLikes() {
     await listenToLiked(likesArray.filter(like => like.value.knownAs.mimeType.startsWith('audio/')));
     await viewLikedVideos(likesArray.filter(like => like.value.knownAs.mimeType.startsWith('video/')));
 }
+function refreshBannerPlaceholderSize() {
+    setTimeout(() => {
+        el('#banner-placeholder').style.height = `${el('#banner').offsetHeight}px`;
+    }, 5);
+}
 async function syncUi() {
     if (currentPictureIndex < 0) {
         el('#image-full-container').classList.add('is-hidden');
@@ -809,5 +815,6 @@ async function syncUi() {
     displayedDirectoryDescriptorSha = currentDirectoryDescriptorSha;
     displayedClientId = currentClientId;
     displayedPictureIndex = currentPictureIndex;
+    refreshBannerPlaceholderSize();
 }
 //# sourceMappingURL=index.js.map
