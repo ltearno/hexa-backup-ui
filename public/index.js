@@ -637,7 +637,7 @@ async function submitSearch() {
             sha: i.sha,
             fileName: i.name,
             mimeType: i.mimeType,
-            size: 0,
+            size: i.size * 1,
             lastWrite: i.lastWrite * 1
         }));
         filesPool = sortFiles(filesPool);
