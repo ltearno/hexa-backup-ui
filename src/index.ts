@@ -181,7 +181,7 @@ async function viewDirectories(directories: { name: string; lastWrite: number; c
         return sa.localeCompare(sb)
     })
         .map(file => {
-            let htmlParents = `<a href='#' onclick='event.preventDefault() || showParents("${file.contentSha}")'>[..]</a>`
+            let htmlParents = `<a href='#' class='small' onclick='event.preventDefault() || showParents("${file.contentSha}")'>[..]</a>`
 
             return EXTENDED ?
                 `<div><span class='small'>${displayDate(file.lastWrite)} ${file.contentSha ? file.contentSha.substr(0, 7) : '-'}</span> <a href='#' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a>${htmlParents}</div>` :
@@ -395,7 +395,7 @@ async function restartFilePool() {
             }
         }
 
-        let htmlParents = `<a href='#' onclick='event.preventDefault() || showParents("${file.sha}")'>[..]</a>`
+        let htmlParents = `<a href='#' class='small' onclick='event.preventDefault() || showParents("${file.sha}")'>[..]</a>`
 
         filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${htmlPrefix}${html}${htmlParents}</div>`
 
