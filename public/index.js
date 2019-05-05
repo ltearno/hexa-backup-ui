@@ -285,6 +285,7 @@ async function restartFilePool() {
             htmlPrefix = `<a href='#' onclick='event.preventDefault() || showVideo(${videoIndex})'>🎞️ ▶</a> `;
             videoIndex++;
         }
+        htmlPrefix += `<a href='#' onclick='event.preventDefault() || showParents(${index})'>^^</a>`;
         let likeHtml = `<a class='like' onclick='event.preventDefault() || toggleLikeFile(${index})'>like ♡</a>`;
         if (EXTENDED) {
             let date = `<span class='small'>${displayDate(file.lastWrite)} ${file.sha ? file.sha.substr(0, 7) : '-'}</span>`;
@@ -355,8 +356,15 @@ async function viewLikedFiles(likes) {
     await loadLikesFiles();
     await restartFilePool();
 }
+async function showParents(index) {
+    if (!filesPool || index < 0 || index >= filesPool.length)
+        return;
+    let file = filesPool[index];
+    let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/parents/${file.sha}`);
+    console.log((await resp.json()).join(', '));
+}
 async function toggleLikeFile(index) {
-    if (index < 0 || index >= filesPool.length)
+    if (!filesPool || index < 0 || index >= filesPool.length)
         return;
     let file = filesPool[index];
     let status = await toggleShaLike(file.sha, file.mimeType, file.fileName);
@@ -656,8 +664,6 @@ async function submitSearch() {
                 }
             });
         }
-        //if (geoSearchBox || searchSpec.date)
-        //el('#extSearch').classList.add('is-hidden')
         if (searchSpec.mimeType.startsWith('image')) {
             el('html').scrollTop = 1000000;
         }

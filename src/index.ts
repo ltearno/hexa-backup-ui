@@ -368,6 +368,8 @@ async function restartFilePool() {
             videoIndex++
         }
 
+        htmlPrefix += `<a href='#' onclick='event.preventDefault() || showParents(${index})'>^^</a>`
+
         let likeHtml = `<a class='like' onclick='event.preventDefault() || toggleLikeFile(${index})'>like ♡</a>`
 
         if (EXTENDED) {
@@ -458,9 +460,20 @@ async function viewLikedFiles(likes) {
 }
 
 
+async function showParents(index: number) {
+    if (!filesPool || index < 0 || index >= filesPool.length)
+        return
+
+    let file = filesPool[index]
+
+    let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/parents/${file.sha}`)
+
+    console.log((await resp.json()).join(', '))
+}
+
 
 async function toggleLikeFile(index) {
-    if (index < 0 || index >= filesPool.length)
+    if (!filesPool || index < 0 || index >= filesPool.length)
         return
 
     let file = filesPool[index]
@@ -845,9 +858,6 @@ async function submitSearch() {
                 }
             })
         }
-
-        //if (geoSearchBox || searchSpec.date)
-        //el('#extSearch').classList.add('is-hidden')
 
         if (searchSpec.mimeType.startsWith('image')) {
             el('html').scrollTop = 1000000
