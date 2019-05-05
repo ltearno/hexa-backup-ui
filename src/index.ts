@@ -180,9 +180,13 @@ async function viewDirectories(directories: { name: string; lastWrite: number; c
         let sb = b.name.toLocaleLowerCase()
         return sa.localeCompare(sb)
     })
-        .map(file => EXTENDED ?
-            `<div><span class='small'>${displayDate(file.lastWrite)} ${file.contentSha ? file.contentSha.substr(0, 7) : '-'}</span> <a href='#' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a></div>` :
-            `<div><a href='${BASE_URL}#${file.contentSha}' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a></div>`)
+        .map(file => {
+            let htmlParents = `<a href='#' onclick='event.preventDefault() || showParents("${file.contentSha}")'>..</a>`
+
+            return EXTENDED ?
+                `<div><span class='small'>${displayDate(file.lastWrite)} ${file.contentSha ? file.contentSha.substr(0, 7) : '-'}</span> <a href='#' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a>${htmlParents}</div>` :
+                `<div><a href='${BASE_URL}#${file.contentSha}' onclick='event.preventDefault() || goDirectory("${file.contentSha}")'>${file.name}</a>${htmlParents}</div>`
+        })
     if (directoriesContent.length) {
         el('#directories').classList.remove('is-hidden')
         el('#directories').innerHTML = `<h2>Directories <small>(${directoriesContent.length})</small></h2><div id='directories-container'>${directoriesContent.join('')}</div>`
@@ -368,7 +372,7 @@ async function restartFilePool() {
             videoIndex++
         }
 
-        htmlPrefix += `<a href='#' onclick='event.preventDefault() || showParents(${index})'>^^</a>`
+
 
         let likeHtml = `<a class='like' onclick='event.preventDefault() || toggleLikeFile(${index})'>like ♡</a>`
 
@@ -391,7 +395,9 @@ async function restartFilePool() {
             }
         }
 
-        filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${htmlPrefix}${html}</div>`
+        let htmlParents = `<a href='#' onclick='event.preventDefault() || showParents("${file.sha}")'>..</a>`
+
+        filesContent += `<div id='file-${index}' class='${classes.join(' ')}'>${htmlPrefix}${html}${htmlParents}</div>`
 
         if (index % 200 == 199)
             await wait(15)
@@ -460,13 +466,8 @@ async function viewLikedFiles(likes) {
 }
 
 
-async function showParents(index: number) {
-    if (!filesPool || index < 0 || index >= filesPool.length)
-        return
-
-    let file = filesPool[index]
-
-    let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/parents/${file.sha}`)
+async function showParents(sha: string) {
+    let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/parents/${sha}`)
 
     console.log((await resp.json()).join(', '))
 }
