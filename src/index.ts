@@ -142,7 +142,7 @@ async function togglePictureSlideshow() {
         stopSlideshow()
     }
     else {
-        slideshowTimer = setInterval(goNextPicture, 3000)
+        slideshowTimer = setInterval(goNextPicture, 5000)
         el('#toggle-picture-slideshow').innerText = 'Stop'
     }
 }
