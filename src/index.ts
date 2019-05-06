@@ -487,10 +487,9 @@ interface ShaBreadcrumb {
 }
 
 interface ShaSimplifiedBreadcrumb {
+    name: string
     shas: string[]
-    parents: {
-        [name: string]: ShaSimplifiedBreadcrumb
-    }
+    parents: ShaSimplifiedBreadcrumb[]
 }
 
 async function getShaBreadcrumb(sha: string, statusCb: () => any) {
@@ -511,23 +510,31 @@ async function getShaBreadcrumb(sha: string, statusCb: () => any) {
     return result
 }
 
-function registerOnTree(sha: string, path: string[], tree) {
+function registerOnTree(sha: string, path: string[], tree: ShaSimplifiedBreadcrumb[]) {
     if (!path || !path.length)
         return
 
     let curTree = tree
+
     for (let part of path) {
-        if (!(part in curTree)) {
-            curTree[part] = {
-                shas: [sha]
+        let selTree = curTree.find(s => s.name == part)
+        if (!selTree) {
+            selTree = {
+                name: part,
+                shas: [],
+                parents: []
             }
+
+            tree.push(selTree)
         }
-        curTree = curTree[part]
-        curTree.shas.push(sha)
+
+        selTree.shas.push(sha)
+
+        curTree = selTree.parents
     }
 }
 
-async function walkShaBreadcrumb(node: ShaBreadcrumb, currentPath: string[], tree) {
+async function walkShaBreadcrumb(node: ShaBreadcrumb, currentPath: string[], tree: ShaSimplifiedBreadcrumb[]) {
     for (let name of node.names) {
         let nextPath = currentPath.concat([name])
         // ie register sha on nextPath
@@ -565,7 +572,7 @@ async function showParents(sha: string) {
     }
 
     let breadcrumb = await getShaBreadcrumb(sha, statusCb)
-    let tree = {}
+    let tree = []
     console.log(`breadcrumb`, breadcrumb)
     await walkShaBreadcrumb(breadcrumb, [], tree)
     console.log(tree)

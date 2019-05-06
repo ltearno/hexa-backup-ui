@@ -391,13 +391,17 @@ function registerOnTree(sha, path, tree) {
         return;
     let curTree = tree;
     for (let part of path) {
-        if (!(part in curTree)) {
-            curTree[part] = {
-                shas: [sha]
+        let selTree = curTree.find(s => s.name == part);
+        if (!selTree) {
+            selTree = {
+                name: part,
+                shas: [],
+                parents: []
             };
+            tree.push(selTree);
         }
-        curTree = curTree[part];
-        curTree.shas.push(sha);
+        selTree.shas.push(sha);
+        curTree = selTree.parents;
     }
 }
 async function walkShaBreadcrumb(node, currentPath, tree) {
@@ -432,7 +436,7 @@ async function showParents(sha) {
         el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>loaded ${itemsLoaded} items...</ul>`;
     };
     let breadcrumb = await getShaBreadcrumb(sha, statusCb);
-    let tree = {};
+    let tree = [];
     console.log(`breadcrumb`, breadcrumb);
     await walkShaBreadcrumb(breadcrumb, [], tree);
     console.log(tree);
