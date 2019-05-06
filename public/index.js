@@ -424,6 +424,7 @@ async function showVideo(index) {
     el('#video-player').play();
     el(`.video-${index}`).style.fontWeight = 'bold';
     el(`.video-${index}`).classList.add('playing');
+    refreshBannerPlaceholderSize();
 }
 async function showNextVideo() {
     showVideo(currentVideoIndex + 1);
@@ -451,6 +452,7 @@ async function listenAudio(index) {
     el('#audio-player').play();
     el(`.audio-${index}`).style.fontWeight = 'bold';
     el(`.audio-${index}`).classList.add('playing');
+    refreshBannerPlaceholderSize();
 }
 async function toggleShaLike(sha, mimeType, fileName) {
     let metadata = filesShaLikeMetadata[sha];

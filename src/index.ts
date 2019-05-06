@@ -553,6 +553,7 @@ async function showVideo(index) {
 
     el(`.video-${index}`).style.fontWeight = 'bold'
     el(`.video-${index}`).classList.add('playing')
+    refreshBannerPlaceholderSize()
 }
 
 async function showNextVideo() {
@@ -587,6 +588,7 @@ async function listenAudio(index) {
 
     el(`.audio-${index}`).style.fontWeight = 'bold'
     el(`.audio-${index}`).classList.add('playing')
+    refreshBannerPlaceholderSize()
 }
 
 async function toggleShaLike(sha: string, mimeType: string, fileName: string) {
