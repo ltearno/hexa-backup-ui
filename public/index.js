@@ -359,10 +359,19 @@ async function viewLikedFiles(likes) {
     await loadLikesFiles();
     await restartFilePool();
 }
-async function showParents(sha) {
+async function getShaParentsHtml(sha) {
     let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/parents/${sha}`);
     let parents = await resp.json();
-    el('#parents').innerHTML = `<h2>Parents</h2><ul>${parents.map(sha => `<li><a href='#' onclick='event.preventDefault() || goDirectory("${sha}")'>${sha.substr(0, 7)}</a> <a href='#' class='small' onclick='event.preventDefault() || showParents("${sha}")'>[..]</a></li>`).join('')}</ul>`;
+    if (!parents || !parents.length)
+        return '';
+    let res = [];
+    for (let parentSha of parents) {
+        res.push(`<li><a href='#' onclick='event.preventDefault() || goDirectory("${parentSha}")'>${parentSha.substr(0, 7)}</a> <a href='#' class='small' onclick='event.preventDefault() || showParents("${parentSha}")'>[..]</a> ${await getShaParentsHtml(parentSha)}</li>`);
+    }
+    return `<ul>${res.join('')}</ul>`;
+}
+async function showParents(sha) {
+    el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>${await getShaParentsHtml(sha)}</ul>`;
 }
 async function toggleLikeFile(index) {
     if (!filesPool || index < 0 || index >= filesPool.length)
