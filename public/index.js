@@ -405,7 +405,7 @@ async function getShaSimplifiedBreadcrumb(node) {
 async function getShaParentsHtml(sha, statusCb) {
     let parents = await getShaParents(sha, statusCb);
     if (!parents || !parents.length)
-        return 'no parent';
+        return `<i class='small'>no parent</i>`;
     let res = [];
     for (let parentSha of parents) {
         res.push(`<li><a href='#' onclick='event.preventDefault() || goDirectory("${parentSha}")'>${EXTENDED ? `<span class='small'>${parentSha.substr(0, 7)}</span>` : ``} ${(await getShaNames(parentSha, statusCb)).join(' / ')}</a> ${EXTENDED ? `<a href='#' class='small' onclick='event.preventDefault() || showParents("${parentSha}")'>[..]</a>` : ``} ${await getShaParentsHtml(parentSha, statusCb)}</li>`);

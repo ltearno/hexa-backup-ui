@@ -533,7 +533,7 @@ async function getShaSimplifiedBreadcrumb(node: ShaBreadcrumb): Promise<ShaSimpl
 async function getShaParentsHtml(sha: string, statusCb: () => any) {
     let parents = await getShaParents(sha, statusCb)
     if (!parents || !parents.length)
-        return 'no parent'
+        return `<i class='small'>no parent</i>`
 
     let res = []
     for (let parentSha of parents) {
