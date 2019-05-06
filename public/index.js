@@ -371,6 +371,7 @@ async function getShaParentsHtml(sha) {
     return `<ul>${res.join('')}</ul>`;
 }
 async function showParents(sha) {
+    el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>loading...</ul>`;
     el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>${await getShaParentsHtml(sha)}</ul>`;
 }
 async function toggleLikeFile(index) {
