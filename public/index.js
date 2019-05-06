@@ -373,14 +373,15 @@ async function getShaParents(sha, statusCb) {
 }
 async function getShaBreadcrumb(sha, statusCb) {
     let result = {
+        sha,
         names: await getShaNames(sha, statusCb),
         parents: null
     };
     let parentShas = await getShaParents(sha, statusCb);
     if (parentShas && parentShas.length) {
-        result.parents = {};
+        result.parents = [];
         for (let parentSha of parentShas) {
-            result.parents[parentSha] = await getShaBreadcrumb(parentSha, statusCb);
+            result.parents.push(await getShaBreadcrumb(parentSha, statusCb));
         }
     }
     return result;

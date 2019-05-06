@@ -481,23 +481,23 @@ async function getShaParents(sha: string, statusCb: () => any) {
 }
 
 interface ShaBreadcrumb {
+    sha: string
     names: string[]
-    parents: {
-        [sha: string]: ShaBreadcrumb
-    }
+    parents: ShaBreadcrumb[]
 }
 
 async function getShaBreadcrumb(sha: string, statusCb: () => any) {
     let result: ShaBreadcrumb = {
+        sha,
         names: await getShaNames(sha, statusCb),
         parents: null
     }
 
     let parentShas = await getShaParents(sha, statusCb)
     if (parentShas && parentShas.length) {
-        result.parents = {}
+        result.parents = []
         for (let parentSha of parentShas) {
-            result.parents[parentSha] = await getShaBreadcrumb(parentSha, statusCb)
+            result.parents.push(await getShaBreadcrumb(parentSha, statusCb))
         }
     }
 
