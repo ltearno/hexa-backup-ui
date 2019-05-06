@@ -518,9 +518,12 @@ function registerOnTree(sha: string, path: string[], tree) {
     let curTree = tree
     for (let part of path) {
         if (!(part in curTree)) {
-            curTree[part] = {}
+            curTree[part] = {
+                shas: [sha]
+            }
         }
         curTree = curTree[part]
+        curTree.shas.push(sha)
     }
 }
 
