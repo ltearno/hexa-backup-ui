@@ -564,15 +564,15 @@ async function getShaParentsHtml(sha: string, statusCb: () => any) {
 function getSimplifiedBreadcrumbHtml(breadcrumb: ShaSimplifiedBreadcrumb[]) {
     if (!breadcrumb || !breadcrumb.length)
         return ''
-        
-    return `<ul>${breadcrumb.map(b => `<li>${b.name} <span class='small'>${b.shas.map(s => s.substr(0, 7)).join(', ')}</span> ${getSimplifiedBreadcrumbHtml(b.parents)}</li>`).join('')}</ul>`
+
+    return `<ul>${breadcrumb.map(b => `<li>${b.name} <span class='small'>${b.shas.map(s => `<a href='#' onclick='event.preventDefault() || goDirectory("${s}")'>${s.substr(0, 7)}</a>`).join(', ')}</span> ${getSimplifiedBreadcrumbHtml(b.parents)}</li>`).join('')}</ul>`
 }
 
 async function showParents(sha: string) {
     let itemsLoaded = 0
     let statusCb = () => {
         itemsLoaded++
-        el('#parents').innerHTML = `<h2> Parents of ${sha.substr(0, 7)} </h2>loaded ${itemsLoaded} items...</ul> `
+        el('#parents').innerHTML = `<h2> Parents of ${sha.substr(0, 7)} </h2>loaded ${itemsLoaded} items...</ul>`
     }
 
     let breadcrumb = await getShaBreadcrumb(sha, statusCb)
