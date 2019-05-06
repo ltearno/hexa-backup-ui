@@ -510,24 +510,18 @@ async function getShaBreadcrumb(sha: string, statusCb: () => any) {
     return result
 }
 
-async function getShaSimplifiedBreadcrumb(node: ShaBreadcrumb): Promise<ShaSimplifiedBreadcrumb[]> {
-    let parentsSimplifiedBreadcrumbs = []
-    if (node.parents) {
-        for (let parent of node.parents)
-            parentsSimplifiedBreadcrumbs = parentsSimplifiedBreadcrumbs.concat(await getShaSimplifiedBreadcrumb(parent))
-    }
-
-    let result: ShaSimplifiedBreadcrumb[] = []
-
+async function walkShaBreadcrumb(node: ShaBreadcrumb, currentPath: string[]) {
     for (let name of node.names) {
-        result.push({
-            name,
-            shas: [node.sha],
-            parents: parentsSimplifiedBreadcrumbs
-        })
+        let nextPath = currentPath.concat([name])
+        if (node.parents) {
+            for (let parent of node.parents) {
+                await walkShaBreadcrumb(parent, nextPath)
+            }
+        }
+        else {
+            console.log(nextPath.join('/'))
+        }
     }
-
-    return result
 }
 
 async function getShaParentsHtml(sha: string, statusCb: () => any) {
@@ -552,7 +546,7 @@ async function showParents(sha: string) {
 
     let breadcrumb = await getShaBreadcrumb(sha, statusCb)
     console.log(`breadcrumb`, breadcrumb)
-    console.log(`simple breadcrumb`, await getShaSimplifiedBreadcrumb(breadcrumb))
+    await walkShaBreadcrumb(breadcrumb, [])
 
     el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>loading...</ul>`
     el('#parents').innerHTML = `<h2>Parents of ${(await getShaNames(sha, statusCb)).join(' / ')} <span class='small'>${sha.substr(0, 7)}</span></h2>${await getShaParentsHtml(sha, statusCb)}</ul>`
