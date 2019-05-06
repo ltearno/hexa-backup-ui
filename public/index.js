@@ -398,7 +398,7 @@ function registerOnTree(sha, path, tree) {
                 shas: [],
                 parents: []
             };
-            tree.push(selTree);
+            curTree.push(selTree);
         }
         selTree.shas.push(sha);
         curTree = selTree.parents;

@@ -525,7 +525,7 @@ function registerOnTree(sha: string, path: string[], tree: ShaSimplifiedBreadcru
                 parents: []
             }
 
-            tree.push(selTree)
+            curTree.push(selTree)
         }
 
         selTree.shas.push(sha)
