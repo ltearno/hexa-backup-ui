@@ -462,6 +462,12 @@ async function viewLikedFiles(likes) {
     await restartFilePool()
 }
 
+async function getShaNames(sha: string) {
+    let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/names/${sha}`)
+    let names = await resp.json()
+    return names || []
+}
+
 async function getShaParentsHtml(sha: string) {
     let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/parents/${sha}`)
     let parents = await resp.json()
@@ -470,7 +476,7 @@ async function getShaParentsHtml(sha: string) {
 
     let res = []
     for (let parentSha of parents) {
-        res.push(`<li><a href='#' onclick='event.preventDefault() || goDirectory("${parentSha}")'>${parentSha.substr(0, 7)}</a> <a href='#' class='small' onclick='event.preventDefault() || showParents("${parentSha}")'>[..]</a> ${await getShaParentsHtml(parentSha)}</li>`)
+        res.push(`<li><a href='#' onclick='event.preventDefault() || goDirectory("${parentSha}")'><span class='small'>${parentSha.substr(0, 7)}</span> ${(await getShaNames(parentSha)).join(' / ')}</a> <a href='#' class='small' onclick='event.preventDefault() || showParents("${parentSha}")'>[..]</a> ${await getShaParentsHtml(parentSha)}</li>`)
     }
 
     return `<ul>${res.join('')}</ul>`
