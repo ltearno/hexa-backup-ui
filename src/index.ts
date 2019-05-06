@@ -462,29 +462,41 @@ async function viewLikedFiles(likes) {
     await restartFilePool()
 }
 
-async function getShaNames(sha: string) {
+async function getShaNames(sha: string, statusCb: () => any) {
     let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/names/${sha}`)
     let names = await resp.json()
+
+    statusCb()
+
     return names || []
 }
 
-async function getShaParentsHtml(sha: string) {
+async function getShaParentsHtml(sha: string, statusCb: () => any) {
     let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/parents/${sha}`)
     let parents = await resp.json()
+
+    statusCb()
+
     if (!parents || !parents.length)
         return ''
 
     let res = []
     for (let parentSha of parents) {
-        res.push(`<li><a href='#' onclick='event.preventDefault() || goDirectory("${parentSha}")'><span class='small'>${parentSha.substr(0, 7)}</span> ${(await getShaNames(parentSha)).join(' / ')}</a> <a href='#' class='small' onclick='event.preventDefault() || showParents("${parentSha}")'>[..]</a> ${await getShaParentsHtml(parentSha)}</li>`)
+        res.push(`<li><a href='#' onclick='event.preventDefault() || goDirectory("${parentSha}")'><span class='small'>${parentSha.substr(0, 7)}</span> ${(await getShaNames(parentSha, statusCb)).join(' / ')}</a> <a href='#' class='small' onclick='event.preventDefault() || showParents("${parentSha}")'>[..]</a> ${await getShaParentsHtml(parentSha, statusCb)}</li>`)
     }
 
     return `<ul>${res.join('')}</ul>`
 }
 
 async function showParents(sha: string) {
+    let itemsLoaded = 0
+    let statusCb = () => {
+        itemsLoaded++
+        el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>loaded ${itemsLoaded} items...</ul>`
+    }
+
     el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>loading...</ul>`
-    el('#parents').innerHTML = `<h2>Parents of <span class='small'>${sha.substr(0, 7)}</span> ${(await getShaNames(sha)).join(' / ')}</h2>${await getShaParentsHtml(sha)}</ul>`
+    el('#parents').innerHTML = `<h2>Parents of <span class='small'>${sha.substr(0, 7)}</span> ${(await getShaNames(sha, statusCb)).join(' / ')}</h2>${await getShaParentsHtml(sha, statusCb)}</ul>`
 }
 
 
