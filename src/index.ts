@@ -482,7 +482,7 @@ async function getShaParentsHtml(sha: string, statusCb: () => any) {
 
     let res = []
     for (let parentSha of parents) {
-        res.push(`<li><a href='#' onclick='event.preventDefault() || goDirectory("${parentSha}")'><span class='small'>${parentSha.substr(0, 7)}</span> ${(await getShaNames(parentSha, statusCb)).join(' / ')}</a> <a href='#' class='small' onclick='event.preventDefault() || showParents("${parentSha}")'>[..]</a> ${await getShaParentsHtml(parentSha, statusCb)}</li>`)
+        res.push(`<li><a href='#' onclick='event.preventDefault() || goDirectory("${parentSha}")'>${EXTENDED ? `<span class='small'>${parentSha.substr(0, 7)}</span>` : ``} ${(await getShaNames(parentSha, statusCb)).join(' / ')}</a> ${EXTENDED ? `<a href='#' class='small' onclick='event.preventDefault() || showParents("${parentSha}")'>[..]</a>` : ``} ${await getShaParentsHtml(parentSha, statusCb)}</li>`)
     }
 
     return `<ul>${res.join('')}</ul>`
