@@ -565,7 +565,7 @@ function getSimplifiedBreadcrumbHtml(breadcrumb: ShaSimplifiedBreadcrumb[]) {
     if (!breadcrumb || !breadcrumb.length)
         return ''
         
-    return `<ul>${breadcrumb.map(b => `<li>${b.name} <span class='small>${b.shas.map(s => s.substr(0, 7)).join(', ')}</span> ${getSimplifiedBreadcrumbHtml(b.parents)}</li>`).join('')}</ul>`
+    return `<ul>${breadcrumb.map(b => `<li>${b.name} <span class='small'>${b.shas.map(s => s.substr(0, 7)).join(', ')}</span> ${getSimplifiedBreadcrumbHtml(b.parents)}</li>`).join('')}</ul>`
 }
 
 async function showParents(sha: string) {
