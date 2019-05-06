@@ -386,6 +386,20 @@ async function getShaBreadcrumb(sha, statusCb) {
     }
     return result;
 }
+async function getShaSimplifiedBreadcrumb(node) {
+    let parentsSimplifiedBreadcrumbs = [];
+    for (let parent of node.parents)
+        parentsSimplifiedBreadcrumbs = parentsSimplifiedBreadcrumbs.concat(await getShaSimplifiedBreadcrumb(parent));
+    let result = [];
+    for (let name of node.names) {
+        result.push({
+            name,
+            shas: [node.sha],
+            parents: parentsSimplifiedBreadcrumbs
+        });
+    }
+    return result;
+}
 async function getShaParentsHtml(sha, statusCb) {
     let parents = await getShaParents(sha, statusCb);
     if (!parents || !parents.length)
@@ -402,7 +416,9 @@ async function showParents(sha) {
         itemsLoaded++;
         el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>loaded ${itemsLoaded} items...</ul>`;
     };
-    console.log(`breadcrumb`, await getShaBreadcrumb(sha, statusCb));
+    let breadcrumb = await getShaBreadcrumb(sha, statusCb);
+    console.log(`breadcrumb`, breadcrumb);
+    console.log(`simple breadcrumb`, await getShaSimplifiedBreadcrumb(breadcrumb));
     el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>loading...</ul>`;
     el('#parents').innerHTML = `<h2>Parents of ${(await getShaNames(sha, statusCb)).join(' / ')} <span class='small'>${sha.substr(0, 7)}</span></h2>${await getShaParentsHtml(sha, statusCb)}</ul>`;
 }
