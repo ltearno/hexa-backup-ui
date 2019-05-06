@@ -528,7 +528,8 @@ function registerOnTree(path: { sha: string; name: string }[], tree: ShaSimplifi
             curTree.push(selTree)
         }
 
-        selTree.shas.push(part.sha)
+        if (!selTree.shas.includes(part.sha))
+            selTree.shas.push(part.sha)
 
         curTree = selTree.parents
     }
