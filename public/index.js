@@ -461,7 +461,7 @@ async function restartImagesPool() {
     if (imagesPool.length) {
         el('#images-container').classList.remove('is-hidden');
         el('#images').innerHTML = '';
-        infiniteScrollerStop = infiniteScroll(imagesPool, ({ sha, mimeType, fileName }, index) => `< div > <img loading="lazy" onclick = 'goPicture(${index})' src = "${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}" /> </div>`, el('#images-container'), el('#images'));
+        infiniteScrollerStop = infiniteScroll(imagesPool, ({ sha, mimeType, fileName }, index) => `<div> <img loading="lazy" onclick = 'goPicture(${index})' src = "${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}"/> </div>`, el('#images-container'), el('#images'));
     }
     else {
         el('#images-container').classList.add('is-hidden');
