@@ -386,29 +386,28 @@ async function getShaBreadcrumb(sha, statusCb) {
     }
     return result;
 }
-function registerOnTree(sha, path, tree) {
+function registerOnTree(path, tree) {
     if (!path || !path.length)
         return;
     let curTree = tree;
     for (let part of path) {
-        let selTree = curTree.find(s => s.name == part);
+        let selTree = curTree.find(s => s.name == part.name);
         if (!selTree) {
             selTree = {
-                name: part,
+                name: part.name,
                 shas: [],
                 parents: []
             };
             curTree.push(selTree);
         }
-        selTree.shas.push(sha);
+        selTree.shas.push(part.sha);
         curTree = selTree.parents;
     }
 }
 async function walkShaBreadcrumb(node, currentPath, tree) {
     for (let name of node.names) {
-        let nextPath = currentPath.concat([name]);
-        // ie register sha on nextPath
-        registerOnTree(node.sha, nextPath, tree);
+        let nextPath = currentPath.concat([{ sha: node.sha, name }]);
+        registerOnTree(nextPath, tree);
         if (node.parents) {
             for (let parent of node.parents) {
                 await walkShaBreadcrumb(parent, nextPath, tree);
