@@ -388,8 +388,10 @@ async function getShaBreadcrumb(sha, statusCb) {
 }
 async function getShaSimplifiedBreadcrumb(node) {
     let parentsSimplifiedBreadcrumbs = [];
-    for (let parent of node.parents)
-        parentsSimplifiedBreadcrumbs = parentsSimplifiedBreadcrumbs.concat(await getShaSimplifiedBreadcrumb(parent));
+    if (node.parents) {
+        for (let parent of node.parents)
+            parentsSimplifiedBreadcrumbs = parentsSimplifiedBreadcrumbs.concat(await getShaSimplifiedBreadcrumb(parent));
+    }
     let result = [];
     for (let name of node.names) {
         result.push({

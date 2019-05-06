@@ -512,8 +512,10 @@ async function getShaBreadcrumb(sha: string, statusCb: () => any) {
 
 async function getShaSimplifiedBreadcrumb(node: ShaBreadcrumb): Promise<ShaSimplifiedBreadcrumb[]> {
     let parentsSimplifiedBreadcrumbs = []
-    for (let parent of node.parents)
-        parentsSimplifiedBreadcrumbs = parentsSimplifiedBreadcrumbs.concat(await getShaSimplifiedBreadcrumb(parent))
+    if (node.parents) {
+        for (let parent of node.parents)
+            parentsSimplifiedBreadcrumbs = parentsSimplifiedBreadcrumbs.concat(await getShaSimplifiedBreadcrumb(parent))
+    }
 
     let result: ShaSimplifiedBreadcrumb[] = []
 
