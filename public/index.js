@@ -414,9 +414,6 @@ async function walkShaBreadcrumb(node, currentPath, tree) {
                 await walkShaBreadcrumb(parent, nextPath, tree);
             }
         }
-        else {
-            console.log(nextPath.join('/'));
-        }
     }
 }
 async function getShaParentsHtml(sha, statusCb) {
@@ -429,19 +426,24 @@ async function getShaParentsHtml(sha, statusCb) {
     }
     return `<ul>${res.join('')}</ul>`;
 }
+function getSimplifiedBreadcrumbHtml(breadcrumb) {
+    if (!breadcrumb || !breadcrumb.length)
+        return '';
+    return `<ul>${breadcrumb.map(b => `<li>${b.name} <span class='small>${b.shas.map(s => s.substr(0, 7)).join(', ')}</span> ${getSimplifiedBreadcrumbHtml(b.parents)}</li>`).join('')}</ul>`;
+}
 async function showParents(sha) {
     let itemsLoaded = 0;
     let statusCb = () => {
         itemsLoaded++;
-        el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>loaded ${itemsLoaded} items...</ul>`;
+        el('#parents').innerHTML = `< h2 > Parents of ${sha.substr(0, 7)} </h2>loaded ${itemsLoaded} items...</ul > `;
     };
     let breadcrumb = await getShaBreadcrumb(sha, statusCb);
     let tree = [];
     console.log(`breadcrumb`, breadcrumb);
     await walkShaBreadcrumb(breadcrumb, [], tree);
     console.log(tree);
-    el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>loading...</ul>`;
-    el('#parents').innerHTML = `<h2>Parents of ${(await getShaNames(sha, statusCb)).join(' / ')} <span class='small'>${sha.substr(0, 7)}</span></h2>${await getShaParentsHtml(sha, statusCb)}</ul>`;
+    el('#parents').innerHTML = `< h2 > Parents of ${sha.substr(0, 7)} </h2>loading...</ul > `;
+    el('#parents').innerHTML = `< h2 > Parents of ${(await getShaNames(sha, statusCb)).join(' / ')} <span class='small' > ${sha.substr(0, 7)} </span></h2 > ${await getShaParentsHtml(sha, statusCb)} <h3>Simplified < /h3>${getSimplifiedBreadcrumbHtml(tree)}</ul > `;
 }
 async function toggleLikeFile(index) {
     if (!filesPool || index < 0 || index >= filesPool.length)
@@ -449,9 +451,9 @@ async function toggleLikeFile(index) {
     let file = filesPool[index];
     let status = await toggleShaLike(file.sha, file.mimeType, file.fileName);
     if (status)
-        el(`#file-${index}`).classList.add('liked');
+        el(`#file - ${index} `).classList.add('liked');
     else
-        el(`#file-${index}`).classList.remove('liked');
+        el(`#file - ${index} `).classList.remove('liked');
 }
 async function restartImagesPool() {
     if (infiniteScrollerStop) {
@@ -461,7 +463,7 @@ async function restartImagesPool() {
     if (imagesPool.length) {
         el('#images-container').classList.remove('is-hidden');
         el('#images').innerHTML = '';
-        infiniteScrollerStop = infiniteScroll(imagesPool, ({ sha, mimeType, fileName }, index) => `<div><img loading="lazy" onclick='goPicture(${index})' src="${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}"/></div>`, el('#images-container'), el('#images'));
+        infiniteScrollerStop = infiniteScroll(imagesPool, ({ sha, mimeType, fileName }, index) => `< div > <img loading="lazy" onclick = 'goPicture(${index})' src = "${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}" /> </div>`, el('#images-container'), el('#images'));
     }
     else {
         el('#images-container').classList.add('is-hidden');
