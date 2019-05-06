@@ -515,6 +515,7 @@ async function walkShaBreadcrumb(node: ShaBreadcrumb, currentPath: string[]) {
         let nextPath = currentPath.concat([name])
         if (node.parents) {
             for (let parent of node.parents) {
+                // ie register sha on nextPath
                 await walkShaBreadcrumb(parent, nextPath)
             }
         }
