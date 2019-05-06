@@ -496,7 +496,7 @@ async function showParents(sha: string) {
     }
 
     el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>loading...</ul>`
-    el('#parents').innerHTML = `<h2>Parents of <span class='small'>${sha.substr(0, 7)}</span> ${(await getShaNames(sha, statusCb)).join(' / ')}</h2>${await getShaParentsHtml(sha, statusCb)}</ul>`
+    el('#parents').innerHTML = `<h2>Parents of ${(await getShaNames(sha, statusCb)).join(' / ')} <span class='small'>${sha.substr(0, 7)}</span></h2>${await getShaParentsHtml(sha, statusCb)}</ul>`
 }
 
 
