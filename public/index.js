@@ -365,12 +365,30 @@ async function getShaNames(sha, statusCb) {
     statusCb();
     return names || [];
 }
-async function getShaParentsHtml(sha, statusCb) {
+async function getShaParents(sha, statusCb) {
     let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/parents/${sha}`);
     let parents = await resp.json();
     statusCb();
+    return parents || [];
+}
+async function getShaBreadcrumb(sha, statusCb) {
+    let result = {
+        names: await getShaNames(sha, statusCb),
+        parents: null
+    };
+    let parentShas = await getShaParents(sha, statusCb);
+    if (parentShas && parentShas.length) {
+        result.parents = {};
+        for (let parentSha of parentShas) {
+            result.parents[parentSha] = await getShaBreadcrumb(parentSha, statusCb);
+        }
+    }
+    return result;
+}
+async function getShaParentsHtml(sha, statusCb) {
+    let parents = await getShaParents(sha, statusCb);
     if (!parents || !parents.length)
-        return '';
+        return 'no parent';
     let res = [];
     for (let parentSha of parents) {
         res.push(`<li><a href='#' onclick='event.preventDefault() || goDirectory("${parentSha}")'>${EXTENDED ? `<span class='small'>${parentSha.substr(0, 7)}</span>` : ``} ${(await getShaNames(parentSha, statusCb)).join(' / ')}</a> ${EXTENDED ? `<a href='#' class='small' onclick='event.preventDefault() || showParents("${parentSha}")'>[..]</a>` : ``} ${await getShaParentsHtml(parentSha, statusCb)}</li>`);
@@ -383,6 +401,7 @@ async function showParents(sha) {
         itemsLoaded++;
         el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>loaded ${itemsLoaded} items...</ul>`;
     };
+    console.log(`breadcrumb`, await getShaBreadcrumb(sha, statusCb));
     el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>loading...</ul>`;
     el('#parents').innerHTML = `<h2>Parents of ${(await getShaNames(sha, statusCb)).join(' / ')} <span class='small'>${sha.substr(0, 7)}</span></h2>${await getShaParentsHtml(sha, statusCb)}</ul>`;
 }

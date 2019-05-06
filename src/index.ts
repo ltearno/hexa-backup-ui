@@ -471,14 +471,43 @@ async function getShaNames(sha: string, statusCb: () => any) {
     return names || []
 }
 
-async function getShaParentsHtml(sha: string, statusCb: () => any) {
+async function getShaParents(sha: string, statusCb: () => any) {
     let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/parents/${sha}`)
     let parents = await resp.json()
 
     statusCb()
 
+    return parents || []
+}
+
+interface ShaBreadcrumb {
+    names: string[]
+    parents: {
+        [sha: string]: ShaBreadcrumb
+    }
+}
+
+async function getShaBreadcrumb(sha: string, statusCb: () => any) {
+    let result: ShaBreadcrumb = {
+        names: await getShaNames(sha, statusCb),
+        parents: null
+    }
+
+    let parentShas = await getShaParents(sha, statusCb)
+    if (parentShas && parentShas.length) {
+        result.parents = {}
+        for (let parentSha of parentShas) {
+            result.parents[parentSha] = await getShaBreadcrumb(parentSha, statusCb)
+        }
+    }
+
+    return result
+}
+
+async function getShaParentsHtml(sha: string, statusCb: () => any) {
+    let parents = await getShaParents(sha, statusCb)
     if (!parents || !parents.length)
-        return ''
+        return 'no parent'
 
     let res = []
     for (let parentSha of parents) {
@@ -494,6 +523,8 @@ async function showParents(sha: string) {
         itemsLoaded++
         el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>loaded ${itemsLoaded} items...</ul>`
     }
+
+    console.log(`breadcrumb`, await getShaBreadcrumb(sha, statusCb))
 
     el('#parents').innerHTML = `<h2>Parents of ${sha.substr(0, 7)}</h2>loading...</ul>`
     el('#parents').innerHTML = `<h2>Parents of ${(await getShaNames(sha, statusCb)).join(' / ')} <span class='small'>${sha.substr(0, 7)}</span></h2>${await getShaParentsHtml(sha, statusCb)}</ul>`
