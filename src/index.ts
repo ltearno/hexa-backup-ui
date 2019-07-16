@@ -988,7 +988,7 @@ async function submitSearch() {
 
 window.addEventListener('load', async () => {
     let resp = await fetch(`${HEXA_BACKUP_BASE_URL}/refs`)
-    let refs = (await resp.json()).filter(e => e.startsWith('CLIENT_')).map(e => e.substr(7))
+    let refs = await resp.json()
     el('#refs-list').innerHTML = refs.map(ref => `<div><a href='#' onclick='event.preventDefault() || goRef("${ref}")'>${ref}</a></div>`).join('')
 
     let user = await fetch(`${PUBLIC_BASE_URL}/well-known/v1/me`)
