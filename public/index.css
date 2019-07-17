@@ -176,9 +176,9 @@ img {
 }
 
 #audio-player {
-    /*width: 100%;*/
     flex-shrink: 0;
-    min-width: 50vh;
+    min-width: 100em;
+    max-width: 100%;
 }
 
 #video-player {
