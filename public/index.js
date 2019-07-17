@@ -271,11 +271,30 @@ async function restartFilePool() {
         let mimeTypes = ['application/octet-stream'];
         if (file.mimeType != 'application/octet-stream')
             mimeTypes.push(file.mimeType);
-        let links = mimeTypes.map((mimeType, index) => `[<a href='${HEXA_BACKUP_BASE_URL}/sha/${file.sha}/content?type=${mimeType}${index == 0 ? `&fileName=${file.fileName}` : ''}' >${EXTENDED ? mimeType : (index == 0 ? 'dl' : (mimeType.indexOf('/') ? mimeType.substr(mimeType.indexOf('/') + 1) : mimeType))}</a>]`).join(' ');
+        const contentUrl = (mimeType, index) => {
+            return `${HEXA_BACKUP_BASE_URL}/sha/${file.sha}/content?type=${mimeType}${index == 0 ? `&fileName=${file.fileName}` : ''}`;
+        };
+        const contentLink = (mimeType, index) => {
+            const displayedMimeType = (() => {
+                if (EXTENDED) {
+                    return mimeType;
+                }
+                else if (index == 0) {
+                    return 'dl';
+                }
+                else {
+                    return mimeType.indexOf('/') < 0 ? mimeType : mimeType.substr(mimeType.indexOf('/') + 1);
+                }
+            })();
+            return `[<a href='${contentUrl(mimeType, index)}'>${displayedMimeType}</a>]`;
+        };
+        let links = mimeTypes
+            .map(contentLink)
+            .join(' ');
         let htmlPrefix = '';
         let html = '';
         let classes = [];
-        let action = 'false';
+        let action = null;
         if (file.mimeType.startsWith('audio/')) {
             classes.push(`audio-${audioIndex}`);
             action = `listenAudio(${audioIndex})`;
@@ -288,7 +307,7 @@ async function restartFilePool() {
             htmlPrefix = `<a href='#' onclick='event.preventDefault() || showVideo(${videoIndex})'>🎞️ ▶</a> `;
             videoIndex++;
         }
-        let likeHtml = `<a class='like' onclick='event.preventDefault() || toggleLikeFile(${index})'>like ♡</a>`;
+        let likeHtml = `<a class='like' onclick='event.preventDefault() || toggleLikeFile(${index})'>[like ♡]</a>`;
         let htmlParents = `<a href='#' onclick='event.preventDefault() || showParents("${file.sha}")'>[..]</a>`;
         if (EXTENDED) {
             let date = `<span class='small'>${displayDate(file.lastWrite)} ${file.sha ? file.sha.substr(0, 7) : '-'}</span>`;
@@ -296,12 +315,17 @@ async function restartFilePool() {
         }
         else {
             let displayedName = file.fileName.substr(currentPrefix.length);
-            if (action != 'false') {
+            let actionJs = '';
+            if (action) {
                 let ie = displayedName.lastIndexOf('.');
                 if (ie)
                     displayedName = displayedName.substr(0, ie);
+                actionJs = `href='#' onclick='event.preventDefault() || ${action}'`;
             }
-            html = `<a href='#' onclick='event.preventDefault() || ${action}'>${displayedName}</a> <span class='small'>${htmlParents} ${likeHtml}</span>`;
+            else {
+                actionJs = `href='${contentUrl(mimeTypes[0], 0)}'`;
+            }
+            html = `<a ${actionJs}>${displayedName}</a> <span class='small'>${htmlParents} ${likeHtml}</span>`;
             if (displayedSortOrder == 'date') {
                 let date = `<span class='small'>${displayDate(file.lastWrite)}</span>`;
                 html = date + ' ' + html;
