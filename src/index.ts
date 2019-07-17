@@ -403,19 +403,28 @@ async function restartFilePool() {
         }
         else {
             let displayedName: string = file.fileName.substr(currentPrefix.length)
-            let actionJs = ''
+
+            let itemLinkInternalTags = ''
+
+            let parts = []
+            parts.push(htmlParents)
+
             if (action) {
                 let ie = displayedName.lastIndexOf('.')
                 if (ie)
                     displayedName = displayedName.substr(0, ie)
 
-                actionJs = `href='#' onclick='event.preventDefault() || ${action}'`
+                itemLinkInternalTags = `href='#' onclick='event.preventDefault() || ${action}'`
+
+                parts.push(`<a href='${contentUrl(mimeTypes[mimeTypes.length - 1], mimeTypes.length - 1)}'>[dl]</a>`)
             }
             else {
-                actionJs = `href='${contentUrl(mimeTypes[0], 0)}'`
+                itemLinkInternalTags = `href='${contentUrl(mimeTypes[mimeTypes.length - 1], mimeTypes.length - 1)}'`
             }
 
-            html = `<a ${actionJs}>${displayedName}</a> <span class='small'>${htmlParents} ${likeHtml}</span>`
+            parts.push(likeHtml)
+
+            html = `<a ${itemLinkInternalTags}>${displayedName}</a> <span class='small'>${parts.join(' ')}</span>`
 
             if (displayedSortOrder == 'date') {
                 let date = `<span class='small'>${displayDate(file.lastWrite)}</span>`
