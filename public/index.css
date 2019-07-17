@@ -182,10 +182,10 @@ img {
 }
 
 #video-player {
+    min-width: 30em;
     max-width: 100%;
     max-height: 80%;
-    flex-shrink: 0;
-    min-width: 30em;
+    flex-shrink: 1;
 }
 
 .like {
@@ -233,9 +233,6 @@ img {
         flex-flow: row;
         flex-wrap: wrap;
         justify-content: space-around;
-    }
-    #audio-player {
-        width: 90%;
     }
     #banner {
         position: fixed;
