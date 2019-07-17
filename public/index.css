@@ -176,9 +176,8 @@ img {
 }
 
 #audio-player {
-    flex-shrink: 0;
-    min-width: 100em;
-    max-width: 100%;
+    width: 100%;
+    max-width: 90vw;
 }
 
 #video-player {
