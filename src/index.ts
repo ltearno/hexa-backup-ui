@@ -351,7 +351,7 @@ async function restartFilePool() {
             mimeTypes.push(file.mimeType)
 
         const contentUrl = (mimeType: string, index) => {
-            return `${HEXA_BACKUP_BASE_URL}/sha/${file.sha}/content?type=${mimeType}${index == 0 ? `&fileName=${file.fileName}` : ''}`
+            return `${HEXA_BACKUP_BASE_URL}/sha/${file.sha}/content?type=${mimeType}&fileName=${file.fileName}`
         }
 
         const contentLink = (mimeType: string, index) => {
