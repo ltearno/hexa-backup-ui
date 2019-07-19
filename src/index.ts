@@ -350,28 +350,29 @@ async function restartFilePool() {
         if (file.mimeType != 'application/octet-stream')
             mimeTypes.push(file.mimeType)
 
-        const contentUrl = (mimeType: string, index) => {
-            return `${HEXA_BACKUP_BASE_URL}/sha/${file.sha}/content?type=${mimeType}&fileName=${file.fileName}`
-        }
-
-        const contentLink = (mimeType: string, index) => {
-            const displayedMimeType = (() => {
-                if (EXTENDED) {
-                    return mimeType
-                }
-                else if (index == 0) {
-                    return 'dl'
-                }
-                else {
-                    return mimeType.indexOf('/') < 0 ? mimeType : mimeType.substr(mimeType.indexOf('/') + 1)
-                }
-            })()
-
-            return `[<a href='${contentUrl(mimeType, index)}'>${displayedMimeType}</a>]`
+        const contentUrl = (mimeType: string, download: boolean) => {
+            let res = `${HEXA_BACKUP_BASE_URL}/sha/${file.sha}/content?type=${mimeType}`
+            if (download)
+                res += `&fileName=${file.fileName}`
+            return res
         }
 
         let links = mimeTypes
-            .map(contentLink)
+            .map((mimeType: string, index) => {
+                const displayedMimeType = (() => {
+                    if (EXTENDED) {
+                        return mimeType
+                    }
+                    else if (index == 0) {
+                        return 'dl'
+                    }
+                    else {
+                        return mimeType.indexOf('/') < 0 ? mimeType : mimeType.substr(mimeType.indexOf('/') + 1)
+                    }
+                })()
+
+                return `[<a href='${contentUrl(mimeType, true)}'>${displayedMimeType}</a>]`
+            })
             .join(' ')
 
         let htmlPrefix = ''
@@ -416,10 +417,10 @@ async function restartFilePool() {
 
                 itemLinkInternalTags = `href='#' onclick='event.preventDefault() || ${action}'`
 
-                parts.push(`<a href='${contentUrl(mimeTypes[mimeTypes.length - 1], mimeTypes.length - 1)}'>[dl]</a>`)
+                parts.push(`<a href='${contentUrl(mimeTypes[mimeTypes.length - 1], false)}'>[dl]</a>`)
             }
             else {
-                itemLinkInternalTags = `href='${contentUrl(mimeTypes[mimeTypes.length - 1], mimeTypes.length - 1)}'`
+                itemLinkInternalTags = `href='${contentUrl(mimeTypes[mimeTypes.length - 1], false)}'`
             }
 
             parts.push(likeHtml)
