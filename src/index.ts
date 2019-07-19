@@ -357,24 +357,6 @@ async function restartFilePool() {
             return res
         }
 
-        let links = mimeTypes
-            .map((mimeType: string, index) => {
-                const displayedMimeType = (() => {
-                    if (EXTENDED) {
-                        return mimeType
-                    }
-                    else if (index == 0) {
-                        return 'dl'
-                    }
-                    else {
-                        return mimeType.indexOf('/') < 0 ? mimeType : mimeType.substr(mimeType.indexOf('/') + 1)
-                    }
-                })()
-
-                return `[<a href='${contentUrl(mimeType, true)}'>${displayedMimeType}</a>]`
-            })
-            .join(' ')
-
         let htmlPrefix = ''
         let html = ''
         let classes = []
@@ -399,6 +381,24 @@ async function restartFilePool() {
         let htmlParents = `<a href='#' onclick='event.preventDefault() || showParents("${file.sha}")'>[..]</a>`
 
         if (EXTENDED) {
+            let links = mimeTypes
+                .map((mimeType: string, index) => {
+                    const displayedMimeType = (() => {
+                        if (EXTENDED) {
+                            return mimeType
+                        }
+                        else if (index == 0) {
+                            return 'dl'
+                        }
+                        else {
+                            return mimeType.indexOf('/') < 0 ? mimeType : mimeType.substr(mimeType.indexOf('/') + 1)
+                        }
+                    })()
+
+                    return `[<a href='${contentUrl(mimeType, true)}'>${displayedMimeType}</a>]`
+                })
+                .join(' ')
+
             let date = `<span class='small'>${displayDate(file.lastWrite)} ${file.sha ? file.sha.substr(0, 7) : '-'}</span>`
             html = `${date} <a href='#' onclick='event.preventDefault() || ${action}'>${file.fileName}</a> <span class='small'>${file.size} ${links} ${htmlParents} ${likeHtml}</span>`
         }
