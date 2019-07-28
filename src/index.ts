@@ -1128,6 +1128,18 @@ el<HTMLInputElement>('#playlist-name').addEventListener('input', () => {
 })
 el<HTMLInputElement>('#playlist-name').value = localStorage.getItem('playlist-name') || 'favorites'
 
+el<HTMLButtonElement>('#youtube-download-button').addEventListener('click', () => {
+    let url = el<HTMLInputElement>('#youtube-download-url').value
+
+    const headers = new Headers()
+    headers.set('Content-Type', 'application/json')
+    fetch(`${HEXA_BACKUP_BASE_URL}/plugins/youtube/fetch`, {
+        headers,
+        method: 'post',
+        body: JSON.stringify({ url })
+    })
+})
+
 window.onpopstate = function (event) {
     if (event.state) {
         currentDirectoryDescriptorSha = event.state.currentDirectoryDescriptorSha
