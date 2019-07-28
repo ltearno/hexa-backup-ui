@@ -384,7 +384,7 @@ async function restartFilePool() {
         }
 
         let likeHtml = `<a class='like' onclick='event.preventDefault() || toggleLikeFile(${index})'>[like ♡]</a>`
-        let addToPlaylistHtml = `<a onclick='event.preventDefault() || addToPlaylist(${index})'>[+]</a>`
+        let addToPlaylistHtml = `<a href='#' onclick='event.preventDefault() || addToPlaylist(${index})'>[+]</a>`
         let htmlParents = `<a href='#' onclick='event.preventDefault() || showParents("${file.sha}")'>[..]</a>`
 
         if (EXTENDED) {
