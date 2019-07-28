@@ -52,12 +52,17 @@
 
     <div id="banner">
         <div class="icon-bar">
-            <a href="#" onclick='event.preventDefault() || el("#menu").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🏠</a>
+            <a href="#"
+                onclick='event.preventDefault() || el("#menu").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🏠</a>
             <a id="fullScreen" href="#">🖵</a>
-            <a href="#" onclick='event.preventDefault() || el("#video-player").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🎞️</a>
-            <a href="#" onclick='event.preventDefault() || el("#audio-player").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🎶</a>
-            <a href="#" onclick='event.preventDefault() || el("#settings").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>⚙️</a>
-            <a href="#" onclick='event.preventDefault() || el("#search-form").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🔍</a>
+            <a href="#"
+                onclick='event.preventDefault() || el("#video-player").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🎞️</a>
+            <a href="#"
+                onclick='event.preventDefault() || el("#audio-player").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🎶</a>
+            <a href="#"
+                onclick='event.preventDefault() || el("#settings").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>⚙️</a>
+            <a href="#"
+                onclick='event.preventDefault() || el("#search-form").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🔍</a>
             <span id="userId"></span>
         </div>
         <audio id="audio-player" class="is-hidden" controls preload="metadata"></audio>
@@ -87,7 +92,8 @@
             <label><select id="display-order">
                     <option value="name" selected>by name</option>
                     <option value="date">by date</option>
-                </select> display order</label>
+                </select> display order</label><br />
+            <label><input type="text" id="playlist-name"> playlist</label>
         </div>
         <div id="status"></div>
     </div>

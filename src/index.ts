@@ -651,7 +651,7 @@ async function addToPlaylist(index) {
 
     let file = filesPool[index]
 
-    await addItemToPlaylist("favorites", file.sha, file.mimeType, file.fileName)
+    await addItemToPlaylist(el<HTMLInputElement>('#playlist-name').value, file.sha, file.mimeType, file.fileName)
 }
 
 async function addItemToPlaylist(playlistName: string, sha: string, mimeType: string, fileName: string) {
@@ -1122,6 +1122,11 @@ el('#toggleExtSearch').addEventListener('click', e => {
     e.preventDefault()
     refreshBannerPlaceholderSize()
 })
+
+el<HTMLInputElement>('#playlist-name').addEventListener('input', () => {
+    localStorage.setItem('playlist-name', el<HTMLInputElement>('#playlist-name').value)
+})
+el<HTMLInputElement>('#playlist-name').value = localStorage.getItem('playlist-name') || 'favorites'
 
 window.onpopstate = function (event) {
     if (event.state) {

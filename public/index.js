@@ -489,7 +489,7 @@ async function addToPlaylist(index) {
     if (!filesPool || index < 0 || index >= filesPool.length)
         return;
     let file = filesPool[index];
-    await addItemToPlaylist("favorites", file.sha, file.mimeType, file.fileName);
+    await addItemToPlaylist(el('#playlist-name').value, file.sha, file.mimeType, file.fileName);
 }
 async function addItemToPlaylist(playlistName, sha, mimeType, fileName) {
     let payload = {
@@ -860,6 +860,10 @@ el('#toggleExtSearch').addEventListener('click', e => {
     e.preventDefault();
     refreshBannerPlaceholderSize();
 });
+el('#playlist-name').addEventListener('input', () => {
+    localStorage.setItem('playlist-name', el('#playlist-name').value);
+});
+el('#playlist-name').value = localStorage.getItem('playlist-name') || 'favorites';
 window.onpopstate = function (event) {
     if (event.state) {
         currentDirectoryDescriptorSha = event.state.currentDirectoryDescriptorSha;
