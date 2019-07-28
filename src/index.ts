@@ -1,5 +1,5 @@
 const BASE_URL = "/public/"
-const HEXA_BACKUP_BASE_URL = window.location.hostname == "home.lteconsulting.fr" ? "https://home.lteconsulting.fr" : "https://192.168.0.2:5005"
+const HEXA_BACKUP_BASE_URL = window.location.hostname == "home.lteconsulting.fr" ? "https://home.lteconsulting.fr" : "https://localhost:5005"
 const PUBLIC_BASE_URL = "https://home.lteconsulting.fr"
 
 const el: <T extends HTMLElement> (selector: string) => T = document.querySelector.bind(document)
@@ -25,7 +25,13 @@ let currentDirectoryDescriptorSha = null
 let currentPictureIndex = -1
 let currentAudioIndex = -1
 let currentVideoIndex = -1
-let filesPool = []
+let filesPool: {
+    sha: string
+    mimeType: string
+    fileName: string
+    lastWrite: number
+    size: number
+}[] = []
 let filesShaLikeMetadata = {}
 let imagesPool = []
 let videosPool = []
@@ -378,6 +384,7 @@ async function restartFilePool() {
         }
 
         let likeHtml = `<a class='like' onclick='event.preventDefault() || toggleLikeFile(${index})'>[like ♡]</a>`
+        let addToPlaylistHtml = `<a onclick='event.preventDefault() || addToPlaylist(${index})'>[+]</a>`
         let htmlParents = `<a href='#' onclick='event.preventDefault() || showParents("${file.sha}")'>[..]</a>`
 
         if (EXTENDED) {
@@ -400,7 +407,7 @@ async function restartFilePool() {
                 .join(' ')
 
             let date = `<span class='small'>${displayDate(file.lastWrite)} ${file.sha ? file.sha.substr(0, 7) : '-'}</span>`
-            html = `${date} <a href='#' onclick='event.preventDefault() || ${action}'>${file.fileName}</a> <span class='small'>${file.size} ${links} ${htmlParents} ${likeHtml}</span>`
+            html = `${date} <a href='#' onclick='event.preventDefault() || ${action}'>${file.fileName}</a> <span class='small'>${file.size} ${links} ${htmlParents} ${likeHtml} ${addToPlaylistHtml}</span>`
         }
         else {
             let displayedName: string = file.fileName.substr(currentPrefix.length)
@@ -424,6 +431,7 @@ async function restartFilePool() {
             }
 
             parts.push(likeHtml)
+            parts.push(addToPlaylistHtml)
 
             html = `<a ${itemLinkInternalTags}>${displayedName}</a> <span class='small'>${parts.join(' ')}</span>`
 
@@ -632,12 +640,41 @@ async function toggleLikeFile(index) {
     let status = await toggleShaLike(file.sha, file.mimeType, file.fileName)
 
     if (status)
-        el(`#file - ${index} `).classList.add('liked')
+        el(`#file-${index}`).classList.add('liked')
     else
-        el(`#file - ${index} `).classList.remove('liked')
+        el(`#file-${index}`).classList.remove('liked')
 }
 
+async function addToPlaylist(index) {
+    if (!filesPool || index < 0 || index >= filesPool.length)
+        return
 
+    let file = filesPool[index]
+
+    await addItemToPlaylist("favorites", file.sha, file.mimeType, file.fileName)
+}
+
+async function addItemToPlaylist(playlistName: string, sha: string, mimeType: string, fileName: string) {
+    let payload = {
+        items: [
+            {
+                name: fileName,
+                date: Date.now(),
+                isDirectory: mimeType == 'application/directory', // really sure ?
+                mimeType: mimeType,
+                sha: sha
+            }
+        ]
+    }
+
+    const headers = new Headers()
+    headers.set('Content-Type', 'application/json')
+    await fetch(`${HEXA_BACKUP_BASE_URL}/plugins/playlists/${playlistName}`, {
+        headers,
+        method: 'put',
+        body: JSON.stringify(payload)
+    })
+}
 
 
 async function restartImagesPool() {

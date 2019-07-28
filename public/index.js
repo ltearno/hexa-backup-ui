@@ -1,5 +1,5 @@
 ﻿const BASE_URL = "/public/";
-const HEXA_BACKUP_BASE_URL = window.location.hostname == "home.lteconsulting.fr" ? "https://home.lteconsulting.fr" : "https://192.168.0.2:5005";
+const HEXA_BACKUP_BASE_URL = window.location.hostname == "home.lteconsulting.fr" ? "https://home.lteconsulting.fr" : "https://localhost:5005";
 const PUBLIC_BASE_URL = "https://home.lteconsulting.fr";
 const el = document.querySelector.bind(document);
 const els = document.querySelectorAll.bind(document);
@@ -271,26 +271,12 @@ async function restartFilePool() {
         let mimeTypes = ['application/octet-stream'];
         if (file.mimeType != 'application/octet-stream')
             mimeTypes.push(file.mimeType);
-        const contentUrl = (mimeType, index) => {
-            return `${HEXA_BACKUP_BASE_URL}/sha/${file.sha}/content?type=${mimeType}${index == 0 ? `&fileName=${file.fileName}` : ''}`;
+        const contentUrl = (mimeType, download) => {
+            let res = `${HEXA_BACKUP_BASE_URL}/sha/${file.sha}/content?type=${mimeType}`;
+            if (download)
+                res += `&fileName=${file.fileName}`;
+            return res;
         };
-        const contentLink = (mimeType, index) => {
-            const displayedMimeType = (() => {
-                if (EXTENDED) {
-                    return mimeType;
-                }
-                else if (index == 0) {
-                    return 'dl';
-                }
-                else {
-                    return mimeType.indexOf('/') < 0 ? mimeType : mimeType.substr(mimeType.indexOf('/') + 1);
-                }
-            })();
-            return `[<a href='${contentUrl(mimeType, index)}'>${displayedMimeType}</a>]`;
-        };
-        let links = mimeTypes
-            .map(contentLink)
-            .join(' ');
         let htmlPrefix = '';
         let html = '';
         let classes = [];
@@ -308,24 +294,46 @@ async function restartFilePool() {
             videoIndex++;
         }
         let likeHtml = `<a class='like' onclick='event.preventDefault() || toggleLikeFile(${index})'>[like ♡]</a>`;
+        let addToPlaylistHtml = `<a onclick='event.preventDefault() || addToPlaylist(${index})'>[+]</a>`;
         let htmlParents = `<a href='#' onclick='event.preventDefault() || showParents("${file.sha}")'>[..]</a>`;
         if (EXTENDED) {
+            let links = mimeTypes
+                .map((mimeType, index) => {
+                const displayedMimeType = (() => {
+                    if (EXTENDED) {
+                        return mimeType;
+                    }
+                    else if (index == 0) {
+                        return 'dl';
+                    }
+                    else {
+                        return mimeType.indexOf('/') < 0 ? mimeType : mimeType.substr(mimeType.indexOf('/') + 1);
+                    }
+                })();
+                return `[<a href='${contentUrl(mimeType, true)}'>${displayedMimeType}</a>]`;
+            })
+                .join(' ');
             let date = `<span class='small'>${displayDate(file.lastWrite)} ${file.sha ? file.sha.substr(0, 7) : '-'}</span>`;
-            html = `${date} <a href='#' onclick='event.preventDefault() || ${action}'>${file.fileName}</a> <span class='small'>${file.size} ${links} ${htmlParents} ${likeHtml}</span>`;
+            html = `${date} <a href='#' onclick='event.preventDefault() || ${action}'>${file.fileName}</a> <span class='small'>${file.size} ${links} ${htmlParents} ${likeHtml} ${addToPlaylistHtml}</span>`;
         }
         else {
             let displayedName = file.fileName.substr(currentPrefix.length);
-            let actionJs = '';
+            let itemLinkInternalTags = '';
+            let parts = [];
+            parts.push(htmlParents);
             if (action) {
                 let ie = displayedName.lastIndexOf('.');
                 if (ie)
                     displayedName = displayedName.substr(0, ie);
-                actionJs = `href='#' onclick='event.preventDefault() || ${action}'`;
+                itemLinkInternalTags = `href='#' onclick='event.preventDefault() || ${action}'`;
+                parts.push(`<a href='${contentUrl(mimeTypes[mimeTypes.length - 1], false)}'>[dl]</a>`);
             }
             else {
-                actionJs = `href='${contentUrl(mimeTypes[0], 0)}'`;
+                itemLinkInternalTags = `href='${contentUrl(mimeTypes[mimeTypes.length - 1], false)}'`;
             }
-            html = `<a ${actionJs}>${displayedName}</a> <span class='small'>${htmlParents} ${likeHtml}</span>`;
+            parts.push(likeHtml);
+            parts.push(addToPlaylistHtml);
+            html = `<a ${itemLinkInternalTags}>${displayedName}</a> <span class='small'>${parts.join(' ')}</span>`;
             if (displayedSortOrder == 'date') {
                 let date = `<span class='small'>${displayDate(file.lastWrite)}</span>`;
                 html = date + ' ' + html;
@@ -473,9 +481,35 @@ async function toggleLikeFile(index) {
     let file = filesPool[index];
     let status = await toggleShaLike(file.sha, file.mimeType, file.fileName);
     if (status)
-        el(`#file - ${index} `).classList.add('liked');
+        el(`#file-${index}`).classList.add('liked');
     else
-        el(`#file - ${index} `).classList.remove('liked');
+        el(`#file-${index}`).classList.remove('liked');
+}
+async function addToPlaylist(index) {
+    if (!filesPool || index < 0 || index >= filesPool.length)
+        return;
+    let file = filesPool[index];
+    await addItemToPlaylist("favorites", file.sha, file.mimeType, file.fileName);
+}
+async function addItemToPlaylist(playlistName, sha, mimeType, fileName) {
+    let payload = {
+        items: [
+            {
+                name: fileName,
+                date: Date.now(),
+                isDirectory: mimeType == 'application/directory',
+                mimeType: mimeType,
+                sha: sha
+            }
+        ]
+    };
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    await fetch(`${HEXA_BACKUP_BASE_URL}/plugins/playlists/${playlistName}`, {
+        headers,
+        method: 'put',
+        body: JSON.stringify(payload)
+    });
 }
 async function restartImagesPool() {
     if (infiniteScrollerStop) {
