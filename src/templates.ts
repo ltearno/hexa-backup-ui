@@ -6,7 +6,7 @@ function templateElement<T extends HTMLElement>(root: HTMLElement, name: string)
 }
 
 const TID_SearchForm = 'search-form'
-const TID_SearchValue = 'search-value'
+const TID_SearchTerm = 'search-term'
 
 const templateHtml = `
 <div class='mui-container-fluid'>
@@ -16,7 +16,7 @@ const templateHtml = `
             <!--this is a little hack to have things centered-->
             <div class="mui-btn mui-btn--flat" style="visibility: hidden;">🔍</div>
             <div class="mui-textfield">
-                <input x-id="${TID_SearchValue}" type="text">
+                <input x-id="${TID_SearchTerm}" type="text">
             </div>
             <button role="submit" class="mui-btn mui-btn--flat">🔍</button>
         </form>
@@ -26,7 +26,7 @@ const templateHtml = `
 
 export interface SearchPanelElements {
     form: HTMLFormElement
-    value: HTMLInputElement
+    term: HTMLInputElement
 }
 
 export const searchPanel = {
@@ -39,7 +39,7 @@ export const searchPanel = {
 
         let data: SearchPanelElements = {
             form: templateElement(root, TID_SearchForm),
-            value: templateElement(root, TID_SearchValue)
+            term: templateElement(root, TID_SearchTerm)
         }
 
         root['template-points'] = data
