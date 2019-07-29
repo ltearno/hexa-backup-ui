@@ -10,7 +10,7 @@ searchPanel.form.addEventListener('submit', async event => {
 
     clearContents()
 
-    addContent(UiTool.elFromHtml(`<div>${res.files.map(f => `<div>${f.fileName}</div>`).join('')}</div>`))
+    addContent(UiTool.elFromHtml(`<div>${res.files.map(f => `<div>${f.name}</div>`).join('')}</div>`))
 })
 
 let contents: HTMLElement[] = []

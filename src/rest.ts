@@ -18,7 +18,7 @@ export async function search(searchText: string, mimeType: string) {
 
         return {
             directories: resultDirectories as { name: string; sha: string }[],
-            files: resultFilesddd as { sha: string; fileName: string; mimeType: string; size: number; lastWrite: number }[]
+            files: resultFilesddd as { sha: string; name: string; mimeType: string; size: number; lastWrite: number }[]
         }
     }
     catch (err) {
