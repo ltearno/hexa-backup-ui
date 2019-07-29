@@ -7,7 +7,6 @@ const searchPanel = SearchPanel.searchPanel.create();
 searchPanel.form.addEventListener('submit', async (event) => {
     UiTool.stopEvent(event);
     let res = await Rest.search(searchPanel.term.value, 'audio/%');
-    clearContents();
     addContent(UiTool.elFromHtml(`<div>${res.files.map(f => `<div>${f.name}</div>`).join('')}</div>`));
 });
 let contents = [];
