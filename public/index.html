@@ -2,105 +2,95 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Hexa-Backup Store</title>
-    <base href="public">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
-        integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
-        crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
-        integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
-        crossorigin=""></script>
-    <script src="mime-types.js"></script>
-    <link rel="stylesheet" href="index.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="mui-0.9.42/css/mui.css" rel="stylesheet" type="text/css" />
+    <link href="index.css" rel="stylesheet" type="text/css" />
+    <script src="mui-0.9.42/js/mui.js"></script>
+    <script src="marked.min.js"></script>
+
+    <title>Raccoon</title>
 </head>
 
-<body>
-    <div id="main">
-        <div id="banner-placeholder"></div>
-        <div id="menu">
-            <h2>Sources</h2>
-            <div><a href='#' onclick='event.preventDefault() || viewLikes()'>show ❤ items</a></div>
-            <div id="refs-list"></div>
-
-            <h2>Current</h2>
-            <b><span id=refName></span></b><br><br>
-            commit history
-            <div id="commitHistory"></div>
+<body class="hide-sidedrawer">
+    <div id="sidedrawer" class="mui--no-user-select">
+        <div id="sidedrawer-brand" class="mui--appbar-line-height">
+            <span class="mui--text-title">Raccoon</span>
         </div>
-        <div id="parents"></div>
-        <div id="dirs-and-files">
-            <div id="directories"></div>
-            <div id="files"></div>
-        </div>
-        <div id="images-container">
-            <div id="images"></div>
-        </div>
-        <div id="after-images-container">&nbsp;</div>
+        <div class="mui-divider"></div>
+        <ul>
+            <li>
+                <strong class="sidedrawer-title">Category 1</strong>
+                <ul>
+                    <li><a href="#">Item 1</a></li>
+                    <li><a href="#">Item 2</a></li>
+                    <li><a href="#">Item 3</a></li>
+                </ul>
+            </li>
+            <li>
+                <strong class="sidedrawer-title">Category 2</strong>
+                <ul>
+                    <li><a href="#">Item 1</a></li>
+                    <li><a href="#">Item 2</a></li>
+                    <li><a href="#">Item 3</a></li>
+                </ul>
+            </li>
+            <li>
+                <strong class="sidedrawer-title">Category 3</strong>
+                <ul>
+                    <li><a href="#">Item 1</a></li>
+                    <li><a href="#">Item 2</a></li>
+                    <li><a href="#">Item 3</a></li>
+                </ul>
+            </li>
+        </ul>
     </div>
-
-    <div id="image-full-container">
-        <div id='image-full-aligner' style='position:absolute;top:0;left:0;bottom:0;right:0;'></div>
-        <div style='position:absolute;bottom:0;left:0;right:0;padding:.5em;display:flex;justify-content:center;'>
-            <button style='font-size: 2em;' onclick='goPreviousPicture()'>&lt;</button><button style='font-size: 2em;'
-                id='toggle-picture-slideshow' onclick='togglePictureSlideshow()'>Play</button><button
-                style='font-size: 2em;' onclick='goNoPicture()'>X</button><button style='font-size: 2em;'
-                onclick='goNextPicture()'>&gt;</button></div>
-    </div>
-
-    <div id="banner">
-        <div class="icon-bar">
-            <a href="#"
-                onclick='event.preventDefault() || el("#menu").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🏠</a>
-            <a id="fullScreen" href="#">🖵</a>
-            <a href="#"
-                onclick='event.preventDefault() || el("#video-player").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🎞️</a>
-            <a href="#"
-                onclick='event.preventDefault() || el("#audio-player").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🎶</a>
-            <a href="#"
-                onclick='event.preventDefault() || el("#settings").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>⚙️</a>
-            <a href="#"
-                onclick='event.preventDefault() || el("#search-form").classList.toggle("is-hidden"), refreshBannerPlaceholderSize()'>🔍</a>
-            <span id="userId"></span>
-        </div>
-        <audio id="audio-player" class="is-hidden" controls preload="metadata"></audio>
-        <video id="video-player" class="is-hidden" controls preload="metadata"></video>
-        <form id="search-form" onsubmit="event.preventDefault(); submitSearch()">
-            <input type="text" id="search-text" placeholder="search">
-            <select id="search-mimeType">
-                <option value="">any</option>
-                <option value="audio" selected>audio</option>
-                <option value="image">image</option>
-                <option value="video">video</option>
-            </select>
-            <button role="submit">search</button>
-            <button id='toggleExtSearch'>...</button>
-            <div id="extSearch" class="is-hidden">
-                <input type="date" id="search-date">
-                <input type="number" id="search-date-day-interval" min="0">
-                <div id="mapid"></div>
+    <header id="header">
+        <div class="mui-appbar mui--appbar-line-height">
+            <div class="mui-container-fluid">
+                <a id="js-show-sidedrawer"
+                    class="sidedrawer-toggle mui--visible-xs-inline-block mui--visible-sm-inline-block">☰</a>
+                <a id="js-hide-sidedrawer" class="sidedrawer-toggle mui--hidden-xs mui--hidden-sm ">☰</a>
+                <span class="mui--text-title mui--visible-xs-inline-block">Raccoon</span>
+                <span class="mui--pull-right">ltearno</span>
+                <div class="mui--clearfix"></div>
             </div>
-        </form>
-        <div id="settings" class="is-hidden">
-            <h2>Settings</h2>
-            <label><input type="checkbox" id="show-full-commit-history"> show full commit history</label><br />
-            <label><input type="checkbox" id="extended"> extended display</label><br />
-            <label><input type="checkbox" id="stream-raw-video"> stream raw video</label><br />
-            <label><input type="checkbox" id="show-unliked-items"> show unliked items</label><br />
-            <label>display order <select id="display-order">
-                    <option value="name" selected>by name</option>
-                    <option value="date">by date</option>
-                </select></label><br />
-            <label>playlist <input type="text" id="playlist-name"></label><br />
-            <label>url <input type="text" id="youtube-download-url"><button
-                    id='youtube-download-button'>fetch</button></label>
         </div>
-        <div id="status"></div>
+    </header>
+    <div id="content-wrapper">
+        <div class="mui--appbar-height"></div>
+        <div class='mui-container-fluid'>
+            <div class="mui--text-center">
+                <h1>Raccoon</h1>
+                <form class="mui-form--inline">
+                    <!--this is a little hack to have things centered-->
+                    <div class="mui-btn mui-btn--flat" style="visibility: hidden;">🔍</div>
+                    <div class="mui-textfield">
+                        <input type="text">
+                    </div>
+                    <button class="mui-btn mui-btn--flat">🔍</button>
+                </form>
+                <br /><a href="#">Browse</a> - <a href="#">Settings</a>
+            </div>
+            <!--<div class="mui-panel">
+                <div id='board-status'></div>
+                <div id='board-categories'></div>
+                <form id='new-category-form'>
+                    <label><input id='new-category-name' type='text' /></label>
+                    <button role='submit' class="mui-btn mui-btn--primary mui-btn--flat">Create category</button>
+                </form>
+            </div>-->
+        </div>
     </div>
+    <footer id="footer">
+        <div class="mui-container-fluid">
+            <br>
+            Made with ♥ by <a href="https://github.com/ltearno">Ltearno</a>
+        </div>
+    </footer>
 
-    <script src="bundle.js"></script>
+    <!--<script src="index.js"></script>-->
 </body>
 
 </html>
