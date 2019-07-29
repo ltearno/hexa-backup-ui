@@ -8,6 +8,17 @@ searchPanelElements.form.addEventListener('submit', event => {
     event.preventDefault();
     event.stopPropagation();
     console.log(searchPanelElements.term.value);
+    clearContents();
 });
-UiTool.el('content-wrapper').appendChild(searchPanelElement);
+let contents = [];
+function addContent(content) {
+    contents.push(content);
+    UiTool.el('content-wrapper').appendChild(content);
+}
+function clearContents() {
+    const contentWrapper = UiTool.el('content-wrapper');
+    contents.forEach(element => contentWrapper.removeChild(element));
+    contents = [];
+}
+addContent(searchPanelElement);
 //# sourceMappingURL=index.js.map

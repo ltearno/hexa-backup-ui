@@ -8,5 +8,18 @@ searchPanelElements.form.addEventListener('submit', event => {
     event.stopPropagation()
 
     console.log(searchPanelElements.term.value)
+    clearContents()
 })
-UiTool.el('content-wrapper').appendChild(searchPanelElement)
+
+let contents: HTMLElement[] = []
+function addContent(content: HTMLElement) {
+    contents.push(content)
+    UiTool.el('content-wrapper').appendChild(content)
+}
+function clearContents() {
+    const contentWrapper = UiTool.el('content-wrapper')
+    contents.forEach(element => contentWrapper.removeChild(element))
+    contents = []
+}
+
+addContent(searchPanelElement)
