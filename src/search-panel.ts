@@ -1,4 +1,4 @@
-import { TemplateElements, createTemplateInstance, createElementAndLocateChildren } from './templates'
+import { TemplateElements, createTemplateInstance } from './templates'
 
 export interface SearchPanelElements extends TemplateElements {
     form: HTMLFormElement

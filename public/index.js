@@ -2,11 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const UiTool = require("./ui-tool");
 const SearchPanel = require("./search-panel");
+const Rest = require("./rest");
 const searchPanel = SearchPanel.searchPanel.create();
-searchPanel.form.addEventListener('submit', event => {
+searchPanel.form.addEventListener('submit', async (event) => {
     UiTool.stopEvent(event);
-    console.log(searchPanel.term.value);
+    let res = await Rest.search(searchPanel.term.value, 'audio/%');
     clearContents();
+    addContent(UiTool.elFromHtml(`<div>${res.files.map(f => `<div>${f.fileName}</div>`).join('')}</div>`));
 });
 let contents = [];
 function addContent(content) {
