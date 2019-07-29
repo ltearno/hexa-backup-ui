@@ -1,8 +1,8 @@
 ﻿"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const templates_1 = require("./templates");
-const TID_SearchForm = 'search-form';
-const TID_SearchTerm = 'search-term';
+const TID_SearchForm = 'form';
+const TID_SearchTerm = 'term';
 const templateHtml = `
 <div class='mui-container-fluid'>
     <div class="mui--text-center">

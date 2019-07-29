@@ -5,8 +5,8 @@ export interface SearchPanelElements extends TemplateElements {
     term: HTMLInputElement
 }
 
-const TID_SearchForm = 'search-form'
-const TID_SearchTerm = 'search-term'
+const TID_SearchForm = 'form'
+const TID_SearchTerm = 'term'
 
 const templateHtml = `
 <div class='mui-container-fluid'>
