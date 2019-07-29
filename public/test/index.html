@@ -10,13 +10,13 @@
     <script src="mui-0.9.42/js/mui.js"></script>
     <script src="marked.min.js"></script>
 
-    <title>Git Docs</title>
+    <title>Raccoon</title>
 </head>
 
 <body class="hide-sidedrawer">
     <div id="sidedrawer" class="mui--no-user-select">
         <div id="sidedrawer-brand" class="mui--appbar-line-height">
-            <span class="mui--text-title">Brand.io</span>
+            <span class="mui--text-title">Raccoon</span>
         </div>
         <div class="mui-divider"></div>
         <ul>
@@ -52,50 +52,35 @@
                 <a id="js-show-sidedrawer"
                     class="sidedrawer-toggle mui--visible-xs-inline-block mui--visible-sm-inline-block">☰</a>
                 <a id="js-hide-sidedrawer" class="sidedrawer-toggle mui--hidden-xs mui--hidden-sm ">☰</a>
-                <span class="mui--text-title mui--visible-xs-inline-block">Brand.io</span>
+                <span class="mui--text-title mui--visible-xs-inline-block">Raccoon</span>
+                <span class="mui--pull-right">ltearno</span>
+                <div class="mui--clearfix"></div>
             </div>
         </div>
     </header>
     <div id="content-wrapper">
+        <div class="mui--appbar-height"></div>
         <div class='mui-container-fluid'>
-            <div class="mui--appbar-height"></div>
-            <h1>Status</h1>
-            <div class="mui-panel">
+            <div class="mui--text-center">
+                <h1>Raccoon</h1>
+                <form class="mui-form--inline">
+                    <!--this is a little hack to have things centered-->
+                    <div class="mui-btn mui-btn--flat" style="visibility: hidden;">🔍</div>
+                    <div class="mui-textfield">
+                        <input type="text">
+                    </div>
+                    <button class="mui-btn mui-btn--flat">🔍</button>
+                </form>
+                <br /><a href="#">Browse</a> - <a href="#">Settings</a>
+            </div>
+            <!--<div class="mui-panel">
                 <div id='board-status'></div>
                 <div id='board-categories'></div>
                 <form id='new-category-form'>
                     <label><input id='new-category-name' type='text' /></label>
                     <button role='submit' class="mui-btn mui-btn--primary mui-btn--flat">Create category</button>
                 </form>
-            </div>
-
-            <h1>Board</h1>
-            <div class="mui-panel">
-                <div style='padding-bottom:1em;'>
-                    <div id='tagsList'></div>
-                    <div style='padding-top:1em;'>
-                        <label>Search : <input id='search-document' type="text" placeholder="search tags..." /></label>
-                        <label>Columns : <input id='columns-document' type="text" size="50"
-                                placeholder="list columns sub-search, comma separated" /></label>
-                    </div>
-                </div>
-                <div class="mui-divider"></div>
-                <div id='board-documents-ul'></div>
-                <div class="mui-divider"></div>
-                <form id='new-document-form'>
-                    <label>Add document : <input id='new-document-name' type="text"
-                            placeholder="new document's name..." /></label>
-                    <button role="submit" class="mui-btn mui-btn--primary mui-btn--flat">Create document</button>
-                </form>
-            </div>
-
-            <h1>Detail zone</h1>
-            <div id='board-opened-documents'></div>
-
-            <h1>Logs</h1>
-            <div class="mui-panel">
-                <div id="log"></div>
-            </div>
+            </div>-->
         </div>
     </div>
     <footer id="footer">
@@ -105,7 +90,7 @@
         </div>
     </footer>
 
-    <script src="index.js"></script>
+    <!--<script src="index.js"></script>-->
 </body>
 
 </html>
