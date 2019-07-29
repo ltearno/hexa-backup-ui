@@ -1,13 +1,11 @@
 ﻿"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const UiTool = require("./ui-tool");
-const Templates = require("./templates");
-const searchPanelElement = Templates.searchPanel.createElement();
-const searchPanelElements = Templates.searchPanel.elements(searchPanelElement);
-searchPanelElements.form.addEventListener('submit', event => {
-    event.preventDefault();
-    event.stopPropagation();
-    console.log(searchPanelElements.term.value);
+const SearchPanel = require("./search-panel");
+const searchPanel = SearchPanel.searchPanel.create();
+searchPanel.form.addEventListener('submit', event => {
+    UiTool.stopEvent(event);
+    console.log(searchPanel.term.value);
     clearContents();
 });
 let contents = [];
@@ -20,5 +18,5 @@ function clearContents() {
     contents.forEach(element => contentWrapper.removeChild(element));
     contents = [];
 }
-addContent(searchPanelElement);
+addContent(searchPanel.root);
 //# sourceMappingURL=index.js.map

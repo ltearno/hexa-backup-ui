@@ -1,13 +1,11 @@
 import * as UiTool from './ui-tool'
-import * as Templates from './templates'
+import * as SearchPanel from './search-panel'
 
-const searchPanelElement = Templates.searchPanel.createElement()
-const searchPanelElements = Templates.searchPanel.elements(searchPanelElement)
-searchPanelElements.form.addEventListener('submit', event => {
-    event.preventDefault()
-    event.stopPropagation()
+const searchPanel = SearchPanel.searchPanel.create()
+searchPanel.form.addEventListener('submit', event => {
+    UiTool.stopEvent(event)
 
-    console.log(searchPanelElements.term.value)
+    console.log(searchPanel.term.value)
     clearContents()
 })
 
@@ -22,4 +20,4 @@ function clearContents() {
     contents = []
 }
 
-addContent(searchPanelElement)
+addContent(searchPanel.root)

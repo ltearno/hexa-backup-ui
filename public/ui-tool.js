@@ -14,4 +14,9 @@ function elFromHtml(html) {
     return parent.children.item(0);
 }
 exports.elFromHtml = elFromHtml;
+function stopEvent(event) {
+    event.preventDefault();
+    event.stopPropagation();
+}
+exports.stopEvent = stopEvent;
 //# sourceMappingURL=ui-tool.js.map

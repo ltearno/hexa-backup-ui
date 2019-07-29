@@ -11,3 +11,8 @@ export function elFromHtml<T extends HTMLElement>(html: string): T {
     parent.innerHTML = html
     return parent.children.item(0) as T
 }
+
+export function stopEvent(event: Event) {
+    event.preventDefault()
+    event.stopPropagation()
+}
