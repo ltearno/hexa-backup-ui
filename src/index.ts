@@ -40,6 +40,8 @@ searchPanel.form.addEventListener('submit', async event => {
 
     SearchPanel.searchPanel.displayTitle(searchPanel, false)
     FilesPanel.filesPanel.displaySearching(filesPanel, term)
+    if (!filesPanel.root.isConnected)
+        addContent(filesPanel.root)
 
     let res = await Rest.search(term, 'audio/%')
 
@@ -49,9 +51,6 @@ searchPanel.form.addEventListener('submit', async event => {
         term: searchPanel.term.value,
         files: res.files
     })
-
-    if (!filesPanel.root.isConnected)
-        addContent(filesPanel.root)
 })
 
 FilesPanel.templateAddEventListener(filesPanel, 'click', (event, element, childIndex) => {

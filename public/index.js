@@ -32,14 +32,14 @@ searchPanel.form.addEventListener('submit', async (event) => {
     let term = searchPanel.term.value;
     SearchPanel.searchPanel.displayTitle(searchPanel, false);
     FilesPanel.filesPanel.displaySearching(filesPanel, term);
+    if (!filesPanel.root.isConnected)
+        addContent(filesPanel.root);
     let res = await Rest.search(term, 'audio/%');
     lastDisplayedFiles = res.files;
     FilesPanel.filesPanel.setValues(filesPanel, {
         term: searchPanel.term.value,
         files: res.files
     });
-    if (!filesPanel.root.isConnected)
-        addContent(filesPanel.root);
 });
 FilesPanel.templateAddEventListener(filesPanel, 'click', (event, element, childIndex) => {
     if (lastDisplayedFiles && element == filesPanel.files && childIndex >= 0 && childIndex < lastDisplayedFiles.length)
