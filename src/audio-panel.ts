@@ -2,12 +2,6 @@ import { TemplateElements, createTemplateInstance, templateGetEventLocation } fr
 import * as Rest from './rest'
 import * as UiTools from './ui-tool'
 
-export interface AudioPanelElements extends TemplateElements {
-    player: HTMLAudioElement
-    playlist: HTMLDivElement
-    expander: HTMLElement
-}
-
 const PLAYER = 'player'
 const PLAYLIST = 'playlist'
 const EXPANDER = 'expander'
@@ -19,15 +13,21 @@ const templateHtml = `
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
 </div>`
 
+export interface AudioPanelElements extends TemplateElements {
+    player: HTMLAudioElement
+    playlist: HTMLDivElement
+    expander: HTMLElement
+}
+
 export const audioPanel = {
     create: () => createTemplateInstance(templateHtml) as AudioPanelElements,
 
     play: (elements: AudioPanelElements, name: string, sha: string, mimeType: string) => {
         elements.player.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`)
         elements.player.setAttribute('type', mimeType)
+        elements.player.play()
 
         elements.root.classList.remove("is-hidden")
-        elements.player.play()
     },
 }
 

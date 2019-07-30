@@ -16,8 +16,8 @@ exports.audioPanel = {
     play: (elements, name, sha, mimeType) => {
         elements.player.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`);
         elements.player.setAttribute('type', mimeType);
-        elements.root.classList.remove("is-hidden");
         elements.player.play();
+        elements.root.classList.remove("is-hidden");
     },
 };
 class AudioJukebox {
