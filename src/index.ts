@@ -41,21 +41,49 @@ function clearContents() {
 addContent(searchPanel.root)
 
 
-
-
-async function playAudio(name: string, sha: string, mimeType: string) {
-    audioPanel.root.classList.remove("is-hidden")
-
-    audioPanel.title.innerText = name
-
-    const audioElement = audioPanel.player
-    audioElement.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`)
-    audioElement.setAttribute('type', mimeType)
-    audioElement.play()
+interface JukeboxItem {
+    name: string
+    sha: string
+    mimeType: string
 }
 
-audioPanel.player.addEventListener('ended', () => {
-    //listenNext()
-})
+class AudioJukebox {
+    private queue: JukeboxItem[] = []
+    private currentItem: JukeboxItem = null
 
+    constructor(private audioPanel: AudioPanel.AudioPanelElements) {
+        this.audioPanel.player.addEventListener('ended', () => {
+            let currentIndex = this.queue.indexOf(this.currentItem)
+            if (currentIndex > 0)
+                this.play(this.queue[currentIndex - 1])
+        })
+    }
+
+    addAndPlay(item: JukeboxItem) {
+        if (this.queue.length && this.queue[0].sha == item.sha)
+            return
+
+        this.queue.push(item)
+
+        this.play(item)
+    }
+
+    play(item: JukeboxItem) {
+        this.currentItem = item
+
+        this.audioPanel.title.innerText = item.name
+
+        this.audioPanel.player.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${item.sha}/content?type=${item.mimeType}`)
+        this.audioPanel.player.setAttribute('type', item.mimeType)
+
+        this.audioPanel.root.classList.remove("is-hidden")
+        this.audioPanel.player.play()
+    }
+}
+
+const audioJukebox = new AudioJukebox(audioPanel)
+
+async function playAudio(name: string, sha: string, mimeType: string) {
+    audioJukebox.addAndPlay({ name, sha, mimeType })
+}
 window['playAudio'] = playAudio

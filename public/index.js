@@ -32,16 +32,35 @@ function clearContents() {
     contents = [];
 }
 addContent(searchPanel.root);
-async function playAudio(name, sha, mimeType) {
-    audioPanel.root.classList.remove("is-hidden");
-    audioPanel.title.innerText = name;
-    const audioElement = audioPanel.player;
-    audioElement.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`);
-    audioElement.setAttribute('type', mimeType);
-    audioElement.play();
+class AudioJukebox {
+    constructor(audioPanel) {
+        this.audioPanel = audioPanel;
+        this.queue = [];
+        this.currentItem = null;
+        this.audioPanel.player.addEventListener('ended', () => {
+            let currentIndex = this.queue.indexOf(this.currentItem);
+            if (currentIndex > 0)
+                this.play(this.queue[currentIndex - 1]);
+        });
+    }
+    addAndPlay(item) {
+        if (this.queue.length && this.queue[0].sha == item.sha)
+            return;
+        this.queue.push(item);
+        this.play(item);
+    }
+    play(item) {
+        this.currentItem = item;
+        this.audioPanel.title.innerText = item.name;
+        this.audioPanel.player.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${item.sha}/content?type=${item.mimeType}`);
+        this.audioPanel.player.setAttribute('type', item.mimeType);
+        this.audioPanel.root.classList.remove("is-hidden");
+        this.audioPanel.player.play();
+    }
 }
-audioPanel.player.addEventListener('ended', () => {
-    //listenNext()
-});
+const audioJukebox = new AudioJukebox(audioPanel);
+async function playAudio(name, sha, mimeType) {
+    audioJukebox.addAndPlay({ name, sha, mimeType });
+}
 window['playAudio'] = playAudio;
 //# sourceMappingURL=index.js.map
