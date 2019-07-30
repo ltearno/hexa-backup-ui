@@ -44,6 +44,8 @@ addContent(searchPanel.root)
 
 
 async function playAudio(name: string, sha: string, mimeType: string) {
+    audioPanel.title.innerText = name
+
     const audioElement = audioPanel.player
 
     audioElement.classList.remove("is-hidden")

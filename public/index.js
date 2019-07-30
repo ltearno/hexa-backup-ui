@@ -33,6 +33,7 @@ function clearContents() {
 }
 addContent(searchPanel.root);
 async function playAudio(name, sha, mimeType) {
+    audioPanel.title.innerText = name;
     const audioElement = audioPanel.player;
     audioElement.classList.remove("is-hidden");
     audioElement.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`);
