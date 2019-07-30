@@ -32,3 +32,4 @@ function clearContents() {
 }
 
 addContent(searchPanel.root)
+addContent(filesPanel.root)

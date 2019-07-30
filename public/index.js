@@ -27,4 +27,5 @@ function clearContents() {
     contents = [];
 }
 addContent(searchPanel.root);
+addContent(filesPanel.root);
 //# sourceMappingURL=index.js.map
