@@ -2,7 +2,7 @@
  * Body CSS
  */
 
- html, body {
+html, body {
     height: 100%;
     background-color: #eee;
 }
@@ -217,4 +217,8 @@ html, body, input, textarea, button {
 
 [onclick] {
     cursor: pointer;
+}
+
+.is-hidden {
+    display: none;
 }
