@@ -70,10 +70,25 @@ export class AudioJukebox {
 
         this.audioPanel.root.addEventListener('click', event => {
             const { element, childIndex } = templateGetEventLocation(this.audioPanel, event)
+
             if (element == this.audioPanel.playlist && childIndex >= 0) {
                 let queueIndex = element.children.item(childIndex).getAttribute('x-queue-index')
                 if (queueIndex.length)
                     this.play(parseInt(queueIndex))
+
+                if (event.target == this.audioPanel.playlist.querySelector(`[x-id='clear-playlist']`)) {
+                    let currentItem = this.currentItem()
+                    if (currentItem) {
+                        this.queue = [currentItem]
+                        this.currentIndex = 0
+                    }
+                    else {
+                        this.queue = []
+                    }
+
+                    localStorage.removeItem('playlist-backup')
+                    this.refreshPlaylist()
+                }
             }
         })
 
@@ -172,6 +187,8 @@ export class AudioJukebox {
 
         if (this.itemUnroller)
             this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary">followed by ${this.itemUnroller.name()}...</div>`
+
+        this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`
     }
 
     private playlistItemHtml(index: number, name: string) {
