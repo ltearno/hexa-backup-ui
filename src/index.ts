@@ -26,7 +26,7 @@ addContent(searchPanel.root)
 const audioJukebox = new AudioPanel.AudioJukebox(audioPanel)
 
 async function playAudio(name: string, sha: string, mimeType: string) {
-    audioJukebox.addAndPlay({ name, sha, mimeType })
+    audioJukebox.addAndPlay({ name: decodeURIComponent(name), sha: decodeURIComponent(sha), mimeType: decodeURIComponent(mimeType) })
 }
 window['playAudio'] = playAudio
 
