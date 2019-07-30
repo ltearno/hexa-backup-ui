@@ -18,7 +18,10 @@ exports.filesPanel = {
     },
     setValues: (elements, values) => {
         elements.term.innerText = values.term;
-        elements.files.innerHTML = values.files.map(f => `<div onclick='playAudio("${f.name}", "${f.sha}", "${f.mimeType}")'>${f.name}</div>`).join('');
+        if (values.files && values.files.length)
+            elements.files.innerHTML = values.files.map(f => `<div onclick='playAudio("${f.name}", "${f.sha}", "${f.mimeType}")'>${f.name}</div>`).join('');
+        else
+            elements.files.innerHTML = `<div class="mui--text-dark-hint">No results</div>`;
     }
 };
 //# sourceMappingURL=files-panel.js.map
