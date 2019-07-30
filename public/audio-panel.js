@@ -5,16 +5,17 @@ const Rest = require("./rest");
 const TITLE = 'title';
 const PLAYER = 'player';
 const PLAYLIST = 'playlist';
+const EXPANDER = 'expander';
 const templateHtml = `
 <div class="audio-footer mui-panel is-hidden">
     <div x-id="${PLAYLIST}" class="is-hidden"></div>
-    <div><h3 x-id="${TITLE}" style="display: inline;"></h3><span class="mui--pull-right">☰</span></div>
+    <div><h3 x-id="${TITLE}" style="display: inline;"></h3><span x-id="${EXPANDER}" class="onclick mui--pull-right">☰</span></div>
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
 </div>`;
 exports.audioPanel = {
     create: () => templates_1.createTemplateInstance(templateHtml, [TITLE, PLAYER, PLAYLIST]),
     play: (elements, name, sha, mimeType) => {
-        elements.title.innerText = name + ' ☰';
+        elements.title.innerText = name;
         elements.player.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`);
         elements.player.setAttribute('type', mimeType);
         elements.root.classList.remove("is-hidden");
@@ -36,7 +37,7 @@ class AudioJukebox {
             else
                 this.stop();
         });
-        this.audioPanel.title.addEventListener('click', () => {
+        this.audioPanel.expander.addEventListener('click', () => {
             this.audioPanel.playlist.classList.toggle("is-hidden");
         });
     }

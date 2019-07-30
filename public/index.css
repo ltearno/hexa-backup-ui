@@ -247,7 +247,7 @@ html, body, input, textarea, button {
     width: 100%;
 }
 
-[onclick] {
+[onclick], .onclick {
     cursor: pointer;
 }
 

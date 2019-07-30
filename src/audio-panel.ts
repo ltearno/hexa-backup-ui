@@ -5,16 +5,18 @@ export interface AudioPanelElements extends TemplateElements {
     title: HTMLElement
     player: HTMLAudioElement
     playlist: HTMLDivElement
+    expander: HTMLElement
 }
 
 const TITLE = 'title'
 const PLAYER = 'player'
 const PLAYLIST = 'playlist'
+const EXPANDER = 'expander'
 
 const templateHtml = `
 <div class="audio-footer mui-panel is-hidden">
     <div x-id="${PLAYLIST}" class="is-hidden"></div>
-    <div><h3 x-id="${TITLE}" style="display: inline;"></h3><span class="mui--pull-right">☰</span></div>
+    <div><h3 x-id="${TITLE}" style="display: inline;"></h3><span x-id="${EXPANDER}" class="onclick mui--pull-right">☰</span></div>
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
 </div>`
 
@@ -22,7 +24,7 @@ export const audioPanel = {
     create: () => createTemplateInstance(templateHtml, [TITLE, PLAYER, PLAYLIST]) as AudioPanelElements,
 
     play: (elements: AudioPanelElements, name: string, sha: string, mimeType: string) => {
-        elements.title.innerText = name + ' ☰'
+        elements.title.innerText = name
 
         elements.player.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`)
         elements.player.setAttribute('type', mimeType)
@@ -55,7 +57,7 @@ export class AudioJukebox {
                 this.stop()
         })
 
-        this.audioPanel.title.addEventListener('click', () => {
+        this.audioPanel.expander.addEventListener('click', () => {
             this.audioPanel.playlist.classList.toggle("is-hidden")
         })
     }
