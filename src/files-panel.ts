@@ -17,6 +17,28 @@ const templateHtml = `
     </div>
 </div>`
 
+export function templateAddEventListener(elements: TemplateElements, name: string, listener: (event: Event, firstTemplateElement: HTMLElement, incomingChildIndex: number) => any) {
+    elements.root.addEventListener(name, event => {
+        let els = new Set(Object.values(elements))
+
+        let c = event.target as HTMLElement
+        let p: HTMLElement = null
+
+        do {
+            if (els.has(c)) {
+                listener(event, c, p && Array.prototype.indexOf.call(c.children, p))
+                return
+            }
+
+            if (c == elements.root)
+                return
+
+            p = c
+            c = c.parentElement
+        } while (c)
+    })
+}
+
 export const filesPanel = {
     create: () => createTemplateInstance(templateHtml, [TID_SearchTerm, TID_Files]) as FilesPanelElements,
 

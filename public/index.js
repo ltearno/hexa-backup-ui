@@ -44,4 +44,7 @@ searchPanel.form.addEventListener('submit', async (event) => {
     if (!filesPanel.root.isConnected)
         addContent(filesPanel.root);
 });
+FilesPanel.templateAddEventListener(filesPanel, 'click', (event, element, childIndex) => {
+    console.log(`click ${element.getAttribute('x-id')}, child ${childIndex}`);
+});
 //# sourceMappingURL=index.js.map
