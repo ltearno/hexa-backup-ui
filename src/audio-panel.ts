@@ -94,8 +94,7 @@ export class AudioJukebox {
         this.queue.push(item)
         localStorage.setItem('playlist-backup', JSON.stringify(this.queue))
 
-        if (this.currentIndex < 0)
-            this.play(this.queue.length - 1)
+        this.play(this.queue.length - 1)
     }
 
     private play(index: number) {
