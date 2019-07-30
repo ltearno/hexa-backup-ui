@@ -66,9 +66,6 @@ export class AudioJukebox {
             this.queue.splice(currentIndex, 0, item)
             this.play(item)
         }
-
-        console.log(JSON.stringify(this.queue))
-        console.log(this.currentIndex())
     }
 
     private play(item: JukeboxItem) {

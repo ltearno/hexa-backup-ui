@@ -45,8 +45,6 @@ class AudioJukebox {
             this.queue.splice(currentIndex, 0, item);
             this.play(item);
         }
-        console.log(JSON.stringify(this.queue));
-        console.log(this.currentIndex());
     }
     play(item) {
         this.currentItem = item;
