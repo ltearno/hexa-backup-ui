@@ -1,11 +1,13 @@
 import * as UiTool from './ui-tool'
 import * as SearchPanel from './search-panel'
 import * as FilesPanel from './files-panel'
+import * as AudioPanel from './audio-panel'
 import * as Rest from './rest'
 
-const audioElement = UiTool.el<HTMLAudioElement>('audio-player')
 const searchPanel = SearchPanel.searchPanel.create()
 const filesPanel = FilesPanel.filesPanel.create()
+const audioPanel = AudioPanel.audioPanel.create()
+document.body.appendChild(audioPanel.root)
 
 searchPanel.form.addEventListener('submit', async event => {
     UiTool.stopEvent(event)
@@ -41,7 +43,9 @@ addContent(searchPanel.root)
 
 
 
-async function playAudio(sha: string, mimeType: string) {
+async function playAudio(name: string, sha: string, mimeType: string) {
+    const audioElement = audioPanel.player
+
     audioElement.classList.remove("is-hidden")
 
     audioElement.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`)
@@ -49,7 +53,7 @@ async function playAudio(sha: string, mimeType: string) {
     audioElement.play()
 }
 
-audioElement.addEventListener('ended', () => {
+audioPanel.player.addEventListener('ended', () => {
     //listenNext()
 })
 

@@ -223,7 +223,7 @@ html, body, input, textarea, button {
     display: none;
 }
 
-#audio-footer {
+.audio-footer {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -234,6 +234,6 @@ html, body, input, textarea, button {
     margin-bottom: 0;
 }
 
-#audio-player {
+.audio-player {
     flex-grow: 1;
 }
