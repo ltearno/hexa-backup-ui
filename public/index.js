@@ -9,7 +9,7 @@ const Auth = require("./auth");
 let contents = [];
 function addContent(content) {
     contents.push(content);
-    UiTool.el('content-wrapper').appendChild(content);
+    UiTool.el('content-wrapper').insertBefore(content, UiTool.el('first-element-after-contents'));
 }
 function clearContents() {
     const contentWrapper = UiTool.el('content-wrapper');

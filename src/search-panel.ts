@@ -22,7 +22,7 @@ const templateHtml = `
             </div>
             <button role="submit" class="mui-btn mui-btn--flat">🔍</button>
         </form>
-        <br /><a href="#">Browse</a> - <a href="#">Settings</a>
+        <br />
     </div>
 </div>`
 

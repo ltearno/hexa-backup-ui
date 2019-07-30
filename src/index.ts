@@ -8,7 +8,7 @@ import * as Auth from './auth'
 let contents: HTMLElement[] = []
 function addContent(content: HTMLElement) {
     contents.push(content)
-    UiTool.el('content-wrapper').appendChild(content)
+    UiTool.el('content-wrapper').insertBefore(content, UiTool.el('first-element-after-contents'))
 }
 function clearContents() {
     const contentWrapper = UiTool.el('content-wrapper')
