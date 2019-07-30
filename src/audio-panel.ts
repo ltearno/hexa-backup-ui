@@ -14,7 +14,8 @@ const EXPANDER = 'expander'
 
 const templateHtml = `
 <div class="audio-footer mui-panel is-hidden">
-    <div><div x-id="${PLAYLIST}" class="is-fullwidth mui--text-center"></div><span x-id="${EXPANDER}" class="onclick mui--pull-right">&nbsp;&nbsp;☰</span></div>
+    <div x-id="${PLAYLIST}" class="is-fullwidth mui--text-center"></div>
+    <div x-id="${EXPANDER}" class="onclick mui--text-center">&nbsp;&nbsp;☰</div>
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
 </div>`
 
