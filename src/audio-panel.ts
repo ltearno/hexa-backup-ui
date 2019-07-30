@@ -92,11 +92,16 @@ export class AudioJukebox {
     }
 
     private refreshPlaylist() {
-        let html = `<h3>Playlist</h3>`
-        for (let i = 0; i < this.queue.length; i++) {
-            let item = this.queue[i]
-            html += `<div x-queue-index="${i}" class="onclick ${i == this.currentIndex ? 'mui--text-headline' : ''}">${item.name}</div>`
+        if (this.largeDisplay) {
+            let html = `<h3>Playlist</h3>`
+            for (let i = 0; i < this.queue.length; i++) {
+                let item = this.queue[i]
+                html += `<div x-queue-index="${i}" class="onclick ${i == this.currentIndex ? 'mui--text-headline' : ''}">${item.name}</div>`
+            }
+            this.audioPanel.playlist.innerHTML = html
         }
-        this.audioPanel.playlist.innerHTML = html
+        else {
+            this.audioPanel.playlist.innerHTML = `<div x-queue-index="${this.currentIndex}" class="onclick mui--text-headline">${this.queue[this.currentIndex].name}</div>`
+        }
     }
 }
