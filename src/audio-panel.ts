@@ -16,7 +16,7 @@ const EXPANDER = 'expander'
 const templateHtml = `
 <div class="audio-footer mui-panel is-hidden">
     <div x-id="${PLAYLIST}" class="is-hidden"></div>
-    <div><h3 x-id="${TITLE}" style="display: inline;"></h3><span x-id="${EXPANDER}" class="onclick mui--pull-right">☰</span></div>
+    <div><h3 x-id="${TITLE}" style="display: inline;"></h3><span x-id="${EXPANDER}" class="onclick mui--pull-right">&nbsp;&nbsp;☰</span></div>
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
 </div>`
 
@@ -96,10 +96,10 @@ export class AudioJukebox {
     }
 
     private refreshPlaylist() {
-        let html = ``
+        let html = `<h3>Playlist</h3>`
         for (let i = 0; i < this.queue.length - 1; i++) {
             let item = this.queue[i]
-            html += `<div>${item.name} ${item.mimeType} ${item.sha.substr(0, 5)}</div>`
+            html += `<div>${item.name}</div>`
         }
         audioPanel.setPlaylist(this.audioPanel, html)
     }
