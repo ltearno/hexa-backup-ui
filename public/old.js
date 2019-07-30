@@ -1,4 +1,4 @@
-﻿const BASE_URL = "/public/";
+﻿const BASE_URL = "/public/old.html";
 const HEXA_BACKUP_BASE_URL = window.location.hostname == "home.lteconsulting.fr" ? "https://home.lteconsulting.fr" : "https://localhost:5005";
 const PUBLIC_BASE_URL = "https://home.lteconsulting.fr";
 const el = document.querySelector.bind(document);
