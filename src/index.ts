@@ -53,19 +53,26 @@ class AudioJukebox {
 
     constructor(private audioPanel: AudioPanel.AudioPanelElements) {
         this.audioPanel.player.addEventListener('ended', () => {
-            let currentIndex = this.queue.indexOf(this.currentItem)
+            let currentIndex = this.currentIndex()
             if (currentIndex > 0)
                 this.play(this.queue[currentIndex - 1])
         })
+    }
+
+    currentIndex() {
+        return this.queue.indexOf(this.currentItem)
     }
 
     addAndPlay(item: JukeboxItem) {
         if (this.queue.length && this.queue[0].sha == item.sha)
             return
 
-        this.queue.push(item)
+        this.queue.splice(this.currentIndex(), 0, item)
 
         this.play(item)
+
+        console.log(JSON.stringify(this.queue))
+        console.log(this.currentIndex())
     }
 
     play(item: JukeboxItem) {
