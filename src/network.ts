@@ -4,6 +4,7 @@ async function afterFetch(response: Response) {
         return null
     }
     let receivedContentType = response.headers.get('Content-Type')
+    console.log(`received contenttype ${receivedContentType}`)
     if (receivedContentType == 'application/json')
         return await response.json()
     else
@@ -24,7 +25,7 @@ export function getData(url: string, responseContentType = 'application/json') {
         .then(afterFetch(responseContentType))
 }
 */
-export async function postData(url: string, data: any = {}, contentType = 'application/json') {
+export async function postData(url: string, data: any, contentType = 'application/json') {
     let response = await fetch(
         url, {
             method: 'POST',
