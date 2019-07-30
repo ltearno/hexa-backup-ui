@@ -13,7 +13,7 @@ const TID_SearchTerm = 'term'
 const templateHtml = `
 <div class='mui-container-fluid'>
     <div class="mui--text-center">
-        <h1 x-id="${TID_Title}">Raccoon</h1>
+        <h1 x-id="${TID_Title}" class="animated--quick">Raccoon</h1>
         <form x-id="${TID_SearchForm}" class="mui-form--inline">
             <!--this is a little hack to have things centered-->
             <div class="mui-btn mui-btn--flat" style="visibility: hidden;">🔍</div>
@@ -31,8 +31,8 @@ export const searchPanel = {
 
     displayTitle: (template: SearchPanelElements, displayed: boolean) => {
         if (displayed)
-            template.title.style.display = null
+            template.title.classList.add('hexa--reduced')
         else
-            template.title.style.display = 'none'
+            template.title.classList.remove('hexa--reduced')
     }
 }

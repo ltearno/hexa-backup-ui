@@ -215,6 +215,17 @@ html, body, input, textarea, button {
     margin-top: 1em;
 }
 
+.animated--quick {
+    transition-property: font-size, color, background-color;
+    transition-timing-function: ease-out;
+    transition-duration: .2s;
+}
+
+.hexa--reduced {
+    font-size: 16px;
+    /*line-height: 24px;*/
+}
+
 .audio-footer {
     position: fixed;
     bottom: 0;
