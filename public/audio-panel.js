@@ -68,7 +68,8 @@ class AudioJukebox {
             return;
         this.queue.push(item);
         localStorage.setItem('playlist-backup', JSON.stringify(this.queue));
-        this.play(this.queue.length - 1);
+        if (this.currentIndex < 0)
+            this.play(this.queue.length - 1);
     }
     play(index) {
         this.currentIndex = index;
