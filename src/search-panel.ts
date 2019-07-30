@@ -1,6 +1,7 @@
 import { TemplateElements, createTemplateInstance } from './templates'
 
 export interface SearchPanelElements extends TemplateElements {
+    title: HTMLElement
     form: HTMLFormElement
     term: HTMLInputElement
 }
@@ -30,8 +31,8 @@ export const searchPanel = {
 
     displayTitle: (template: SearchPanelElements, displayed: boolean) => {
         if (displayed)
-            template.root.style.display = null
+            template.title.style.display = null
         else
-            template.root.style.display = 'none'
+            template.title.style.display = 'none'
     }
 }

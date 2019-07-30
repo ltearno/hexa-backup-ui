@@ -23,9 +23,9 @@ exports.searchPanel = {
     create: () => templates_1.createTemplateInstance(templateHtml, [TID_Title, TID_SearchForm, TID_SearchTerm]),
     displayTitle: (template, displayed) => {
         if (displayed)
-            template.root.style.display = null;
+            template.title.style.display = null;
         else
-            template.root.style.display = 'none';
+            template.title.style.display = 'none';
     }
 };
 //# sourceMappingURL=search-panel.js.map
