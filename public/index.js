@@ -39,17 +39,18 @@ class AudioJukebox {
         this.currentItem = null;
         this.audioPanel.player.addEventListener('ended', () => {
             let currentIndex = this.currentIndex();
-            if (currentIndex > 0)
-                this.play(this.queue[currentIndex - 1]);
+            currentIndex++;
+            if (currentIndex < this.queue.length - 1)
+                this.play(this.queue[currentIndex]);
         });
     }
     currentIndex() {
         return this.queue.indexOf(this.currentItem);
     }
     addAndPlay(item) {
-        if (this.queue.length && this.queue[0].sha == item.sha)
-            return;
-        this.queue.splice(this.currentIndex(), 0, item);
+        if (!this.queue.length || this.queue[0].sha != item.sha) {
+            this.queue.splice(this.currentIndex(), 0, item);
+        }
         this.play(item);
         console.log(JSON.stringify(this.queue));
         console.log(this.currentIndex());
