@@ -22,21 +22,18 @@ const audioPanel = AudioPanel.audioPanel.create();
 document.body.appendChild(audioPanel.root);
 addContent(searchPanel.root);
 const audioJukebox = new AudioPanel.AudioJukebox(audioPanel);
-async function playAudio(item) {
-    const { name, sha, mimeType } = JSON.parse(item);
-    audioJukebox.addAndPlay({ name, sha, mimeType });
-}
-window['playAudio'] = playAudio;
 Auth.autoRenewAuth();
 /**
  * Events
  */
+let lastDisplayedFiles = null;
 searchPanel.form.addEventListener('submit', async (event) => {
     UiTool.stopEvent(event);
     let term = searchPanel.term.value;
     SearchPanel.searchPanel.displayTitle(searchPanel, false);
     FilesPanel.filesPanel.displaySearching(filesPanel, term);
     let res = await Rest.search(term, 'audio/%');
+    lastDisplayedFiles = res.files;
     FilesPanel.filesPanel.setValues(filesPanel, {
         term: searchPanel.term.value,
         files: res.files
@@ -45,6 +42,8 @@ searchPanel.form.addEventListener('submit', async (event) => {
         addContent(filesPanel.root);
 });
 FilesPanel.templateAddEventListener(filesPanel, 'click', (event, element, childIndex) => {
+    if (lastDisplayedFiles && element == filesPanel.files && childIndex >= 0 && childIndex < lastDisplayedFiles.length)
+        audioJukebox.addAndPlay(lastDisplayedFiles[childIndex]);
     console.log(`click ${element.getAttribute('x-id')}, child ${childIndex}`);
 });
 //# sourceMappingURL=index.js.map

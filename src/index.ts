@@ -25,17 +25,13 @@ addContent(searchPanel.root)
 
 const audioJukebox = new AudioPanel.AudioJukebox(audioPanel)
 
-async function playAudio(item: string) {
-    const { name, sha, mimeType } = JSON.parse(item)
-    audioJukebox.addAndPlay({ name, sha, mimeType })
-}
-window['playAudio'] = playAudio
-
 Auth.autoRenewAuth()
 
 /**
  * Events
  */
+
+let lastDisplayedFiles: Rest.FileDescriptor[] = null
 
 searchPanel.form.addEventListener('submit', async event => {
     UiTool.stopEvent(event)
@@ -47,6 +43,8 @@ searchPanel.form.addEventListener('submit', async event => {
 
     let res = await Rest.search(term, 'audio/%')
 
+    lastDisplayedFiles = res.files
+
     FilesPanel.filesPanel.setValues(filesPanel, {
         term: searchPanel.term.value,
         files: res.files
@@ -57,5 +55,7 @@ searchPanel.form.addEventListener('submit', async event => {
 })
 
 FilesPanel.templateAddEventListener(filesPanel, 'click', (event, element, childIndex) => {
+    if (lastDisplayedFiles && element == filesPanel.files && childIndex >= 0 && childIndex < lastDisplayedFiles.length)
+        audioJukebox.addAndPlay(lastDisplayedFiles[childIndex])
     console.log(`click ${element.getAttribute('x-id')}, child ${childIndex}`)
 })
