@@ -23,9 +23,9 @@ exports.searchPanel = {
     create: () => templates_1.createTemplateInstance(templateHtml, [TID_Title, TID_SearchForm, TID_SearchTerm]),
     displayTitle: (template, displayed) => {
         if (displayed)
-            template.title.classList.add('hexa--reduced');
-        else
             template.title.classList.remove('hexa--reduced');
+        else
+            template.title.classList.add('hexa--reduced');
     }
 };
 //# sourceMappingURL=search-panel.js.map

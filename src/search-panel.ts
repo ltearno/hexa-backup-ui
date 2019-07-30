@@ -31,8 +31,8 @@ export const searchPanel = {
 
     displayTitle: (template: SearchPanelElements, displayed: boolean) => {
         if (displayed)
-            template.title.classList.add('hexa--reduced')
-        else
             template.title.classList.remove('hexa--reduced')
+        else
+            template.title.classList.add('hexa--reduced')
     }
 }
