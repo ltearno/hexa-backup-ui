@@ -128,7 +128,7 @@ class AudioJukebox {
                 this.audioPanel.playlist.innerHTML = "";
         }
         if (this.itemUnroller)
-            this.audioPanel.playlist.innerHTML += `<span class="mui--text-dark-secondary">followed by ${this.itemUnroller.name()}...</span>`;
+            this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary">followed by ${this.itemUnroller.name()}...</div>`;
     }
     playlistItemHtml(index, name) {
         return `<div x-queue-index="${index}" class="onclick ${index == this.currentIndex ? 'mui--text-headline' : ''}">${name}</div>`;
