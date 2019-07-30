@@ -7,7 +7,7 @@ const PLAYLIST = 'playlist'
 const EXPANDER = 'expander'
 
 const templateHtml = `
-<div class="audio-footer mui-panel is-hidden">
+<div class="audio-footer mui-panel">
     <div x-id="${PLAYLIST}" class="is-fullwidth mui--text-center"></div>
     <div x-id="${EXPANDER}" class="onclick mui--text-center">☰</div>
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
@@ -108,7 +108,7 @@ export class AudioJukebox {
             const item = this.queue[index]
             audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType)
 
-            UiTools.els(this.audioPanel.playlist, `[x-queue-index='${index}']`).forEach(e => e.scrollIntoView())
+            //UiTools.els(this.audioPanel.playlist, `[x-queue-index='${index}']`).forEach(e => e.scrollIntoView())
         }
     }
 

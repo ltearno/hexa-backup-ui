@@ -2,12 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templates_1 = require("./templates");
 const Rest = require("./rest");
-const UiTools = require("./ui-tool");
 const PLAYER = 'player';
 const PLAYLIST = 'playlist';
 const EXPANDER = 'expander';
 const templateHtml = `
-<div class="audio-footer mui-panel is-hidden">
+<div class="audio-footer mui-panel">
     <div x-id="${PLAYLIST}" class="is-fullwidth mui--text-center"></div>
     <div x-id="${EXPANDER}" class="onclick mui--text-center">☰</div>
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
@@ -79,7 +78,7 @@ class AudioJukebox {
         if (index >= 0 && index < this.queue.length) {
             const item = this.queue[index];
             exports.audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType);
-            UiTools.els(this.audioPanel.playlist, `[x-queue-index='${index}']`).forEach(e => e.scrollIntoView());
+            //UiTools.els(this.audioPanel.playlist, `[x-queue-index='${index}']`).forEach(e => e.scrollIntoView())
         }
     }
     refreshPlaylist() {
