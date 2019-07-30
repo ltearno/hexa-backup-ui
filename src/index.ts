@@ -16,7 +16,7 @@ searchPanel.form.addEventListener('submit', async event => {
         files: res.files
     })
 
-    if (!filesPanel.root.parentElement)
+    if (!filesPanel.root.isConnected)
         addContent(filesPanel.root)
 })
 
@@ -32,4 +32,3 @@ function clearContents() {
 }
 
 addContent(searchPanel.root)
-addContent(filesPanel.root)

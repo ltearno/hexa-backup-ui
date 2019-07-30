@@ -13,7 +13,7 @@ searchPanel.form.addEventListener('submit', async (event) => {
         term: searchPanel.term.value,
         files: res.files
     });
-    if (!filesPanel.root.parentElement)
+    if (!filesPanel.root.isConnected)
         addContent(filesPanel.root);
 });
 let contents = [];
@@ -27,5 +27,4 @@ function clearContents() {
     contents = [];
 }
 addContent(searchPanel.root);
-addContent(filesPanel.root);
 //# sourceMappingURL=index.js.map
