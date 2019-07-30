@@ -21,13 +21,27 @@ const filesPanel = FilesPanel.filesPanel.create()
 const audioPanel = AudioPanel.audioPanel.create()
 document.body.appendChild(audioPanel.root)
 
+addContent(searchPanel.root)
+
+const audioJukebox = new AudioPanel.AudioJukebox(audioPanel)
+
+async function playAudio(name: string, sha: string, mimeType: string) {
+    audioJukebox.addAndPlay({ name, sha, mimeType })
+}
+window['playAudio'] = playAudio
+
+Auth.autoRenewAuth()
+
+/**
+ * Events
+ */
+
 searchPanel.form.addEventListener('submit', async event => {
     UiTool.stopEvent(event)
 
     let term = searchPanel.term.value
 
     SearchPanel.searchPanel.displayTitle(searchPanel, false)
-
     FilesPanel.filesPanel.displaySearching(filesPanel, term)
 
     let res = await Rest.search(term, 'audio/%')
@@ -40,14 +54,3 @@ searchPanel.form.addEventListener('submit', async event => {
     if (!filesPanel.root.isConnected)
         addContent(filesPanel.root)
 })
-
-addContent(searchPanel.root)
-
-const audioJukebox = new AudioPanel.AudioJukebox(audioPanel)
-
-async function playAudio(name: string, sha: string, mimeType: string) {
-    audioJukebox.addAndPlay({ name, sha, mimeType })
-}
-window['playAudio'] = playAudio
-
-Auth.autoRenewAuth()

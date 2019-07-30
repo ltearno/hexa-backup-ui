@@ -4,13 +4,16 @@ import * as Rest from './rest'
 export interface AudioPanelElements extends TemplateElements {
     title: HTMLElement
     player: HTMLAudioElement
+    playlist: HTMLDivElement
 }
 
 const TITLE = 'title'
 const PLAYER = 'player'
+const PLAYLIST = 'playlist'
 
 const templateHtml = `
 <div class="audio-footer mui-panel is-hidden">
+    <div x-id="${PLAYLIST}"></div>
     <h3 x-id="${TITLE}"></h3>
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
 </div>`
@@ -26,6 +29,10 @@ export const audioPanel = {
 
         elements.root.classList.remove("is-hidden")
         elements.player.play()
+    },
+
+    setPlaylist(elements: AudioPanelElements, html: string) {
+        elements.playlist.innerHTML = html
     }
 }
 
@@ -64,8 +71,10 @@ export class AudioJukebox {
         console.log(this.currentIndex())
     }
 
-    play(item: JukeboxItem) {
+    private play(item: JukeboxItem) {
         this.currentItem = item
+
+        audioPanel.setPlaylist(this.audioPanel, this.queue.map(i => `<div>${i.name} ${i.mimeType} ${i.sha.substr(0, 5)}</div>`).join(''))
 
         audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType)
     }

@@ -20,6 +20,16 @@ const searchPanel = SearchPanel.searchPanel.create();
 const filesPanel = FilesPanel.filesPanel.create();
 const audioPanel = AudioPanel.audioPanel.create();
 document.body.appendChild(audioPanel.root);
+addContent(searchPanel.root);
+const audioJukebox = new AudioPanel.AudioJukebox(audioPanel);
+async function playAudio(name, sha, mimeType) {
+    audioJukebox.addAndPlay({ name, sha, mimeType });
+}
+window['playAudio'] = playAudio;
+Auth.autoRenewAuth();
+/**
+ * Events
+ */
 searchPanel.form.addEventListener('submit', async (event) => {
     UiTool.stopEvent(event);
     let term = searchPanel.term.value;
@@ -33,11 +43,4 @@ searchPanel.form.addEventListener('submit', async (event) => {
     if (!filesPanel.root.isConnected)
         addContent(filesPanel.root);
 });
-addContent(searchPanel.root);
-const audioJukebox = new AudioPanel.AudioJukebox(audioPanel);
-async function playAudio(name, sha, mimeType) {
-    audioJukebox.addAndPlay({ name, sha, mimeType });
-}
-window['playAudio'] = playAudio;
-Auth.autoRenewAuth();
 //# sourceMappingURL=index.js.map

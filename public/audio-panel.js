@@ -4,8 +4,10 @@ const templates_1 = require("./templates");
 const Rest = require("./rest");
 const TITLE = 'title';
 const PLAYER = 'player';
+const PLAYLIST = 'playlist';
 const templateHtml = `
 <div class="audio-footer mui-panel is-hidden">
+    <div x-id="${PLAYLIST}"></div>
     <h3 x-id="${TITLE}"></h3>
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
 </div>`;
@@ -17,6 +19,9 @@ exports.audioPanel = {
         elements.player.setAttribute('type', mimeType);
         elements.root.classList.remove("is-hidden");
         elements.player.play();
+    },
+    setPlaylist(elements, html) {
+        elements.playlist.innerHTML = html;
     }
 };
 class AudioJukebox {
@@ -45,6 +50,7 @@ class AudioJukebox {
     }
     play(item) {
         this.currentItem = item;
+        exports.audioPanel.setPlaylist(this.audioPanel, this.queue.map(i => `<div>${i.name} ${i.mimeType} ${i.sha.substr(0, 5)}</div>`).join(''));
         exports.audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType);
     }
 }
