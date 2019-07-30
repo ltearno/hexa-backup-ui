@@ -81,6 +81,12 @@ export class AudioJukebox {
     }
 
     addAndPlay(item: JukeboxItem) {
+        item = {
+            sha: item.sha,
+            name: item.name,
+            mimeType: item.mimeType
+        }
+        
         let currentItem = this.currentItem()
         if (currentItem && currentItem.sha == item.sha)
             return
