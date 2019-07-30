@@ -2,17 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const UiTools = require("./ui-tool");
 const elementsData = new WeakMap();
-function templateElement(root, name) {
-    let list = UiTools.els(root, `[x-id=${name}]`);
-    return list.length ? list.item(0) : null;
-}
-function createElementAndLocateChildren(html) {
+function createElementAndLocateChildren(obj, html) {
     let root = UiTools.elFromHtml(html);
-    let data = {
-        root
-    };
-    UiTools.els(root, `[x-id]`).forEach(e => data[e.getAttribute('x-id')] = e);
-    elementsData.set(root, data);
+    obj['root'] = root;
+    UiTools.els(root, `[x-id]`).forEach(e => obj[e.getAttribute('x-id')] = e);
+    elementsData.set(root, obj);
     return root;
 }
 exports.createElementAndLocateChildren = createElementAndLocateChildren;
@@ -22,7 +16,7 @@ function getTemplateInstanceData(root) {
 }
 exports.getTemplateInstanceData = getTemplateInstanceData;
 function createTemplateInstance(html) {
-    let root = createElementAndLocateChildren(html);
+    let root = createElementAndLocateChildren({}, html);
     return getTemplateInstanceData(root);
 }
 exports.createTemplateInstance = createTemplateInstance;
