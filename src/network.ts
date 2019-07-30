@@ -7,7 +7,6 @@ async function afterFetch(response: Response) {
     let sci = receivedContentType.indexOf(';')
     if (sci >= 0)
         receivedContentType = receivedContentType.substr(0, sci)
-    console.log(`received contenttype ${receivedContentType}`)
 
     if (receivedContentType == 'application/json')
         return await response.json()
