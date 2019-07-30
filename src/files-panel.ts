@@ -22,6 +22,6 @@ export const filesPanel = {
 
     setValues: (elements: FilesPanelElements, values: { term: string, files: any[] }) => {
         elements.term.innerText = values.term
-        elements.files.innerHTML = values.files.map(f => `<div>${f.name}</div>`).join('')
+        elements.files.innerHTML = values.files.map(f => `<div onclick='playAudio("${f.sha}", "${f.mimeType}")'>${f.name}</div>`).join('')
     }
 }

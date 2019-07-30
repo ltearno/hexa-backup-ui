@@ -3,6 +3,7 @@ import * as SearchPanel from './search-panel'
 import * as FilesPanel from './files-panel'
 import * as Rest from './rest'
 
+const audioElement = UiTool.el<HTMLAudioElement>('audio-player')
 const searchPanel = SearchPanel.searchPanel.create()
 const filesPanel = FilesPanel.filesPanel.create()
 
@@ -36,3 +37,18 @@ function clearContents() {
 }
 
 addContent(searchPanel.root)
+
+
+
+
+async function playAudio(sha: string, mimeType: string) {
+    audioElement.classList.remove("is-hidden")
+
+    audioElement.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`)
+    audioElement.setAttribute('type', mimeType)
+    audioElement.play()
+}
+
+audioElement.addEventListener('ended', () => {
+    //listenNext()
+})

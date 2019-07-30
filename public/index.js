@@ -4,6 +4,7 @@ const UiTool = require("./ui-tool");
 const SearchPanel = require("./search-panel");
 const FilesPanel = require("./files-panel");
 const Rest = require("./rest");
+const audioElement = UiTool.el('audio-player');
 const searchPanel = SearchPanel.searchPanel.create();
 const filesPanel = FilesPanel.filesPanel.create();
 searchPanel.form.addEventListener('submit', async (event) => {
@@ -29,4 +30,13 @@ function clearContents() {
     contents = [];
 }
 addContent(searchPanel.root);
+async function playAudio(sha, mimeType) {
+    audioElement.classList.remove("is-hidden");
+    audioElement.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`);
+    audioElement.setAttribute('type', mimeType);
+    audioElement.play();
+}
+audioElement.addEventListener('ended', () => {
+    //listenNext()
+});
 //# sourceMappingURL=index.js.map

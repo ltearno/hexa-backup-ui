@@ -14,7 +14,7 @@ exports.filesPanel = {
     create: () => templates_1.createTemplateInstance(templateHtml, [TID_SearchTerm, TID_Files]),
     setValues: (elements, values) => {
         elements.term.innerText = values.term;
-        elements.files.innerHTML = values.files.map(f => `<div>${f.name}</div>`).join('');
+        elements.files.innerHTML = values.files.map(f => `<div onclick='playAudio("${f.sha}", "${f.mimeType}")'>${f.name}</div>`).join('');
     }
 };
 //# sourceMappingURL=files-panel.js.map
