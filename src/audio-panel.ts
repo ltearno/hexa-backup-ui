@@ -108,7 +108,7 @@ export class AudioJukebox {
         let html = ``
         for (let i = 0; i < this.queue.length - 1; i++) {
             let item = this.queue[i]
-            html += `<div>${item.name}</div>`
+            html += `<div class="onclick">${item.name}</div>`
         }
         this.audioPanel.playlist.innerHTML = html
     }
