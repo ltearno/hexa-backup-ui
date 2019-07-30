@@ -21,7 +21,7 @@ const templateHtml = `
 </div>`
 
 export const audioPanel = {
-    create: () => createTemplateInstance(templateHtml, [TITLE, PLAYER, PLAYLIST]) as AudioPanelElements,
+    create: () => createTemplateInstance(templateHtml, [TITLE, PLAYER, PLAYLIST, EXPANDER]) as AudioPanelElements,
 
     play: (elements: AudioPanelElements, name: string, sha: string, mimeType: string) => {
         elements.title.innerText = name
