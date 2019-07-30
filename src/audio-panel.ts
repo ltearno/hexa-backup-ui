@@ -171,7 +171,7 @@ export class AudioJukebox {
         }
 
         if (this.itemUnroller)
-            this.audioPanel.playlist.innerHTML += `<span class="mui--text-dark-secondary">followed by ${this.itemUnroller.name()}</span>`
+            this.audioPanel.playlist.innerHTML += `<span class="mui--text-dark-secondary">followed by ${this.itemUnroller.name()}...</span>`
     }
 
     private playlistItemHtml(index: number, name: string) {
