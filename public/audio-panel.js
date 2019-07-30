@@ -7,7 +7,7 @@ const PLAYER = 'player';
 const PLAYLIST = 'playlist';
 const templateHtml = `
 <div class="audio-footer mui-panel is-hidden">
-    <div x-id="${PLAYLIST}"></div>
+    <div x-id="${PLAYLIST}" class="is-hidden"></div>
     <h3 x-id="${TITLE}"></h3>
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
 </div>`;
