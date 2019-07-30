@@ -215,14 +215,6 @@ html, body, input, textarea, button {
     margin-top: 1em;
 }
 
-[onclick] {
-    cursor: pointer;
-}
-
-.is-hidden {
-    display: none;
-}
-
 .audio-footer {
     position: fixed;
     bottom: 0;
@@ -236,4 +228,12 @@ html, body, input, textarea, button {
 
 .audio-player {
     flex-grow: 1;
+}
+
+[onclick] {
+    cursor: pointer;
+}
+
+.is-hidden {
+    display: none;
 }
