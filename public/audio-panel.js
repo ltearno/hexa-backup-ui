@@ -74,6 +74,10 @@ class AudioJukebox {
         }
     }
     refreshPlaylist() {
+        if (!this.queue || !this.queue.length) {
+            this.audioPanel.playlist.innerHTML = '';
+            return;
+        }
         if (this.largeDisplay) {
             let html = `<h3>Playlist</h3>`;
             for (let i = 0; i < this.queue.length; i++) {
