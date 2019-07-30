@@ -97,4 +97,4 @@ async function playAudio(name: string, sha: string, mimeType: string) {
 }
 window['playAudio'] = playAudio
 
-new Auth.Auth()
+Auth.autoRenewAuth()

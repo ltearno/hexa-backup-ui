@@ -71,5 +71,5 @@ async function playAudio(name, sha, mimeType) {
     audioJukebox.addAndPlay({ name, sha, mimeType });
 }
 window['playAudio'] = playAudio;
-new Auth.Auth();
+Auth.autoRenewAuth();
 //# sourceMappingURL=index.js.map
