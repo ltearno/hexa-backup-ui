@@ -28,28 +28,37 @@ class AudioJukebox {
     constructor(audioPanel) {
         this.audioPanel = audioPanel;
         this.queue = [];
-        this.currentItem = null;
+        this.currentIndex = -1;
         this.audioPanel.player.addEventListener('ended', () => {
-            let currentIndex = this.currentIndex();
-            currentIndex++;
-            if (currentIndex < this.queue.length - 1)
-                this.play(this.queue[currentIndex]);
+            this.currentIndex++;
+            if (this.currentIndex < this.queue.length)
+                this.play(this.currentIndex + 1);
+            else
+                this.stop();
         });
     }
-    currentIndex() {
-        return this.queue.indexOf(this.currentItem);
+    currentItem() {
+        if (this.currentIndex < 0 || this.currentIndex >= this.queue.length)
+            return null;
+        return this.queue[this.currentIndex];
     }
     addAndPlay(item) {
-        let currentIndex = this.currentIndex();
-        if (!this.queue.length || this.queue[0].sha != item.sha) {
-            this.queue.splice(currentIndex, 0, item);
-            this.play(item);
-        }
+        let currentItem = this.currentItem();
+        if (currentItem && currentItem.sha == item.sha)
+            return;
+        this.queue.push(item);
+        this.play(this.queue.length - 1);
     }
-    play(item) {
-        this.currentItem = item;
+    stop() {
+        this.play(-1);
+    }
+    play(index) {
+        this.currentIndex = index;
         this.refreshPlaylist();
-        exports.audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType);
+        if (index >= 0 && index < this.queue.length) {
+            const item = this.queue[index];
+            exports.audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType);
+        }
     }
     refreshPlaylist() {
         let html = ``;

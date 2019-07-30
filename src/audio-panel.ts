@@ -44,36 +44,47 @@ export interface JukeboxItem {
 
 export class AudioJukebox {
     private queue: JukeboxItem[] = []
-    private currentItem: JukeboxItem = null
+    private currentIndex: number = -1
 
     constructor(private audioPanel: AudioPanelElements) {
         this.audioPanel.player.addEventListener('ended', () => {
-            let currentIndex = this.currentIndex()
-            currentIndex++
-            if (currentIndex < this.queue.length - 1)
-                this.play(this.queue[currentIndex])
+            this.currentIndex++
+            if (this.currentIndex < this.queue.length)
+                this.play(this.currentIndex + 1)
+            else
+                this.stop()
         })
     }
 
-    currentIndex() {
-        return this.queue.indexOf(this.currentItem)
+    currentItem() {
+        if (this.currentIndex < 0 || this.currentIndex >= this.queue.length)
+            return null
+        return this.queue[this.currentIndex]
     }
 
     addAndPlay(item: JukeboxItem) {
-        let currentIndex = this.currentIndex()
+        let currentItem = this.currentItem()
+        if (currentItem && currentItem.sha == item.sha)
+            return
 
-        if (!this.queue.length || this.queue[0].sha != item.sha) {
-            this.queue.splice(currentIndex, 0, item)
-            this.play(item)
-        }
+        this.queue.push(item)
+
+        this.play(this.queue.length - 1)
     }
 
-    private play(item: JukeboxItem) {
-        this.currentItem = item
+    private stop() {
+        this.play(-1)
+    }
+
+    private play(index: number) {
+        this.currentIndex = index
 
         this.refreshPlaylist()
 
-        audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType)
+        if (index >= 0 && index < this.queue.length) {
+            const item = this.queue[index]
+            audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType)
+        }
     }
 
     private refreshPlaylist() {
