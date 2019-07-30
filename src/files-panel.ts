@@ -17,6 +17,8 @@ const templateHtml = `
     </div>
 </div>`
 
+const EMPTY_LOCATION = { element: null, childIndex: -1 }
+
 export function templateGetEventLocation(elements: TemplateElements, event: Event): { element: HTMLElement, childIndex: number } {
     let els = new Set(Object.values(elements))
 
@@ -32,13 +34,13 @@ export function templateGetEventLocation(elements: TemplateElements, event: Even
         }
 
         if (c == elements.root)
-            return { element: null, childIndex: -1 }
+            return EMPTY_LOCATION
 
         p = c
         c = c.parentElement
     } while (c)
 
-    return { element: null, childIndex: -1 }
+    return EMPTY_LOCATION
 }
 
 export const filesPanel = {

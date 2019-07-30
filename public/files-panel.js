@@ -10,6 +10,7 @@ const templateHtml = `
         <div x-id="${TID_Files}"></div>
     </div>
 </div>`;
+const EMPTY_LOCATION = { element: null, childIndex: -1 };
 function templateGetEventLocation(elements, event) {
     let els = new Set(Object.values(elements));
     let c = event.target;
@@ -22,11 +23,11 @@ function templateGetEventLocation(elements, event) {
             };
         }
         if (c == elements.root)
-            return { element: null, childIndex: -1 };
+            return EMPTY_LOCATION;
         p = c;
         c = c.parentElement;
     } while (c);
-    return { element: null, childIndex: -1 };
+    return EMPTY_LOCATION;
 }
 exports.templateGetEventLocation = templateGetEventLocation;
 exports.filesPanel = {
