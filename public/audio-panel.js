@@ -42,6 +42,8 @@ class AudioJukebox {
         this.audioPanel.expander.addEventListener('click', () => {
             this.toggleLargeDisplay();
         });
+        this.toggledElements = UiTools.els(this.audioPanel.root, ".x-toggled");
+        this.toggledElements.forEach(e => e.classList.add('is-hidden'));
     }
     currentItem() {
         if (this.currentIndex < 0 || this.currentIndex >= this.queue.length)
@@ -77,7 +79,7 @@ class AudioJukebox {
         exports.audioPanel.setPlaylist(this.audioPanel, html);
     }
     toggleLargeDisplay() {
-        UiTools.els(this.audioPanel.root, ".x-toggled").forEach(e => e.classList.toggle('is-hidden'));
+        this.toggledElements.forEach(e => e.classList.toggle('is-hidden'));
     }
 }
 exports.AudioJukebox = AudioJukebox;

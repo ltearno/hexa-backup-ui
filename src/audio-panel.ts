@@ -49,6 +49,7 @@ export interface JukeboxItem {
 export class AudioJukebox {
     private queue: JukeboxItem[] = []
     private currentIndex: number = -1
+    private toggledElements: NodeListOf<HTMLElement>
 
     constructor(private audioPanel: AudioPanelElements) {
         this.audioPanel.player.addEventListener('ended', () => {
@@ -62,6 +63,9 @@ export class AudioJukebox {
         this.audioPanel.expander.addEventListener('click', () => {
             this.toggleLargeDisplay()
         })
+
+        this.toggledElements = UiTools.els(this.audioPanel.root, ".x-toggled")
+        this.toggledElements.forEach(e => e.classList.add('is-hidden'))
     }
 
     currentItem() {
@@ -107,6 +111,6 @@ export class AudioJukebox {
     }
 
     private toggleLargeDisplay() {
-        UiTools.els(this.audioPanel.root, ".x-toggled").forEach(e => e.classList.toggle('is-hidden'))
+        this.toggledElements.forEach(e => e.classList.toggle('is-hidden'))
     }
 }
