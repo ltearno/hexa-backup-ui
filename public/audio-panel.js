@@ -89,13 +89,19 @@ class AudioJukebox {
             let html = `<h3>Playlist</h3>`;
             for (let i = 0; i < this.queue.length; i++) {
                 let item = this.queue[i];
-                html += `<div x-queue-index="${i}" class="onclick ${i == this.currentIndex ? 'mui--text-headline' : ''}">${item.name}</div>`;
+                html += this.playlistItemHtml(i, item.name);
             }
             this.audioPanel.playlist.innerHTML = html;
         }
         else {
-            this.audioPanel.playlist.innerHTML = `<div x-queue-index="${this.currentIndex}" class="onclick mui--text-headline">${this.queue[this.currentIndex].name}</div>`;
+            if (this.currentIndex >= 0 && this.currentIndex < this.queue.length)
+                this.audioPanel.playlist.innerHTML = this.playlistItemHtml(this.currentIndex, this.queue[this.currentIndex].name);
+            else
+                this.audioPanel.playlist.innerHTML = "";
         }
+    }
+    playlistItemHtml(index, name) {
+        return `<div x-queue-index="${index}" class="onclick ${index == this.currentIndex ? 'mui--text-headline' : ''}">${name}</div>`;
     }
 }
 exports.AudioJukebox = AudioJukebox;
