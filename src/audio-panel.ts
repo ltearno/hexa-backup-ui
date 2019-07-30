@@ -43,6 +43,13 @@ export class AudioJukebox {
     private currentIndex: number = -1
 
     constructor(private audioPanel: AudioPanelElements) {
+        try {
+            this.queue = JSON.parse(localStorage.getItem('playlist-backup'))
+        }
+        catch (err) {
+            console.error(`error`, err)
+        }
+
         this.audioPanel.player.addEventListener('ended', () => {
             if (this.currentIndex + 1 < this.queue.length)
                 this.play(this.currentIndex + 1)
@@ -61,6 +68,8 @@ export class AudioJukebox {
                     this.play(parseInt(queueIndex))
             }
         })
+
+        this.refreshPlaylist()
     }
 
     currentItem() {
@@ -75,6 +84,7 @@ export class AudioJukebox {
             return
 
         this.queue.push(item)
+        localStorage.setItem('playlist-backup', JSON.stringify(this.queue))
 
         this.play(this.queue.length - 1)
     }

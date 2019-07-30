@@ -26,6 +26,12 @@ class AudioJukebox {
         this.largeDisplay = false;
         this.queue = [];
         this.currentIndex = -1;
+        try {
+            this.queue = JSON.parse(localStorage.getItem('playlist-backup'));
+        }
+        catch (err) {
+            console.error(`error`, err);
+        }
         this.audioPanel.player.addEventListener('ended', () => {
             if (this.currentIndex + 1 < this.queue.length)
                 this.play(this.currentIndex + 1);
@@ -42,6 +48,7 @@ class AudioJukebox {
                     this.play(parseInt(queueIndex));
             }
         });
+        this.refreshPlaylist();
     }
     currentItem() {
         if (this.currentIndex < 0 || this.currentIndex >= this.queue.length)
@@ -53,6 +60,7 @@ class AudioJukebox {
         if (currentItem && currentItem.sha == item.sha)
             return;
         this.queue.push(item);
+        localStorage.setItem('playlist-backup', JSON.stringify(this.queue));
         this.play(this.queue.length - 1);
     }
     play(index) {
