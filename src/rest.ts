@@ -1,3 +1,5 @@
+import * as Network from './network'
+
 export const HEXA_BACKUP_BASE_URL = window.location.hostname == "home.lteconsulting.fr" ? "https://home.lteconsulting.fr" : "https://localhost:5005"
 
 export async function search(searchText: string, mimeType: string) {
@@ -7,14 +9,7 @@ export async function search(searchText: string, mimeType: string) {
             mimeType: mimeType
         }
 
-        const headers = new Headers()
-        headers.set('Content-Type', 'application/json')
-        const resp = await fetch(`${HEXA_BACKUP_BASE_URL}/search`, {
-            headers,
-            method: 'post',
-            body: JSON.stringify(searchSpec)
-        })
-        const { resultDirectories, resultFilesddd } = await resp.json()
+        const { resultDirectories, resultFilesddd } = await Network.postData(`${HEXA_BACKUP_BASE_URL}/search`, searchSpec)
 
         return {
             directories: resultDirectories as { name: string; sha: string }[],
