@@ -65,11 +65,12 @@ class AudioJukebox {
     }
 
     addAndPlay(item: JukeboxItem) {
-        if (!this.queue.length || this.queue[0].sha != item.sha) {
-            this.queue.splice(this.currentIndex(), 0, item)
-        }
+        let currentIndex = this.currentIndex()
 
-        this.play(item)
+        if (!this.queue.length || this.queue[0].sha != item.sha) {
+            this.queue.splice(currentIndex, 0, item)
+            this.play(item)
+        }
 
         console.log(JSON.stringify(this.queue))
         console.log(this.currentIndex())

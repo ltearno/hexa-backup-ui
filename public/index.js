@@ -48,10 +48,11 @@ class AudioJukebox {
         return this.queue.indexOf(this.currentItem);
     }
     addAndPlay(item) {
+        let currentIndex = this.currentIndex();
         if (!this.queue.length || this.queue[0].sha != item.sha) {
-            this.queue.splice(this.currentIndex(), 0, item);
+            this.queue.splice(currentIndex, 0, item);
+            this.play(item);
         }
-        this.play(item);
         console.log(JSON.stringify(this.queue));
         console.log(this.currentIndex());
     }
