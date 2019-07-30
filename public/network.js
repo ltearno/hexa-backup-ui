@@ -15,20 +15,18 @@ async function afterFetch(response) {
     else
         return await response.text();
 }
-/*
-export function getData(url: string, responseContentType = 'application/json') {
-    return fetch(
-        url, {
-            method: 'GET',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            redirect: 'follow',
-            referrer: 'no-referrer'
-        })
-        .then(afterFetch(responseContentType))
+function getData(url) {
+    return fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        redirect: 'follow',
+        referrer: 'no-referrer'
+    })
+        .then(afterFetch);
 }
-*/
+exports.getData = getData;
 function postData(url, data, contentType = 'application/json') {
     return fetch(url, {
         method: 'POST',
@@ -43,34 +41,32 @@ function postData(url, data, contentType = 'application/json') {
         .then(afterFetch);
 }
 exports.postData = postData;
-/*
-export function putData(url: string, data: any = {}, contentType = 'application/json', responseContentType = 'application/json') {
-    return fetch(
-        url, {
-            method: 'PUT',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            redirect: 'follow',
-            referrer: 'no-referrer',
-            headers: { "Content-Type": contentType },
-            body: contentType == 'application/json' ? JSON.stringify(data) : data
-        })
-        .then(afterFetch(responseContentType))
+function putData(url, data = {}, contentType = 'application/json') {
+    return fetch(url, {
+        method: 'PUT',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        redirect: 'follow',
+        referrer: 'no-referrer',
+        headers: { "Content-Type": contentType },
+        body: contentType == 'application/json' ? JSON.stringify(data) : data
+    })
+        .then(afterFetch);
 }
-
-export function deleteData(url: string, data: any = {}, contentType = 'application/json', responseContentType = 'application/json') {
-    return fetch(
-        url, {
-            method: 'DELETE',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            redirect: 'follow',
-            referrer: 'no-referrer',
-            headers: { "Content-Type": contentType },
-            body: contentType == 'application/json' ? JSON.stringify(data) : data
-        })
-        .then(afterFetch(responseContentType))
-}*/ 
+exports.putData = putData;
+function deleteData(url, data = {}, contentType = 'application/json') {
+    return fetch(url, {
+        method: 'DELETE',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        redirect: 'follow',
+        referrer: 'no-referrer',
+        headers: { "Content-Type": contentType },
+        body: contentType == 'application/json' ? JSON.stringify(data) : data
+    })
+        .then(afterFetch);
+}
+exports.deleteData = deleteData;
 //# sourceMappingURL=network.js.map

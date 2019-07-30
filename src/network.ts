@@ -15,8 +15,7 @@ async function afterFetch(response: Response) {
         return await response.text()
 }
 
-/*
-export function getData(url: string, responseContentType = 'application/json') {
+export function getData<T>(url: string): Promise<T> {
     return fetch(
         url, {
             method: 'GET',
@@ -26,10 +25,10 @@ export function getData(url: string, responseContentType = 'application/json') {
             redirect: 'follow',
             referrer: 'no-referrer'
         })
-        .then(afterFetch(responseContentType))
+        .then(afterFetch)
 }
-*/
-export function postData(url: string, data: any, contentType = 'application/json'): Promise<any> {
+
+export function postData<T>(url: string, data: any, contentType = 'application/json'): Promise<T> {
     return fetch(
         url, {
             method: 'POST',
@@ -43,8 +42,8 @@ export function postData(url: string, data: any, contentType = 'application/json
         })
         .then(afterFetch)
 }
-/*
-export function putData(url: string, data: any = {}, contentType = 'application/json', responseContentType = 'application/json') {
+
+export function putData<T>(url: string, data: any = {}, contentType = 'application/json'): Promise<T> {
     return fetch(
         url, {
             method: 'PUT',
@@ -56,10 +55,10 @@ export function putData(url: string, data: any = {}, contentType = 'application/
             headers: { "Content-Type": contentType },
             body: contentType == 'application/json' ? JSON.stringify(data) : data
         })
-        .then(afterFetch(responseContentType))
+        .then(afterFetch)
 }
 
-export function deleteData(url: string, data: any = {}, contentType = 'application/json', responseContentType = 'application/json') {
+export function deleteData<T>(url: string, data: any = {}, contentType = 'application/json'): Promise<T> {
     return fetch(
         url, {
             method: 'DELETE',
@@ -71,5 +70,5 @@ export function deleteData(url: string, data: any = {}, contentType = 'applicati
             headers: { "Content-Type": contentType },
             body: contentType == 'application/json' ? JSON.stringify(data) : data
         })
-        .then(afterFetch(responseContentType))
-}*/
+        .then(afterFetch)
+}
