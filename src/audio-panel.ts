@@ -44,7 +44,9 @@ export class AudioJukebox {
 
     constructor(private audioPanel: AudioPanelElements) {
         try {
-            this.queue = JSON.parse(localStorage.getItem('playlist-backup'))
+            let queue = JSON.parse(localStorage.getItem('playlist-backup'))
+            if (queue && queue instanceof Array)
+                this.queue = queue
         }
         catch (err) {
             console.error(`error`, err)

@@ -27,7 +27,9 @@ class AudioJukebox {
         this.queue = [];
         this.currentIndex = -1;
         try {
-            this.queue = JSON.parse(localStorage.getItem('playlist-backup'));
+            let queue = JSON.parse(localStorage.getItem('playlist-backup'));
+            if (queue && queue instanceof Array)
+                this.queue = queue;
         }
         catch (err) {
             console.error(`error`, err);
