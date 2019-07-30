@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const templates_1 = require("./templates");
 const Rest = require("./rest");
+const UiTools = require("./ui-tool");
 const PLAYER = 'player';
 const PLAYLIST = 'playlist';
 const EXPANDER = 'expander';
@@ -78,6 +79,7 @@ class AudioJukebox {
         if (index >= 0 && index < this.queue.length) {
             const item = this.queue[index];
             exports.audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType);
+            UiTools.els(this.audioPanel.playlist, `[x-queue-index=${index}]`).forEach(e => e.scrollIntoView());
         }
     }
     refreshPlaylist() {

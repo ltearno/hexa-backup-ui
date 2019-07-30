@@ -107,6 +107,8 @@ export class AudioJukebox {
         if (index >= 0 && index < this.queue.length) {
             const item = this.queue[index]
             audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType)
+
+            UiTools.els(this.audioPanel.playlist, `[x-queue-index=${index}]`).forEach(e => e.scrollIntoView())
         }
     }
 
