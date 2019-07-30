@@ -28,7 +28,8 @@ class Auth {
                 console.error(`cannot refresh auth (${err})`);
                 this.onError();
             }
-            await wait(10000);
+            // every 30 minutes
+            await wait(1000 * 60 * 30);
         }
     }
 }
