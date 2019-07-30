@@ -3,8 +3,12 @@ async function afterFetch(response: Response) {
         console.error(`bad response : ${JSON.stringify(response)}`)
         return null
     }
-    let receivedContentType = response.headers.get('Content-Type')
+    let receivedContentType = response.headers.get('Content-Type') || 'application/json'
+    let sci = receivedContentType.indexOf(';')
+    if (sci >= 0)
+        receivedContentType = receivedContentType.substr(0, sci)
     console.log(`received contenttype ${receivedContentType}`)
+
     if (receivedContentType == 'application/json')
         return await response.json()
     else
