@@ -1,5 +1,7 @@
 import * as UiTools from './ui-tool'
 
+const elementsData = new WeakMap<HTMLElement, TemplateElements>()
+
 function templateElement<T extends HTMLElement>(root: HTMLElement, name: string): T {
     let list = UiTools.els(root, `[x-id=${name}]`)
     return list.length ? list.item(0) as T : null
@@ -21,13 +23,15 @@ export function createElementAndLocateChildren<T extends HTMLElement>(html: stri
         data[id] = templateElement(root, id)
     }
 
-    root[TEMPLATE_HIDDEN_DATA_ATTRIBUTE] = data
+    elementsData.set(root, data)
+    //root[TEMPLATE_HIDDEN_DATA_ATTRIBUTE] = data
 
     return root as T
 }
 
 export function getTemplateInstanceData<T extends TemplateElements>(root: HTMLElement): T {
-    const data = root[TEMPLATE_HIDDEN_DATA_ATTRIBUTE]
+    const data = elementsData.get(root)
+    //const data = root[TEMPLATE_HIDDEN_DATA_ATTRIBUTE]
     return data as T
 }
 
