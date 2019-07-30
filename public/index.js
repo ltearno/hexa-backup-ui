@@ -13,8 +13,8 @@ document.body.appendChild(audioPanel.root);
 searchPanel.form.addEventListener('submit', async (event) => {
     UiTool.stopEvent(event);
     let term = searchPanel.term.value;
-    let res = await Rest.search(term, 'audio/%');
     SearchPanel.searchPanel.displayTitle(searchPanel, false);
+    let res = await Rest.search(term, 'audio/%');
     FilesPanel.filesPanel.setValues(filesPanel, {
         term: searchPanel.term.value,
         files: res.files
