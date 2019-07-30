@@ -22,7 +22,7 @@ export const filesPanel = {
 
     displaySearching: (elements: FilesPanelElements, term: string) => {
         elements.term.innerText = term
-        elements.files.innerHTML = '...'
+        elements.files.innerHTML = `<div class="mui--text-dark-hint">Searching ...</div>`
     },
 
     setValues: (elements: FilesPanelElements, values: { term: string, files: any[] }) => {
