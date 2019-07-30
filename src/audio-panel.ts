@@ -71,8 +71,17 @@ export class AudioJukebox {
     private play(item: JukeboxItem) {
         this.currentItem = item
 
-        audioPanel.setPlaylist(this.audioPanel, this.queue.map(i => `<div>${i.name} ${i.mimeType} ${i.sha.substr(0, 5)}</div>`).join(''))
+        this.refreshPlaylist()
 
         audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType)
+    }
+
+    private refreshPlaylist() {
+        let html = ``
+        for (let i = 0; i < this.queue.length - 1; i++) {
+            let item = this.queue[i]
+            html += `<div>${item.name} ${item.mimeType} ${item.sha.substr(0, 5)}</div>`
+        }
+        audioPanel.setPlaylist(this.audioPanel, html)
     }
 }

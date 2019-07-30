@@ -48,8 +48,16 @@ class AudioJukebox {
     }
     play(item) {
         this.currentItem = item;
-        exports.audioPanel.setPlaylist(this.audioPanel, this.queue.map(i => `<div>${i.name} ${i.mimeType} ${i.sha.substr(0, 5)}</div>`).join(''));
+        this.refreshPlaylist();
         exports.audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType);
+    }
+    refreshPlaylist() {
+        let html = ``;
+        for (let i = 0; i < this.queue.length - 1; i++) {
+            let item = this.queue[i];
+            html += `<div>${item.name} ${item.mimeType} ${item.sha.substr(0, 5)}</div>`;
+        }
+        exports.audioPanel.setPlaylist(this.audioPanel, html);
     }
 }
 exports.AudioJukebox = AudioJukebox;
