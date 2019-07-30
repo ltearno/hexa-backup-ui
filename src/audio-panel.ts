@@ -22,7 +22,7 @@ export const audioPanel = {
     create: () => createTemplateInstance(templateHtml, [TITLE, PLAYER, PLAYLIST]) as AudioPanelElements,
 
     play: (elements: AudioPanelElements, name: string, sha: string, mimeType: string) => {
-        elements.title.innerText = name
+        elements.title.innerText = name + ' ☰'
 
         elements.player.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`)
         elements.player.setAttribute('type', mimeType)
@@ -54,6 +54,10 @@ export class AudioJukebox {
             else
                 this.stop()
         })
+
+        this.audioPanel.title.addEventListener('click', () => {
+            this.audioPanel.playlist.classList.toggle("is-hidden")
+        })
     }
 
     currentItem() {
@@ -78,6 +82,8 @@ export class AudioJukebox {
 
     private play(index: number) {
         this.currentIndex = index
+        if (this.currentIndex < 0)
+            this.currentIndex = -1
 
         this.refreshPlaylist()
 

@@ -14,7 +14,7 @@ const templateHtml = `
 exports.audioPanel = {
     create: () => templates_1.createTemplateInstance(templateHtml, [TITLE, PLAYER, PLAYLIST]),
     play: (elements, name, sha, mimeType) => {
-        elements.title.innerText = name;
+        elements.title.innerText = name + ' ☰';
         elements.player.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`);
         elements.player.setAttribute('type', mimeType);
         elements.root.classList.remove("is-hidden");
@@ -36,6 +36,9 @@ class AudioJukebox {
             else
                 this.stop();
         });
+        this.audioPanel.title.addEventListener('click', () => {
+            this.audioPanel.playlist.classList.toggle("is-hidden");
+        });
     }
     currentItem() {
         if (this.currentIndex < 0 || this.currentIndex >= this.queue.length)
@@ -54,6 +57,8 @@ class AudioJukebox {
     }
     play(index) {
         this.currentIndex = index;
+        if (this.currentIndex < 0)
+            this.currentIndex = -1;
         this.refreshPlaylist();
         if (index >= 0 && index < this.queue.length) {
             const item = this.queue[index];
