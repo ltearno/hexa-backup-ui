@@ -1,5 +1,6 @@
 import { TemplateElements, createTemplateInstance, templateGetEventLocation } from './templates'
 import * as Rest from './rest'
+import * as UiTools from './ui-tool'
 
 export interface AudioPanelElements extends TemplateElements {
     title: HTMLElement
@@ -15,7 +16,8 @@ const EXPANDER = 'expander'
 
 const templateHtml = `
 <div class="audio-footer mui-panel is-hidden">
-    <div x-id="${PLAYLIST}" class="is-hidden is-fullwidth mui--text-center"></div>
+    <h3 class="x-toggled">Playlist</h3>
+    <div x-id="${PLAYLIST}" class="x-toggled is-fullwidth mui--text-center"></div>
     <div><h3 x-id="${TITLE}" style="display: inline;"></h3><span x-id="${EXPANDER}" class="onclick mui--pull-right">&nbsp;&nbsp;☰</span></div>
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
 </div>`
@@ -58,7 +60,7 @@ export class AudioJukebox {
         })
 
         this.audioPanel.expander.addEventListener('click', () => {
-            this.audioPanel.playlist.classList.toggle("is-hidden")
+            this.toggleLargeDisplay()
         })
     }
 
@@ -96,11 +98,15 @@ export class AudioJukebox {
     }
 
     private refreshPlaylist() {
-        let html = `<h3>Playlist</h3>`
+        let html = ``
         for (let i = 0; i < this.queue.length - 1; i++) {
             let item = this.queue[i]
             html += `<div>${item.name}</div>`
         }
         audioPanel.setPlaylist(this.audioPanel, html)
+    }
+
+    private toggleLargeDisplay() {
+        UiTools.els(this.audioPanel.root, ".x-toggled").forEach(e => e.classList.toggle('is-hidden'))
     }
 }
