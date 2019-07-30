@@ -37,7 +37,10 @@ async function postData(url, data, contentType = 'application/json') {
         headers: { "Content-Type": contentType },
         body: contentType == 'application/json' ? JSON.stringify(data) : data
     });
-    return await afterFetch(response);
+    console.log(`response`, response);
+    const result = await afterFetch(response);
+    console.log(`result`, result);
+    return result;
 }
 exports.postData = postData;
 /*
