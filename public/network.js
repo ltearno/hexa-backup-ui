@@ -15,19 +15,20 @@ async function afterFetch(response) {
     else
         return await response.text();
 }
-function getData(url) {
+function getData(url, headers = null) {
     return fetch(url, {
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
         redirect: 'follow',
-        referrer: 'no-referrer'
+        referrer: 'no-referrer',
+        headers
     })
         .then(afterFetch);
 }
 exports.getData = getData;
-function postData(url, data, contentType = 'application/json') {
+function postData(url, data = {}, contentType = 'application/json') {
     return fetch(url, {
         method: 'POST',
         mode: 'cors',

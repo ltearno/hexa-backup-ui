@@ -3,6 +3,7 @@ import * as SearchPanel from './search-panel'
 import * as FilesPanel from './files-panel'
 import * as AudioPanel from './audio-panel'
 import * as Rest from './rest'
+import * as Auth from './auth'
 
 const searchPanel = SearchPanel.searchPanel.create()
 const filesPanel = FilesPanel.filesPanel.create()
@@ -95,3 +96,5 @@ async function playAudio(name: string, sha: string, mimeType: string) {
     audioJukebox.addAndPlay({ name, sha, mimeType })
 }
 window['playAudio'] = playAudio
+
+new Auth.Auth()

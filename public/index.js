@@ -5,6 +5,7 @@ const SearchPanel = require("./search-panel");
 const FilesPanel = require("./files-panel");
 const AudioPanel = require("./audio-panel");
 const Rest = require("./rest");
+const Auth = require("./auth");
 const searchPanel = SearchPanel.searchPanel.create();
 const filesPanel = FilesPanel.filesPanel.create();
 const audioPanel = AudioPanel.audioPanel.create();
@@ -70,4 +71,5 @@ async function playAudio(name, sha, mimeType) {
     audioJukebox.addAndPlay({ name, sha, mimeType });
 }
 window['playAudio'] = playAudio;
+new Auth.Auth();
 //# sourceMappingURL=index.js.map

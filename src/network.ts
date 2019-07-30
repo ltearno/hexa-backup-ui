@@ -15,7 +15,7 @@ async function afterFetch(response: Response) {
         return await response.text()
 }
 
-export function getData<T>(url: string): Promise<T> {
+export function getData<T>(url: string, headers: { [key: string]: string } = null): Promise<T> {
     return fetch(
         url, {
             method: 'GET',
@@ -23,12 +23,13 @@ export function getData<T>(url: string): Promise<T> {
             cache: 'no-cache',
             credentials: 'same-origin',
             redirect: 'follow',
-            referrer: 'no-referrer'
+            referrer: 'no-referrer',
+            headers
         })
         .then(afterFetch)
 }
 
-export function postData<T>(url: string, data: any, contentType = 'application/json'): Promise<T> {
+export function postData<T>(url: string, data: any = {}, contentType = 'application/json'): Promise<T> {
     return fetch(
         url, {
             method: 'POST',
