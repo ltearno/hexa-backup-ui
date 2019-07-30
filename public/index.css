@@ -222,3 +222,10 @@ html, body, input, textarea, button {
 .is-hidden {
     display: none;
 }
+
+.audio-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
