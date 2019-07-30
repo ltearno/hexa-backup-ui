@@ -224,6 +224,7 @@ html, body, input, textarea, button {
 .hexa--reduced {
     font-size: 16px;
     line-height: 16px;
+    color: rgba(0, 0, 0, .54);
 }
 
 .audio-footer {
