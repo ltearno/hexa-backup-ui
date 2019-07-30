@@ -20,6 +20,11 @@ const templateHtml = `
 export const filesPanel = {
     create: () => createTemplateInstance(templateHtml, [TID_SearchTerm, TID_Files]) as FilesPanelElements,
 
+    displaySearching: (elements: FilesPanelElements, term: string) => {
+        elements.term.innerText = term
+        elements.files.innerHTML = '...'
+    },
+
     setValues: (elements: FilesPanelElements, values: { term: string, files: any[] }) => {
         elements.term.innerText = values.term
         elements.files.innerHTML = values.files.map(f => `<div onclick='playAudio("${f.name}", "${f.sha}", "${f.mimeType}")'>${f.name}</div>`).join('')

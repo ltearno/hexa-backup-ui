@@ -14,6 +14,7 @@ searchPanel.form.addEventListener('submit', async (event) => {
     UiTool.stopEvent(event);
     let term = searchPanel.term.value;
     SearchPanel.searchPanel.displayTitle(searchPanel, false);
+    FilesPanel.filesPanel.displaySearching(filesPanel, term);
     let res = await Rest.search(term, 'audio/%');
     FilesPanel.filesPanel.setValues(filesPanel, {
         term: searchPanel.term.value,
