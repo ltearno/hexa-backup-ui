@@ -7,7 +7,6 @@ function templateElement<T extends HTMLElement>(root: HTMLElement, name: string)
     return list.length ? list.item(0) as T : null
 }
 
-const TEMPLATE_HIDDEN_DATA_ATTRIBUTE = 'template-data'
 export interface TemplateElements {
     root: HTMLElement
 }
@@ -24,14 +23,12 @@ export function createElementAndLocateChildren<T extends HTMLElement>(html: stri
     }
 
     elementsData.set(root, data)
-    //root[TEMPLATE_HIDDEN_DATA_ATTRIBUTE] = data
 
     return root as T
 }
 
 export function getTemplateInstanceData<T extends TemplateElements>(root: HTMLElement): T {
     const data = elementsData.get(root)
-    //const data = root[TEMPLATE_HIDDEN_DATA_ATTRIBUTE]
     return data as T
 }
 

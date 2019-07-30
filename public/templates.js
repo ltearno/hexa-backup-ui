@@ -6,7 +6,6 @@ function templateElement(root, name) {
     let list = UiTools.els(root, `[x-id=${name}]`);
     return list.length ? list.item(0) : null;
 }
-const TEMPLATE_HIDDEN_DATA_ATTRIBUTE = 'template-data';
 function createElementAndLocateChildren(html, elementXIds) {
     let root = UiTools.elFromHtml(html);
     let data = {
@@ -16,13 +15,11 @@ function createElementAndLocateChildren(html, elementXIds) {
         data[id] = templateElement(root, id);
     }
     elementsData.set(root, data);
-    //root[TEMPLATE_HIDDEN_DATA_ATTRIBUTE] = data
     return root;
 }
 exports.createElementAndLocateChildren = createElementAndLocateChildren;
 function getTemplateInstanceData(root) {
     const data = elementsData.get(root);
-    //const data = root[TEMPLATE_HIDDEN_DATA_ATTRIBUTE]
     return data;
 }
 exports.getTemplateInstanceData = getTemplateInstanceData;
