@@ -255,7 +255,12 @@ html, body, input, textarea, button {
     display: none;
 }
 
+.is-fullwidth {
+    width: 100%;
+}
+
 [x-id=playlist] {
     max-height: 70vh;
     overflow-y: auto;
+    width: 100%;
 }

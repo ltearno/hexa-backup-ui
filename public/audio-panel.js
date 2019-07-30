@@ -8,7 +8,7 @@ const PLAYLIST = 'playlist';
 const EXPANDER = 'expander';
 const templateHtml = `
 <div class="audio-footer mui-panel is-hidden">
-    <div x-id="${PLAYLIST}" class="is-hidden"></div>
+    <div x-id="${PLAYLIST}" class="is-hidden is-fullwidth"></div>
     <div><h3 x-id="${TITLE}" style="display: inline;"></h3><span x-id="${EXPANDER}" class="onclick mui--pull-right">&nbsp;&nbsp;☰</span></div>
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
 </div>`;
