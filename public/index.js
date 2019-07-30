@@ -6,6 +6,7 @@ const FilesPanel = require("./files-panel");
 const AudioPanel = require("./audio-panel");
 const Rest = require("./rest");
 const Auth = require("./auth");
+const Templates = require("./templates");
 let contents = [];
 function addContent(content) {
     contents.push(content);
@@ -42,7 +43,8 @@ searchPanel.form.addEventListener('submit', async (event) => {
     });
 });
 filesPanel.root.addEventListener('click', event => {
-    let { element, childIndex } = FilesPanel.templateGetEventLocation(filesPanel, event);
+    // todo : knownledge to do that is in files-panel
+    let { element, childIndex } = Templates.templateGetEventLocation(filesPanel, event);
     if (lastDisplayedFiles && element == filesPanel.files && childIndex >= 0 && childIndex < lastDisplayedFiles.length)
         audioJukebox.addAndPlay(lastDisplayedFiles[childIndex]);
 });

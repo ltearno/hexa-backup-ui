@@ -28,4 +28,24 @@ function createTemplateInstance(html, elementXIds) {
     return getTemplateInstanceData(root);
 }
 exports.createTemplateInstance = createTemplateInstance;
+const EMPTY_LOCATION = { element: null, childIndex: -1 };
+function templateGetEventLocation(elements, event) {
+    let els = new Set(Object.values(elements));
+    let c = event.target;
+    let p = null;
+    do {
+        if (els.has(c)) {
+            return {
+                element: c,
+                childIndex: p && Array.prototype.indexOf.call(c.children, p)
+            };
+        }
+        if (c == elements.root)
+            return EMPTY_LOCATION;
+        p = c;
+        c = c.parentElement;
+    } while (c);
+    return EMPTY_LOCATION;
+}
+exports.templateGetEventLocation = templateGetEventLocation;
 //# sourceMappingURL=templates.js.map

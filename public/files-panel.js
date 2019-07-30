@@ -10,26 +10,6 @@ const templateHtml = `
         <div x-id="${TID_Files}"></div>
     </div>
 </div>`;
-const EMPTY_LOCATION = { element: null, childIndex: -1 };
-function templateGetEventLocation(elements, event) {
-    let els = new Set(Object.values(elements));
-    let c = event.target;
-    let p = null;
-    do {
-        if (els.has(c)) {
-            return {
-                element: c,
-                childIndex: p && Array.prototype.indexOf.call(c.children, p)
-            };
-        }
-        if (c == elements.root)
-            return EMPTY_LOCATION;
-        p = c;
-        c = c.parentElement;
-    } while (c);
-    return EMPTY_LOCATION;
-}
-exports.templateGetEventLocation = templateGetEventLocation;
 exports.filesPanel = {
     create: () => templates_1.createTemplateInstance(templateHtml, [TID_SearchTerm, TID_Files]),
     displaySearching: (elements, term) => {

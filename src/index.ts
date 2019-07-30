@@ -4,6 +4,7 @@ import * as FilesPanel from './files-panel'
 import * as AudioPanel from './audio-panel'
 import * as Rest from './rest'
 import * as Auth from './auth'
+import * as Templates from './templates'
 
 let contents: HTMLElement[] = []
 function addContent(content: HTMLElement) {
@@ -54,7 +55,8 @@ searchPanel.form.addEventListener('submit', async event => {
 })
 
 filesPanel.root.addEventListener('click', event => {
-    let { element, childIndex } = FilesPanel.templateGetEventLocation(filesPanel, event)
+    // todo : knownledge to do that is in files-panel
+    let { element, childIndex } = Templates.templateGetEventLocation(filesPanel, event)
     if (lastDisplayedFiles && element == filesPanel.files && childIndex >= 0 && childIndex < lastDisplayedFiles.length)
         audioJukebox.addAndPlay(lastDisplayedFiles[childIndex])
 })

@@ -36,3 +36,29 @@ export function createTemplateInstance<T extends TemplateElements>(html: string,
     let root = createElementAndLocateChildren(html, elementXIds)
     return getTemplateInstanceData(root)
 }
+
+const EMPTY_LOCATION = { element: null, childIndex: -1 }
+
+export function templateGetEventLocation(elements: TemplateElements, event: Event): { element: HTMLElement, childIndex: number } {
+    let els = new Set(Object.values(elements))
+
+    let c = event.target as HTMLElement
+    let p: HTMLElement = null
+
+    do {
+        if (els.has(c)) {
+            return {
+                element: c,
+                childIndex: p && Array.prototype.indexOf.call(c.children, p)
+            }
+        }
+
+        if (c == elements.root)
+            return EMPTY_LOCATION
+
+        p = c
+        c = c.parentElement
+    } while (c)
+
+    return EMPTY_LOCATION
+}

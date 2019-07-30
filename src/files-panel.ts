@@ -1,4 +1,3 @@
-import * as UiTool from './ui-tool'
 import { TemplateElements, createTemplateInstance } from './templates'
 
 export interface FilesPanelElements extends TemplateElements {
@@ -16,32 +15,6 @@ const templateHtml = `
         <div x-id="${TID_Files}"></div>
     </div>
 </div>`
-
-const EMPTY_LOCATION = { element: null, childIndex: -1 }
-
-export function templateGetEventLocation(elements: TemplateElements, event: Event): { element: HTMLElement, childIndex: number } {
-    let els = new Set(Object.values(elements))
-
-    let c = event.target as HTMLElement
-    let p: HTMLElement = null
-
-    do {
-        if (els.has(c)) {
-            return {
-                element: c,
-                childIndex: p && Array.prototype.indexOf.call(c.children, p)
-            }
-        }
-
-        if (c == elements.root)
-            return EMPTY_LOCATION
-
-        p = c
-        c = c.parentElement
-    } while (c)
-
-    return EMPTY_LOCATION
-}
 
 export const filesPanel = {
     create: () => createTemplateInstance(templateHtml, [TID_SearchTerm, TID_Files]) as FilesPanelElements,

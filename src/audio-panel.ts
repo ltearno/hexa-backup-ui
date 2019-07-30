@@ -1,4 +1,4 @@
-import { TemplateElements, createTemplateInstance } from './templates'
+import { TemplateElements, createTemplateInstance, templateGetEventLocation } from './templates'
 import * as Rest from './rest'
 
 export interface AudioPanelElements extends TemplateElements {
