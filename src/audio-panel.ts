@@ -37,10 +37,17 @@ export interface JukeboxItem {
     mimeType: string
 }
 
+export interface JukeboxItemUnroller {
+    name(): string
+    unroll(): JukeboxItem
+    hasNext(): boolean
+}
+
 export class AudioJukebox {
     private largeDisplay: boolean = false
     private queue: JukeboxItem[] = []
     private currentIndex: number = -1
+    private itemUnroller: JukeboxItemUnroller
 
     constructor(private audioPanel: AudioPanelElements) {
         try {
@@ -53,8 +60,7 @@ export class AudioJukebox {
         }
 
         this.audioPanel.player.addEventListener('ended', () => {
-            if (this.currentIndex + 1 < this.queue.length)
-                this.play(this.currentIndex + 1)
+            this.playNext()
         })
 
         this.audioPanel.expander.addEventListener('click', () => {
@@ -91,9 +97,35 @@ export class AudioJukebox {
         if (currentItem && currentItem.sha == item.sha)
             return
 
+        this.pushQueueAndPlay(item)
+    }
+
+    playNext() {
+        if (this.currentIndex + 1 < this.queue.length) {
+            this.play(this.currentIndex + 1)
+        }
+        else if (this.itemUnroller) {
+            let item = this.itemUnroller.unroll()
+            if (item) {
+                if (!this.itemUnroller.hasNext())
+                    this.itemUnroller = null
+                this.pushQueueAndPlay(item)
+            }
+            else {
+                this.itemUnroller = null
+                this.refreshPlaylist()
+            }
+        }
+    }
+
+    setItemUnroller(itemUnroller: JukeboxItemUnroller) {
+        this.itemUnroller = itemUnroller
+        this.refreshPlaylist()
+    }
+
+    private pushQueueAndPlay(item: JukeboxItem) {
         this.queue.push(item)
         localStorage.setItem('playlist-backup', JSON.stringify(this.queue))
-
         this.play(this.queue.length - 1)
     }
 
@@ -107,12 +139,17 @@ export class AudioJukebox {
         if (index >= 0 && index < this.queue.length) {
             const item = this.queue[index]
             audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType)
-
-            //UiTools.els(this.audioPanel.playlist, `[x-queue-index='${index}']`).forEach(e => e.scrollIntoView())
         }
     }
 
+    private refreshTimer
     private refreshPlaylist() {
+        if (this.refreshTimer)
+            clearTimeout(this.refreshTimer)
+        this.refreshTimer = setTimeout(() => this.realRefreshPlaylist(), 10)
+    }
+
+    private realRefreshPlaylist() {
         if (!this.queue || !this.queue.length) {
             this.audioPanel.playlist.innerHTML = ''
             return
@@ -132,6 +169,9 @@ export class AudioJukebox {
             else
                 this.audioPanel.playlist.innerHTML = ""
         }
+
+        if (this.itemUnroller)
+            this.audioPanel.playlist.innerHTML += `<span class="mui--text-dark-secondary">followed by ${this.itemUnroller.name()}</span>`
     }
 
     private playlistItemHtml(index: number, name: string) {

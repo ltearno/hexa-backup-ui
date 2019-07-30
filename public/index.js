@@ -28,6 +28,7 @@ Auth.autoRenewAuth();
  * Events
  */
 let lastDisplayedFiles = null;
+let lastSearchTerm = null; // HACK very temporary
 searchPanel.form.addEventListener('submit', async (event) => {
     UiTool.stopEvent(event);
     let term = searchPanel.term.value;
@@ -37,6 +38,7 @@ searchPanel.form.addEventListener('submit', async (event) => {
         addContent(filesPanel.root);
     let res = await Rest.search(term, 'audio/%');
     lastDisplayedFiles = res.files;
+    lastSearchTerm = term;
     FilesPanel.filesPanel.setValues(filesPanel, {
         term: searchPanel.term.value,
         files: res.files
@@ -45,7 +47,17 @@ searchPanel.form.addEventListener('submit', async (event) => {
 filesPanel.root.addEventListener('click', event => {
     // todo : knownledge to do that is in files-panel
     let { element, childIndex } = Templates.templateGetEventLocation(filesPanel, event);
-    if (lastDisplayedFiles && element == filesPanel.files && childIndex >= 0 && childIndex < lastDisplayedFiles.length)
+    if (lastDisplayedFiles && element == filesPanel.files && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
         audioJukebox.addAndPlay(lastDisplayedFiles[childIndex]);
+        // set an unroller
+        let term = lastSearchTerm;
+        let unrollIndex = childIndex + 1;
+        let files = lastDisplayedFiles;
+        audioJukebox.setItemUnroller({
+            name: () => `'${term}' songs`,
+            unroll: () => files[unrollIndex++],
+            hasNext: () => unrollIndex >= 0 && unrollIndex < files.length
+        });
+    }
 });
 //# sourceMappingURL=index.js.map

@@ -35,8 +35,7 @@ class AudioJukebox {
             console.error(`error`, err);
         }
         this.audioPanel.player.addEventListener('ended', () => {
-            if (this.currentIndex + 1 < this.queue.length)
-                this.play(this.currentIndex + 1);
+            this.playNext();
         });
         this.audioPanel.expander.addEventListener('click', () => {
             this.largeDisplay = !this.largeDisplay;
@@ -66,6 +65,30 @@ class AudioJukebox {
         let currentItem = this.currentItem();
         if (currentItem && currentItem.sha == item.sha)
             return;
+        this.pushQueueAndPlay(item);
+    }
+    playNext() {
+        if (this.currentIndex + 1 < this.queue.length) {
+            this.play(this.currentIndex + 1);
+        }
+        else if (this.itemUnroller) {
+            let item = this.itemUnroller.unroll();
+            if (item) {
+                if (!this.itemUnroller.hasNext())
+                    this.itemUnroller = null;
+                this.pushQueueAndPlay(item);
+            }
+            else {
+                this.itemUnroller = null;
+                this.refreshPlaylist();
+            }
+        }
+    }
+    setItemUnroller(itemUnroller) {
+        this.itemUnroller = itemUnroller;
+        this.refreshPlaylist();
+    }
+    pushQueueAndPlay(item) {
         this.queue.push(item);
         localStorage.setItem('playlist-backup', JSON.stringify(this.queue));
         this.play(this.queue.length - 1);
@@ -78,10 +101,14 @@ class AudioJukebox {
         if (index >= 0 && index < this.queue.length) {
             const item = this.queue[index];
             exports.audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType);
-            //UiTools.els(this.audioPanel.playlist, `[x-queue-index='${index}']`).forEach(e => e.scrollIntoView())
         }
     }
     refreshPlaylist() {
+        if (this.refreshTimer)
+            clearTimeout(this.refreshTimer);
+        this.refreshTimer = setTimeout(() => this.realRefreshPlaylist(), 10);
+    }
+    realRefreshPlaylist() {
         if (!this.queue || !this.queue.length) {
             this.audioPanel.playlist.innerHTML = '';
             return;
@@ -100,6 +127,8 @@ class AudioJukebox {
             else
                 this.audioPanel.playlist.innerHTML = "";
         }
+        if (this.itemUnroller)
+            this.audioPanel.playlist.innerHTML += `<span class="mui--text-dark-secondary">followed by ${this.itemUnroller.name()}</span>`;
     }
     playlistItemHtml(index, name) {
         return `<div x-queue-index="${index}" class="onclick ${index == this.currentIndex ? 'mui--text-headline' : ''}">${name}</div>`;
