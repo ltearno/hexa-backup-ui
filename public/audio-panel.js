@@ -15,7 +15,7 @@ const templateHtml = `
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
 </div>`;
 exports.audioPanel = {
-    create: () => templates_1.createTemplateInstance(templateHtml, [TITLE, PLAYER, PLAYLIST, EXPANDER]),
+    create: () => templates_1.createTemplateInstance(templateHtml),
     play: (elements, name, sha, mimeType) => {
         elements.title.innerText = name;
         elements.player.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`);

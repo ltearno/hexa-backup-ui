@@ -27,7 +27,7 @@ const templateHtml = `
 </div>`
 
 export const searchPanel = {
-    create: () => createTemplateInstance(templateHtml, [TID_Title, TID_SearchForm, TID_SearchTerm]) as SearchPanelElements,
+    create: () => createTemplateInstance(templateHtml) as SearchPanelElements,
 
     displayTitle: (template: SearchPanelElements, displayed: boolean) => {
         if (displayed)

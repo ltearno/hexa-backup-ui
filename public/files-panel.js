@@ -11,7 +11,7 @@ const templateHtml = `
     </div>
 </div>`;
 exports.filesPanel = {
-    create: () => templates_1.createTemplateInstance(templateHtml, [TID_SearchTerm, TID_Files]),
+    create: () => templates_1.createTemplateInstance(templateHtml),
     displaySearching: (elements, term) => {
         elements.term.innerText = term;
         elements.files.innerHTML = `<div class="mui--text-dark-hint">Searching ...</div>`;

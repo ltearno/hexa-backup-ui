@@ -20,7 +20,7 @@ const templateHtml = `
     </div>
 </div>`;
 exports.searchPanel = {
-    create: () => templates_1.createTemplateInstance(templateHtml, [TID_Title, TID_SearchForm, TID_SearchTerm]),
+    create: () => templates_1.createTemplateInstance(templateHtml),
     displayTitle: (template, displayed) => {
         if (displayed)
             template.title.classList.remove('hexa--reduced');

@@ -17,7 +17,7 @@ const templateHtml = `
 </div>`
 
 export const filesPanel = {
-    create: () => createTemplateInstance(templateHtml, [TID_SearchTerm, TID_Files]) as FilesPanelElements,
+    create: () => createTemplateInstance(templateHtml) as FilesPanelElements,
 
     displaySearching: (elements: FilesPanelElements, term: string) => {
         elements.term.innerText = term

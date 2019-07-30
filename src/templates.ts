@@ -11,16 +11,14 @@ export interface TemplateElements {
     root: HTMLElement
 }
 
-export function createElementAndLocateChildren<T extends HTMLElement>(html: string, elementXIds: string[]): T {
+export function createElementAndLocateChildren<T extends HTMLElement>(html: string): T {
     let root = UiTools.elFromHtml(html)
 
     let data: TemplateElements = {
         root
     }
 
-    for (let id of elementXIds) {
-        data[id] = templateElement(root, id)
-    }
+    UiTools.els(root, `[x-id]`).forEach(e => data[e.getAttribute('x-id')] = e)
 
     elementsData.set(root, data)
 
@@ -32,8 +30,8 @@ export function getTemplateInstanceData<T extends TemplateElements>(root: HTMLEl
     return data as T
 }
 
-export function createTemplateInstance<T extends TemplateElements>(html: string, elementXIds: string[]): T {
-    let root = createElementAndLocateChildren(html, elementXIds)
+export function createTemplateInstance<T extends TemplateElements>(html: string): T {
+    let root = createElementAndLocateChildren(html)
     return getTemplateInstanceData(root)
 }
 

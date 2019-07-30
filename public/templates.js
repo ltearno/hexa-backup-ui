@@ -6,14 +6,12 @@ function templateElement(root, name) {
     let list = UiTools.els(root, `[x-id=${name}]`);
     return list.length ? list.item(0) : null;
 }
-function createElementAndLocateChildren(html, elementXIds) {
+function createElementAndLocateChildren(html) {
     let root = UiTools.elFromHtml(html);
     let data = {
         root
     };
-    for (let id of elementXIds) {
-        data[id] = templateElement(root, id);
-    }
+    UiTools.els(root, `[x-id]`).forEach(e => data[e.getAttribute('x-id')] = e);
     elementsData.set(root, data);
     return root;
 }
@@ -23,8 +21,8 @@ function getTemplateInstanceData(root) {
     return data;
 }
 exports.getTemplateInstanceData = getTemplateInstanceData;
-function createTemplateInstance(html, elementXIds) {
-    let root = createElementAndLocateChildren(html, elementXIds);
+function createTemplateInstance(html) {
+    let root = createElementAndLocateChildren(html);
     return getTemplateInstanceData(root);
 }
 exports.createTemplateInstance = createTemplateInstance;
