@@ -8,7 +8,9 @@ const searchPanel = SearchPanel.searchPanel.create();
 const filesPanel = FilesPanel.filesPanel.create();
 searchPanel.form.addEventListener('submit', async (event) => {
     UiTool.stopEvent(event);
-    let res = await Rest.search(searchPanel.term.value, 'audio/%');
+    let term = searchPanel.term.value;
+    let res = await Rest.search(term, 'audio/%');
+    SearchPanel.searchPanel.displayTitle(searchPanel, false);
     FilesPanel.filesPanel.setValues(filesPanel, {
         term: searchPanel.term.value,
         files: res.files
