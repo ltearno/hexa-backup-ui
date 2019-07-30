@@ -221,13 +221,18 @@ html, body, input, textarea, button {
     left: 0;
     right: 0;
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: column nowrap;
     align-items: center;
     margin-bottom: 0;
+    padding: 5px;
+}
+
+.audio-footer>h3 {
+    margin: 0;
 }
 
 .audio-player {
-    flex-grow: 1;
+    width: 100%;
 }
 
 [onclick] {
