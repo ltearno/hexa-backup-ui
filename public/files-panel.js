@@ -10,24 +10,25 @@ const templateHtml = `
         <div x-id="${TID_Files}"></div>
     </div>
 </div>`;
-function templateAddEventListener(elements, name, listener) {
-    elements.root.addEventListener(name, event => {
-        let els = new Set(Object.values(elements));
-        let c = event.target;
-        let p = null;
-        do {
-            if (els.has(c)) {
-                listener(event, c, p && Array.prototype.indexOf.call(c.children, p));
-                return;
-            }
-            if (c == elements.root)
-                return;
-            p = c;
-            c = c.parentElement;
-        } while (c);
-    });
+function templateGetEventLocation(elements, event) {
+    let els = new Set(Object.values(elements));
+    let c = event.target;
+    let p = null;
+    do {
+        if (els.has(c)) {
+            return {
+                element: c,
+                childIndex: p && Array.prototype.indexOf.call(c.children, p)
+            };
+        }
+        if (c == elements.root)
+            return { element: null, childIndex: -1 };
+        p = c;
+        c = c.parentElement;
+    } while (c);
+    return { element: null, childIndex: -1 };
 }
-exports.templateAddEventListener = templateAddEventListener;
+exports.templateGetEventLocation = templateGetEventLocation;
 exports.filesPanel = {
     create: () => templates_1.createTemplateInstance(templateHtml, [TID_SearchTerm, TID_Files]),
     displaySearching: (elements, term) => {

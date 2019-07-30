@@ -41,9 +41,9 @@ searchPanel.form.addEventListener('submit', async (event) => {
         files: res.files
     });
 });
-FilesPanel.templateAddEventListener(filesPanel, 'click', (event, element, childIndex) => {
+filesPanel.root.addEventListener('click', event => {
+    let { element, childIndex } = FilesPanel.templateGetEventLocation(filesPanel, event);
     if (lastDisplayedFiles && element == filesPanel.files && childIndex >= 0 && childIndex < lastDisplayedFiles.length)
         audioJukebox.addAndPlay(lastDisplayedFiles[childIndex]);
-    console.log(`click ${element.getAttribute('x-id')}, child ${childIndex}`);
 });
 //# sourceMappingURL=index.js.map

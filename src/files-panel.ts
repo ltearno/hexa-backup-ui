@@ -17,26 +17,28 @@ const templateHtml = `
     </div>
 </div>`
 
-export function templateAddEventListener(elements: TemplateElements, name: string, listener: (event: Event, firstTemplateElement: HTMLElement, incomingChildIndex: number) => any) {
-    elements.root.addEventListener(name, event => {
-        let els = new Set(Object.values(elements))
+export function templateGetEventLocation(elements: TemplateElements, event: Event): { element: HTMLElement, childIndex: number } {
+    let els = new Set(Object.values(elements))
 
-        let c = event.target as HTMLElement
-        let p: HTMLElement = null
+    let c = event.target as HTMLElement
+    let p: HTMLElement = null
 
-        do {
-            if (els.has(c)) {
-                listener(event, c, p && Array.prototype.indexOf.call(c.children, p))
-                return
+    do {
+        if (els.has(c)) {
+            return {
+                element: c,
+                childIndex: p && Array.prototype.indexOf.call(c.children, p)
             }
+        }
 
-            if (c == elements.root)
-                return
+        if (c == elements.root)
+            return { element: null, childIndex: -1 }
 
-            p = c
-            c = c.parentElement
-        } while (c)
-    })
+        p = c
+        c = c.parentElement
+    } while (c)
+
+    return { element: null, childIndex: -1 }
 }
 
 export const filesPanel = {
