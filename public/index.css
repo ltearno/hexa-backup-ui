@@ -230,6 +230,8 @@ html, body, input, textarea, button {
     right: 0;
     display: flex;
     flex-flow: row nowrap;
+    align-items: center;
+    margin-bottom: 0;
 }
 
 #audio-player {
