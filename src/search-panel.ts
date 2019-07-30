@@ -18,7 +18,7 @@ const templateHtml = `
             <!--this is a little hack to have things centered-->
             <div class="mui-btn mui-btn--flat" style="visibility: hidden;">🔍</div>
             <div class="mui-textfield">
-                <input x-id="${TID_SearchTerm}" type="text">
+                <input x-id="${TID_SearchTerm}" type="text" autofocus>
             </div>
             <button role="submit" class="mui-btn mui-btn--flat">🔍</button>
         </form>
