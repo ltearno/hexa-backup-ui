@@ -1,15 +1,23 @@
 import * as UiTool from './ui-tool'
 import * as SearchPanel from './search-panel'
+import * as FilesPanel from './files-panel'
 import * as Rest from './rest'
 
 const searchPanel = SearchPanel.searchPanel.create()
+const filesPanel = FilesPanel.filesPanel.create()
 
 searchPanel.form.addEventListener('submit', async event => {
     UiTool.stopEvent(event)
 
     let res = await Rest.search(searchPanel.term.value, 'audio/%')
 
-    addContent(UiTool.elFromHtml(`<div>${res.files.map(f => `<div>${f.name}</div>`).join('')}</div>`))
+    FilesPanel.filesPanel.setValues(filesPanel, {
+        term: searchPanel.term.value,
+        files: res.files
+    })
+
+    if (!filesPanel.root.parentElement)
+        addContent(filesPanel.root)
 })
 
 let contents: HTMLElement[] = []
