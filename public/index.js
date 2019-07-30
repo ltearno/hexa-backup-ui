@@ -39,4 +39,5 @@ async function playAudio(sha, mimeType) {
 audioElement.addEventListener('ended', () => {
     //listenNext()
 });
+window['playAudio'] = playAudio;
 //# sourceMappingURL=index.js.map

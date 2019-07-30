@@ -52,3 +52,5 @@ async function playAudio(sha: string, mimeType: string) {
 audioElement.addEventListener('ended', () => {
     //listenNext()
 })
+
+window['playAudio'] = playAudio
