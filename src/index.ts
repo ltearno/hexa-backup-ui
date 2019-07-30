@@ -44,12 +44,11 @@ addContent(searchPanel.root)
 
 
 async function playAudio(name: string, sha: string, mimeType: string) {
+    audioPanel.root.classList.remove("is-hidden")
+
     audioPanel.title.innerText = name
 
     const audioElement = audioPanel.player
-
-    audioElement.classList.remove("is-hidden")
-
     audioElement.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`)
     audioElement.setAttribute('type', mimeType)
     audioElement.play()
