@@ -23,9 +23,6 @@ exports.audioPanel = {
         elements.root.classList.remove("is-hidden");
         elements.player.play();
     },
-    setPlaylist(elements, html) {
-        elements.playlist.innerHTML = html;
-    }
 };
 class AudioJukebox {
     constructor(audioPanel) {
@@ -33,17 +30,20 @@ class AudioJukebox {
         this.queue = [];
         this.currentIndex = -1;
         this.audioPanel.player.addEventListener('ended', () => {
-            this.currentIndex++;
-            if (this.currentIndex < this.queue.length)
+            if (this.currentIndex + 1 < this.queue.length)
                 this.play(this.currentIndex + 1);
-            else
-                this.stop();
         });
         this.audioPanel.expander.addEventListener('click', () => {
             this.toggleLargeDisplay();
         });
         this.toggledElements = UiTools.els(this.audioPanel.root, ".x-toggled");
         this.toggledElements.forEach(e => e.classList.add('is-hidden'));
+        this.audioPanel.root.addEventListener('click', event => {
+            const { element, childIndex } = templates_1.templateGetEventLocation(this.audioPanel, event);
+            if (element == this.audioPanel.playlist && childIndex >= 0 && childIndex < this.queue.length) {
+                this.play(childIndex);
+            }
+        });
     }
     currentItem() {
         if (this.currentIndex < 0 || this.currentIndex >= this.queue.length)
@@ -69,6 +69,9 @@ class AudioJukebox {
             const item = this.queue[index];
             exports.audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType);
         }
+        else {
+            // this.audioPanel.player.stop()
+        }
     }
     refreshPlaylist() {
         let html = ``;
@@ -76,7 +79,7 @@ class AudioJukebox {
             let item = this.queue[i];
             html += `<div>${item.name}</div>`;
         }
-        exports.audioPanel.setPlaylist(this.audioPanel, html);
+        this.audioPanel.playlist.innerHTML = html;
     }
     toggleLargeDisplay() {
         this.toggledElements.forEach(e => e.classList.toggle('is-hidden'));
