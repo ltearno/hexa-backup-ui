@@ -29,8 +29,8 @@ export function getData(url: string, responseContentType = 'application/json') {
         .then(afterFetch(responseContentType))
 }
 */
-async function postData(url, data, contentType = 'application/json') {
-    let response = await fetch(url, {
+function postData(url, data, contentType = 'application/json') {
+    return fetch(url, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -39,11 +39,8 @@ async function postData(url, data, contentType = 'application/json') {
         referrer: 'no-referrer',
         headers: { "Content-Type": contentType },
         body: contentType == 'application/json' ? JSON.stringify(data) : data
-    });
-    console.log(`response`, response);
-    const result = await afterFetch(response);
-    console.log(`result`, result);
-    return result;
+    })
+        .then(afterFetch);
 }
 exports.postData = postData;
 /*
