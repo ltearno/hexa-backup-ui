@@ -22,8 +22,9 @@ const audioPanel = AudioPanel.audioPanel.create();
 document.body.appendChild(audioPanel.root);
 addContent(searchPanel.root);
 const audioJukebox = new AudioPanel.AudioJukebox(audioPanel);
-async function playAudio(name, sha, mimeType) {
-    audioJukebox.addAndPlay({ name: decodeURIComponent(name), sha: decodeURIComponent(sha), mimeType: decodeURIComponent(mimeType) });
+async function playAudio(item) {
+    const { name, sha, mimeType } = JSON.parse(item);
+    audioJukebox.addAndPlay({ name, sha, mimeType });
 }
 window['playAudio'] = playAudio;
 Auth.autoRenewAuth();

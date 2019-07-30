@@ -19,7 +19,7 @@ exports.filesPanel = {
     setValues: (elements, values) => {
         elements.term.innerText = values.term;
         if (values.files && values.files.length)
-            elements.files.innerHTML = values.files.map(f => `<div onclick="playAudio('${encodeURIComponent(f.name)}', '${encodeURIComponent(f.sha)}', '${encodeURIComponent(f.mimeType)}')">${f.name}</div>`).join('');
+            elements.files.innerHTML = values.files.map(f => `<div onclick='playAudio(${JSON.stringify(f)})'>${f.name}</div>`).join('');
         else
             elements.files.innerHTML = `<div class="mui--text-dark-hint">No results</div>`;
     }
