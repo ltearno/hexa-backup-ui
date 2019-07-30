@@ -223,7 +223,7 @@ html, body, input, textarea, button {
 
 .hexa--reduced {
     font-size: 16px;
-    /*line-height: 24px;*/
+    line-height: 16px;
 }
 
 .audio-footer {
