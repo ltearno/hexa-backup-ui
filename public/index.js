@@ -62,18 +62,25 @@ searchResultPanel.root.addEventListener('click', event => {
     if (lastDisplayedFiles && element == searchResultPanel.files && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
         audioJukebox.addAndPlay(lastDisplayedFiles[childIndex]);
         // set an unroller
-        let term = lastSearchTerm;
-        let unrollIndex = childIndex + 1;
-        let files = lastDisplayedFiles;
-        audioJukebox.setItemUnroller({
-            name: () => {
-                if (unrollIndex >= 0 && unrollIndex < files.length)
-                    return `then '${files[unrollIndex].name.substr(0, 20)}' and other '${term}' search...`;
-                return `finished '${term} songs`;
-            },
-            unroll: () => files[unrollIndex++],
-            hasNext: () => unrollIndex >= 0 && unrollIndex < files.length
-        });
+        if (childIndex >= lastDisplayedFiles.length - 1) {
+            audioJukebox.setItemUnroller(null);
+        }
+        else {
+            let term = lastSearchTerm;
+            let unrolledItems = lastDisplayedFiles.slice(childIndex + 1).filter(f => f.mimeType.startsWith('audio/'));
+            let unrollIndex = 0;
+            if (unrolledItems.length) {
+                audioJukebox.setItemUnroller({
+                    name: () => {
+                        if (unrollIndex >= 0 && unrollIndex < unrolledItems.length)
+                            return `then '${unrolledItems[unrollIndex].name.substr(0, 20)}' and ${unrolledItems.length - unrollIndex - 1} other '${term}' searched items...`;
+                        return `finished '${term} songs`;
+                    },
+                    unroll: () => unrolledItems[unrollIndex++],
+                    hasNext: () => unrollIndex >= 0 && unrollIndex < unrolledItems.length
+                });
+            }
+        }
     }
 });
 //# sourceMappingURL=index.js.map
