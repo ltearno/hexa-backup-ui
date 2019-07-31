@@ -96,6 +96,7 @@ class AudioJukebox {
         let currentItem = this.currentItem();
         if (currentItem && currentItem.sha == item.sha)
             return;
+        console.log(`item: `, item);
         this.pushQueueAndPlay(item);
     }
     playNext() {
