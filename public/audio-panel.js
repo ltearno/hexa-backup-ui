@@ -136,7 +136,7 @@ class AudioJukebox {
             document.querySelectorAll(`[x-for-sha='${item.sha.substr(0, 5)}']`).forEach(e => e.classList.add('is-weighted'));
         }
         if (index == this.queue.length - 1) {
-            this.audioPanel.playlist.scrollTop += 100000;
+            this.audioPanel.playlist.scrollTop = this.audioPanel.playlist.scrollHeight;
         }
     }
     refreshPlaylist() {
