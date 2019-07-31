@@ -61,6 +61,9 @@ function readHashAndAct() {
         const name = parsed.pathname.substring('/refs/'.length);
         loadReference(name);
     }
+    else {
+        console.log(`unkown path ${parsed.pathname}`);
+    }
 }
 const searchPanel = SearchPanel.searchPanel.create();
 const searchResultPanel = SearchResultPanel.searchResultPanel.create();
