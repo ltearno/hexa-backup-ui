@@ -86,6 +86,20 @@ UiTool.el('content-wrapper').insertBefore(searchPanel.root, UiTool.el('first-ele
 Auth.autoRenewAuth()
 
 /**
+ * Waiter tool
+ */
+
+const beginWait = (callback: () => any) => {
+    let isDone = false
+    setTimeout(() => isDone || callback(), 500)
+    return {
+        done: () => {
+            isDone = true
+        }
+    }
+}
+
+/**
  * Events
  */
 
@@ -176,20 +190,6 @@ function goLoadDirectory(sha: string, name: string) {
 }
 
 async function loadDirectory(item: Rest.FileDescriptor) {
-    function wait(duration) {
-        return new Promise(resolve => setTimeout(resolve, duration))
-    }
-
-    const beginWait = (callback: () => any) => {
-        let isDone = false
-        wait(500).then(() => isDone || callback())
-        return {
-            done: () => {
-                isDone = true
-            }
-        }
-    }
-
     const waiting = beginWait(() => {
         setContent(directoryPanel.root)
         DirectoryPanel.directoryPanel.setLoading(directoryPanel, item.name)

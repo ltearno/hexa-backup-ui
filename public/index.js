@@ -72,6 +72,18 @@ document.body.appendChild(audioPanel.root);
 UiTool.el('content-wrapper').insertBefore(searchPanel.root, UiTool.el('first-element-after-contents'));
 Auth.autoRenewAuth();
 /**
+ * Waiter tool
+ */
+const beginWait = (callback) => {
+    let isDone = false;
+    setTimeout(() => isDone || callback(), 500);
+    return {
+        done: () => {
+            isDone = true;
+        }
+    };
+};
+/**
  * Events
  */
 let lastDisplayedFiles = null;
@@ -142,18 +154,6 @@ function goLoadDirectory(sha, name) {
     window.location.href = url;
 }
 async function loadDirectory(item) {
-    function wait(duration) {
-        return new Promise(resolve => setTimeout(resolve, duration));
-    }
-    const beginWait = (callback) => {
-        let isDone = false;
-        wait(500).then(() => isDone || callback());
-        return {
-            done: () => {
-                isDone = true;
-            }
-        };
-    };
     const waiting = beginWait(() => {
         setContent(directoryPanel.root);
         DirectoryPanel.directoryPanel.setLoading(directoryPanel, item.name);
