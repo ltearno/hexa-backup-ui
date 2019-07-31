@@ -107,17 +107,19 @@ function goSearchItems(term) {
     window.location.href = url;
 }
 async function searchItems(term) {
-    //searchPanel.term.value = term
     SearchPanel.searchPanel.displayTitle(searchPanel, false);
-    SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term);
-    if (!searchResultPanel.root.isConnected)
+    const waiting = beginWait(() => {
         setContent(searchResultPanel.root);
+        SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term);
+    });
     let res = await Rest.search(term, 'audio/%');
     // first files then directories
     res.items = res.items.filter(i => !i.mimeType.startsWith('application/directory')).concat(res.items.filter(i => i.mimeType.startsWith('application/directory')));
     res.items = beautifyNames(res.items);
     lastDisplayedFiles = res.items;
     lastSearchTerm = term;
+    waiting.done();
+    setContent(searchResultPanel.root);
     SearchResultPanel.searchResultPanel.setValues(searchResultPanel, {
         term: searchPanel.term.value,
         items: res.items

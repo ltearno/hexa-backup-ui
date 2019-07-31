@@ -128,12 +128,12 @@ function goSearchItems(term: string) {
 }
 
 async function searchItems(term: string) {
-    //searchPanel.term.value = term
-
     SearchPanel.searchPanel.displayTitle(searchPanel, false)
-    SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term)
-    if (!searchResultPanel.root.isConnected)
+
+    const waiting = beginWait(() => {
         setContent(searchResultPanel.root)
+        SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term)
+    })
 
     let res = await Rest.search(term, 'audio/%')
 
@@ -144,6 +144,9 @@ async function searchItems(term: string) {
 
     lastDisplayedFiles = res.items
     lastSearchTerm = term
+
+    waiting.done()
+    setContent(searchResultPanel.root)
 
     SearchResultPanel.searchResultPanel.setValues(searchResultPanel, {
         term: searchPanel.term.value,
