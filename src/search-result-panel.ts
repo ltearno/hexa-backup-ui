@@ -28,6 +28,8 @@ export const searchResultPanel = {
             elements.items.innerHTML = values.items.map(f => {
                 if (f.mimeType == 'application/directory')
                     return `<div class="onclick"><i>${f.name} ...</i></div>`
+                else if (f.mimeType == 'application/reference')
+                    return `<div class="onclick"><i>${f.name} ...</i></div>`
                 else if (f.mimeType.startsWith('audio/'))
                     return `<div x-for-sha="${f.sha.substr(0, 5)}" class="onclick">${f.name}</div>`
                 else
