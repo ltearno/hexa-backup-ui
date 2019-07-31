@@ -68,7 +68,7 @@ export class AudioJukebox {
             this.refreshPlaylist()
             if (this.currentIndex >= 0) {
                 let e = this.audioPanel.playlist.querySelector(`[x-queue-index='${this.currentIndex}']`)
-                e && e.scrollIntoView()
+                e.scrollIntoView()
             }
         })
 
