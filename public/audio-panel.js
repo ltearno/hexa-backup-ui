@@ -48,8 +48,14 @@ class AudioJukebox {
             const { element, childIndex } = templates_1.templateGetEventLocation(this.audioPanel, event);
             if (element == this.audioPanel.playlist && childIndex >= 0) {
                 let queueIndex = element.children.item(childIndex).getAttribute('x-queue-index');
-                if (queueIndex && queueIndex.length)
-                    this.play(parseInt(queueIndex));
+                if (queueIndex && queueIndex.length) {
+                    let val = parseInt(queueIndex);
+                    if (val < this.queue.length)
+                        this.play(val);
+                    else
+                        this.playNext(); // will fetch from unroller if present
+                    return;
+                }
                 if (event.target == this.audioPanel.playlist.querySelector(`[x-id='clear-playlist']`)) {
                     let currentItem = this.currentItem();
                     if (currentItem) {
@@ -149,7 +155,7 @@ class AudioJukebox {
                 this.audioPanel.playlist.innerHTML = "";
         }
         if (this.itemUnroller && this.itemUnroller.hasNext())
-            this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`;
+            this.audioPanel.playlist.innerHTML += `<div x-queue-index="${this.queue.length}" class="onclick mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`;
         if (this.largeDisplay)
             this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`;
         // after refresh steps
