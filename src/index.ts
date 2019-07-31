@@ -28,7 +28,7 @@ function parseURL(url: string) {
     queries = parser.search.replace(/^\?/, '').split('&');
     for (i = 0; i < queries.length; i++) {
         split = queries[i].split('=');
-        searchObject[split[0]] = split[1];
+        searchObject[split[0]] = decodeURIComponent(split[1])
     }
     return {
         pathname: parser.pathname,
