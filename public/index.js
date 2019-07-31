@@ -12,12 +12,48 @@ const MimeTypes = require("./mime-types-module");
 /*
 hash urls :
 
-- ''                                search
-- '#/'                              search
-- '#'                               search
-- '#/search                         search
+- ''                                home
+- '#/'                              home
+- '#'                               home
+- '#/search/:term                   search
 - '#/directories/:sha?name=xxx      directory
 */
+function parseURL(url) {
+    var parser = document.createElement('a'), searchObject = {}, queries, split, i;
+    // Let the browser do the work
+    parser.href = url;
+    // Convert query string to object
+    queries = parser.search.replace(/^\?/, '').split('&');
+    for (i = 0; i < queries.length; i++) {
+        split = queries[i].split('=');
+        searchObject[split[0]] = split[1];
+    }
+    return {
+        pathname: parser.pathname,
+        search: parser.search,
+        searchObject: searchObject
+    };
+}
+function readHashAndAct() {
+    let hash = '';
+    if (window.location.hash && window.location.hash.startsWith('#'))
+        hash = window.location.hash.substr(1);
+    let parsed = parseURL(hash);
+    if (parsed.pathname.startsWith('/search/')) {
+        searchItems(parsed.pathname.substr('/search/'.length));
+    }
+    else if (parsed.pathname.startsWith('/directories/')) {
+        const sha = parsed.pathname.substring('/directories/'.length);
+        const name = parsed.searchObject.name || sha;
+        loadDirectory({
+            lastWrite: 0,
+            mimeType: 'application/directory',
+            size: 0,
+            sha,
+            name
+        });
+    }
+}
 const searchPanel = SearchPanel.searchPanel.create();
 const searchResultPanel = SearchResultPanel.searchResultPanel.create();
 const audioPanel = AudioPanel.audioPanel.create();
@@ -152,4 +188,5 @@ directoryPanel.root.addEventListener('click', async (event) => {
         itemDefaultAction(childIndex);
     }
 });
+readHashAndAct();
 //# sourceMappingURL=index.js.map
