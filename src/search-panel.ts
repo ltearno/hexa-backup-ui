@@ -17,8 +17,9 @@ const templateHtml = `
         <form x-id="${TID_SearchForm}" class="mui-form--inline">
             <!--this is a little hack to have things centered-->
             <div class="mui-btn mui-btn--flat" style="visibility: hidden;">🔍</div>
-            <div class="mui-textfield">
-                <input placeholder="Search an audio title" x-id="${TID_SearchTerm}" type="text" style="text-align: center;" autofocus>
+            <div class="mui-textfield mui-textfield--float-label>
+                <input x-id="${TID_SearchTerm}" type="text" style="text-align: center;" autofocus>
+                <label>Search an audio title</label>
             </div>
             <button role="submit" class="mui-btn mui-btn--flat">🔍</button>
         </form>
