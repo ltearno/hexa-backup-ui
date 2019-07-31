@@ -32,18 +32,8 @@ Auth.autoRenewAuth();
  */
 let lastDisplayedFiles = null;
 let lastSearchTerm = null; // HACK very temporary
-searchPanel.form.addEventListener('submit', async (event) => {
-    UiTool.stopEvent(event);
-    let term = searchPanel.term.value;
-    SearchPanel.searchPanel.displayTitle(searchPanel, false);
-    SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term);
-    if (!searchResultPanel.root.isConnected)
-        addContent(searchResultPanel.root);
-    let res = await Rest.search(term, 'audio/%');
-    // first files then directories
-    res.items = res.items.filter(i => !i.mimeType.startsWith('application/directory')).concat(res.items.filter(i => i.mimeType.startsWith('application/directory')));
-    // arrange and beautify names
-    res.items = res.items.map(file => {
+function beautifyNames(items) {
+    return items.map(file => {
         if (file.mimeType.startsWith('audio/')) {
             let dot = file.name.lastIndexOf('.');
             if (dot)
@@ -54,12 +44,28 @@ searchPanel.form.addEventListener('submit', async (event) => {
         }
         return file;
     });
-    lastDisplayedFiles = res.items;
-    lastSearchTerm = term;
+}
+async function searchItems(term) {
+    searchPanel.term.value = term;
+    SearchPanel.searchPanel.displayTitle(searchPanel, false);
+    SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term);
+    if (!searchResultPanel.root.isConnected)
+        addContent(searchResultPanel.root);
+    let res = await Rest.search(term, 'audio/%');
+    // first files then directories
+    res.items = res.items.filter(i => !i.mimeType.startsWith('application/directory')).concat(res.items.filter(i => i.mimeType.startsWith('application/directory')));
+    res.items = beautifyNames(res.files);
     SearchResultPanel.searchResultPanel.setValues(searchResultPanel, {
         term: searchPanel.term.value,
         items: res.items
     });
+    lastDisplayedFiles = res.items;
+    lastSearchTerm = term;
+}
+searchPanel.form.addEventListener('submit', event => {
+    UiTool.stopEvent(event);
+    let term = searchPanel.term.value;
+    searchItems(term);
 });
 function getMimeType(f) {
     if (f.isDirectory)
