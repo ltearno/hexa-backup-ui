@@ -22,17 +22,18 @@ export const filesPanel = {
         elements.title.innerHTML = `<div class="mui--text-dark-hint">Searching '${term}' ...</div>`
     },
 
-    setValues: (elements: FilesPanelElements, values: { term: string, directories: any[], files: any[] }) => {
+    setValues: (elements: FilesPanelElements, values: { term: string, items: any[] }) => {
         elements.title.innerHTML = `Results for '${values.term}'`
 
-        if (values.directories && values.directories.length) {
-            console.log('dirs', values.directories)
-            elements.directories.innerHTML = values.directories.map(d => `<div>${JSON.stringify(d)}</div>`).join('')
+        if (values.items && values.items.length) {
+            elements.files.innerHTML = values.items.map(f => {
+                if (f.mimeType == 'application/directory')
+                    return `<div>${JSON.stringify(f)}</div>`
+                return `<div x-for-sha="${f.sha.substr(0, 5)}" class="onclick">${f.name}</div>`
+            }).join('')
         }
-
-        if (values.files && values.files.length)
-            elements.files.innerHTML = values.files.map(f => `<div x-for-sha="${f.sha.substr(0, 5)}" class="onclick">${f.name}</div>`).join('')
-        else
+        else {
             elements.files.innerHTML = `<div class="mui--text-dark-hint">No results</div>`
+        }
     },
 }

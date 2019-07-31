@@ -17,6 +17,7 @@ export interface FileDescriptor {
 export interface SearchResult {
     directories: DirectorySearchResult[]
     files: FileDescriptor[]
+    items: FileDescriptor[]
 }
 
 export const HEXA_BACKUP_BASE_URL = window.location.hostname == "home.lteconsulting.fr" ? "https://home.lteconsulting.fr" : "https://localhost:5005"
@@ -28,11 +29,12 @@ export async function search(searchText: string, mimeType: string): Promise<Sear
             mimeType: mimeType
         }
 
-        const { resultDirectories, resultFilesddd } = await Network.postData(`${HEXA_BACKUP_BASE_URL}/search`, searchSpec)
+        const { resultDirectories, resultFilesddd, items } = await Network.postData(`${HEXA_BACKUP_BASE_URL}/search`, searchSpec)
 
         return {
             directories: resultDirectories,
-            files: resultFilesddd
+            files: resultFilesddd,
+            items
         }
     }
     catch (err) {

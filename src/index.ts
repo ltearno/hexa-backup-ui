@@ -47,24 +47,26 @@ searchPanel.form.addEventListener('submit', async event => {
 
     let res = await Rest.search(term, 'audio/%')
 
-    // HACK seulement parceque c'est de l'audio
-    res.files = res.files.map(file => {
-        let dot = file.name.lastIndexOf('.')
-        if (dot)
-            file.name = file.name.substring(0, dot)
-        file.name = file.name.replace(/'_'/g, ' ')
-            .replace(/'  '/g, ' ')
-            .replace(/[ ]*-[ ]*/g, ' - ')
+    // arrange and beautify names
+    res.items = res.items.map(file => {
+        if (file.mimeType.startsWith('audio/')) {
+            let dot = file.name.lastIndexOf('.')
+            if (dot)
+                file.name = file.name.substring(0, dot)
+            file.name = file.name.replace(/'_'/g, ' ')
+                .replace(/'  '/g, ' ')
+                .replace(/[ ]*-[ ]*/g, ' - ')
+        }
+
         return file
     })
 
-    lastDisplayedFiles = res.files
+    lastDisplayedFiles = res.items
     lastSearchTerm = term
 
     FilesPanel.filesPanel.setValues(filesPanel, {
         term: searchPanel.term.value,
-        files: res.files,
-        directories: res.directories
+        items: res.items
     })
 })
 

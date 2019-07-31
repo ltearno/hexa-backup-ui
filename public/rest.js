@@ -8,10 +8,11 @@ async function search(searchText, mimeType) {
             name: searchText,
             mimeType: mimeType
         };
-        const { resultDirectories, resultFilesddd } = await Network.postData(`${exports.HEXA_BACKUP_BASE_URL}/search`, searchSpec);
+        const { resultDirectories, resultFilesddd, items } = await Network.postData(`${exports.HEXA_BACKUP_BASE_URL}/search`, searchSpec);
         return {
             directories: resultDirectories,
-            files: resultFilesddd
+            files: resultFilesddd,
+            items
         };
     }
     catch (err) {
