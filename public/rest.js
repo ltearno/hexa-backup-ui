@@ -37,6 +37,8 @@ async function getCommit(sha) {
 }
 exports.getCommit = getCommit;
 function getShaContentUrl(sha, mimeType, name, isDownload) {
+    if (!sha)
+        return '#';
     let base = `${exports.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${encodeURIComponent(mimeType)}`;
     if (isDownload)
         base += `&fileName=${encodeURIComponent(name || sha)}`;

@@ -71,6 +71,9 @@ export async function getCommit(sha: string): Promise<{ directoryDescriptorSha: 
 }
 
 export function getShaContentUrl(sha: string, mimeType: string, name: string, isDownload: boolean) {
+    if (!sha)
+        return '#'
+        
     let base = `${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${encodeURIComponent(mimeType)}`
     if (isDownload)
         base += `&fileName=${encodeURIComponent(name || sha)}`

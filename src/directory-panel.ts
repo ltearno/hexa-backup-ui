@@ -30,9 +30,9 @@ export const directoryPanel = {
                 if (f.mimeType == 'application/directory')
                     return `<div class="onclick"><i>${f.name} ...</i></div>`
                 else if (f.mimeType.startsWith('audio/'))
-                    return `<div x-for-sha="${f.sha.substr(0, 5)}" class="onclick">${f.name}</div>`
+                    return `<div x-for-sha="${f.sha && f.sha.substr(0, 5)}" class="onclick">${f.name}</div>`
                 else
-                    return `<div x-for-sha="${f.sha.substr(0, 5)}" class="onclick"><a href="${Rest.getShaContentUrl(f.sha, f.mimeType, f.name, false)}" target="_blank">${f.name}</a></div>`
+                    return `<div x-for-sha="${f.sha && f.sha.substr(0, 5)}" class="onclick"><a href="${Rest.getShaContentUrl(f.sha, f.mimeType, f.name, false)}" target="_blank">${f.name}</a></div>`
             }).join('')
         }
         else {

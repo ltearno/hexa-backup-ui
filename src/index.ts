@@ -220,23 +220,38 @@ async function loadDirectory(item: Rest.FileDescriptor) {
 }
 
 async function loadReferences() {
-    const waiting = beginWait(() => {
+    let waiting = beginWait(() => {
         setContent(directoryPanel.root)
         DirectoryPanel.directoryPanel.setLoading(directoryPanel, "References")
     })
 
-    let items: Rest.FileDescriptor[] = []
     let references = await Rest.getReferences()
-    for (let name of references) {
-        let reference = await Rest.getReference(name)
+
+    let items: Rest.FileDescriptor[] = references.map(reference => ({
+        name: reference,
+        lastWrite: 0,
+        mimeType: 'application/directory',
+        sha: null,
+        size: 0
+    }))
+
+    waiting.done()
+
+    setContent(directoryPanel.root)
+    DirectoryPanel.directoryPanel.setValues(directoryPanel, {
+        name: "References (still loading)",
+        items
+    })
+
+    waiting = beginWait(() => {
+        setContent(directoryPanel.root)
+        DirectoryPanel.directoryPanel.setLoading(directoryPanel, "Commits")
+    })
+
+    for (let item of items) {
+        let reference = await Rest.getReference(item.name)
         let commit = await Rest.getCommit(reference.currentCommitSha)
-        items.push({
-            name,
-            lastWrite: 0,
-            mimeType: 'application/directory',
-            sha: commit.directoryDescriptorSha,
-            size: 0
-        })
+        item.sha = commit.directoryDescriptorSha
     }
 
     lastDisplayedFiles = items
@@ -244,7 +259,6 @@ async function loadReferences() {
 
     waiting.done()
 
-    setContent(directoryPanel.root)
     DirectoryPanel.directoryPanel.setValues(directoryPanel, {
         name: "References",
         items
