@@ -44,7 +44,7 @@ searchPanel.form.addEventListener('submit', async (event) => {
             file.name = file.name.substring(0, dot);
         file.name = file.name.replace(/'_'/g, ' ');
         file.name = file.name.replace(/'  '/g, ' ');
-        file.name = file.name.replace(/'[ ]*-[ ]*'/g, ' - ');
+        file.name = file.name.replace(/'[ ]*[-][ ]*'/g, ' - ');
         return file;
     });
     lastDisplayedFiles = res.files;
