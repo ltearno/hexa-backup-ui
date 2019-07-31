@@ -110,7 +110,7 @@ function beautifyNames(items: Rest.FileDescriptor[]) {
 
 function goSearchItems(term: string) {
     const url = `#/search/${term}`
-    history.pushState(url, `Raccoon search '${term}'`, url)
+    window.location.href = url
 }
 
 async function searchItems(term: string) {
@@ -171,7 +171,7 @@ function directoryDescriptorToFileDescriptor(d: Rest.DirectoryDescriptorFile): R
 
 function goLoadDirectory(sha: string, name: string) {
     const url = `#/directory/${sha}?name=${encodeURIComponent(name)}`
-    history.pushState(url, `Raccoon directory '${name}'`, url)
+    window.location.href = url
 }
 
 async function loadDirectory(item: Rest.FileDescriptor) {

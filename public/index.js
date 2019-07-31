@@ -92,7 +92,7 @@ function beautifyNames(items) {
 }
 function goSearchItems(term) {
     const url = `#/search/${term}`;
-    history.pushState(url, `Raccoon search '${term}'`, url);
+    window.location.href = url;
 }
 async function searchItems(term) {
     searchPanel.term.value = term;
@@ -138,7 +138,7 @@ function directoryDescriptorToFileDescriptor(d) {
 }
 function goLoadDirectory(sha, name) {
     const url = `#/directory/${sha}?name=${encodeURIComponent(name)}`;
-    history.pushState(url, `Raccoon directory '${name}'`, url);
+    window.location.href = url;
 }
 async function loadDirectory(item) {
     setContent(directoryPanel.root);
