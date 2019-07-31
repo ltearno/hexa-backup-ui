@@ -16,3 +16,13 @@ export function stopEvent(event: Event) {
     event.preventDefault()
     event.stopPropagation()
 }
+
+export function* iter_path_to_root_element(start: HTMLElement) {
+    do {
+        yield start
+        if (!start)
+            break
+        start = start.parentElement
+    }
+    while (true)
+}

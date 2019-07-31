@@ -8,7 +8,7 @@ const EXPANDER = 'expander'
 
 const templateHtml = `
 <div class="audio-footer mui-panel">
-    <div x-id="${PLAYLIST}" class="is-fullwidth mui--text-center"></div>
+    <div x-id="${PLAYLIST}" class="mui--text-center"></div>
     <div x-id="${EXPANDER}" class="onclick mui--text-center">☰</div>
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
 </div>`
@@ -73,19 +73,21 @@ export class AudioJukebox {
         })
 
         this.audioPanel.root.addEventListener('click', event => {
-            const { element, childIndex } = templateGetEventLocation(this.audioPanel, event)
-
-            if (element == this.audioPanel.playlist && childIndex >= 0) {
-                let queueIndex = element.children.item(childIndex).getAttribute('x-queue-index')
-                if (queueIndex && queueIndex.length) {
-                    let val = parseInt(queueIndex)
-                    if (val < this.queue.length)
-                        this.play(val)
-                    else
-                        this.playNext() // will fetch from unroller if present
-                    return
+            for (let e of UiTools.iter_path_to_root_element(event.target as HTMLElement)) {
+                const indexAttr = e.getAttribute('x-queue-index')
+                if (typeof indexAttr === 'string') {
+                    let index = parseInt(indexAttr)
+                    if (index !== NaN) {
+                        if (index < this.queue.length)
+                            this.play(index)
+                        else
+                            this.playNext() // will fetch from unroller if present
+                    }
                 }
+            }
 
+            const { element, childIndex } = templateGetEventLocation(this.audioPanel, event)
+            if (element == this.audioPanel.playlist && childIndex >= 0) {
                 if (event.target == this.audioPanel.playlist.querySelector(`[x-id='clear-playlist']`)) {
                     let currentItem = this.currentItem()
                     if (currentItem) {
