@@ -161,6 +161,7 @@ export class AudioJukebox {
     }
 
     private pushQueueAndPlay(item: JukeboxItem) {
+        this.scrollToPlayingItem = true
         this.queue.push(item)
         localStorage.setItem('playlist-backup', JSON.stringify(this.queue))
         this.play(this.queue.length - 1)
