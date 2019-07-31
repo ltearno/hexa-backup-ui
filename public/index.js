@@ -121,7 +121,7 @@ async function searchItems(term) {
     waiting.done();
     setContent(searchResultPanel.root);
     SearchResultPanel.searchResultPanel.setValues(searchResultPanel, {
-        term: searchPanel.term.value,
+        term: term,
         items: res.items
     });
 }

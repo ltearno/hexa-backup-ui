@@ -149,7 +149,7 @@ async function searchItems(term: string) {
     setContent(searchResultPanel.root)
 
     SearchResultPanel.searchResultPanel.setValues(searchResultPanel, {
-        term: searchPanel.term.value,
+        term: term,
         items: res.items
     })
 }
