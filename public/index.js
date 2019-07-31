@@ -147,7 +147,7 @@ async function loadDirectory(item) {
     }
     const beginWait = (callback) => {
         let isDone = false;
-        wait(100).then(() => isDone || callback());
+        wait(500).then(() => isDone || callback());
         return {
             done: () => {
                 isDone = true;
