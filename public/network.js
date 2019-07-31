@@ -15,15 +15,17 @@ async function afterFetch(response) {
         return await response.text();
 }
 function getData(url, headers = null) {
-    return fetch(url, {
+    const options = {
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
         redirect: 'follow',
-        referrer: 'no-referrer',
-        headers
-    })
+        referrer: 'no-referrer'
+    };
+    if (headers)
+        options.headers = headers;
+    return fetch(url, options)
         .then(afterFetch);
 }
 exports.getData = getData;

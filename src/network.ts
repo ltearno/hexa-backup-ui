@@ -15,16 +15,19 @@ async function afterFetch(response: Response) {
 }
 
 export function getData<T>(url: string, headers: { [key: string]: string } = null): Promise<T> {
+    const options: any = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        redirect: 'follow',
+        referrer: 'no-referrer'
+    }
+    if (headers)
+        options.headers = headers
+        
     return fetch(
-        url, {
-            method: 'GET',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            redirect: 'follow',
-            referrer: 'no-referrer',
-            headers
-        })
+        url, options)
         .then(afterFetch)
 }
 
