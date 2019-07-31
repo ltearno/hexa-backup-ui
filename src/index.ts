@@ -110,48 +110,66 @@ function directoryDescriptorToFileDescriptor(d: Rest.DirectoryDescriptorFile): R
     }
 }
 
+async function loadDirectory(item: Rest.FileDescriptor) {
+    addContent(directoryPanel.root)
+
+    DirectoryPanel.directoryPanel.setLoading(directoryPanel, item.name)
+
+    let directoryDescriptor = await Rest.getDirectoryDescriptor(item.sha)
+    let items = directoryDescriptor.files.map(directoryDescriptorToFileDescriptor)
+
+    items = beautifyNames(items)
+
+    DirectoryPanel.directoryPanel.setValues(directoryPanel, {
+        name: item.name,
+        items
+    })
+}
+
+function itemDefaultAction(childIndex: number) {
+    let clickedItem = lastDisplayedFiles[childIndex]
+
+    if (clickedItem.mimeType == 'application/directory') {
+        loadDirectory(clickedItem)
+    }
+    if (clickedItem.mimeType.startsWith('audio/')) {
+        audioJukebox.addAndPlay(clickedItem)
+
+        // set an unroller
+        if (childIndex >= lastDisplayedFiles.length - 1) {
+            audioJukebox.setItemUnroller(null)
+        }
+        else {
+            let term = lastSearchTerm
+            let unrolledItems = lastDisplayedFiles.slice(childIndex + 1).filter(f => f.mimeType.startsWith('audio/'))
+            let unrollIndex = 0
+            if (unrolledItems.length) {
+                audioJukebox.setItemUnroller({
+                    name: () => {
+                        if (unrollIndex >= 0 && unrollIndex < unrolledItems.length)
+                            return `then '${unrolledItems[unrollIndex].name.substr(0, 20)}' and ${unrolledItems.length - unrollIndex - 1} other '${term}' items...`
+                        return `finished '${term} songs`
+                    },
+                    unroll: () => unrolledItems[unrollIndex++],
+                    hasNext: () => unrollIndex >= 0 && unrollIndex < unrolledItems.length
+                })
+            }
+        }
+    }
+}
+
 searchResultPanel.root.addEventListener('click', async event => {
     // todo : knownledge to do that is in files-panel
     let { element, childIndex } = Templates.templateGetEventLocation(searchResultPanel, event)
     if (lastDisplayedFiles && element == searchResultPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
-        let clickedItem = lastDisplayedFiles[childIndex]
+        itemDefaultAction(childIndex)
+    }
+})
 
-        if (clickedItem.mimeType == 'application/directory') {
-            addContent(directoryPanel.root)
-
-            DirectoryPanel.directoryPanel.setLoading(directoryPanel, clickedItem.name)
-
-            let directoryDescriptor = await Rest.getDirectoryDescriptor(clickedItem.sha)
-            let items = directoryDescriptor.files.map(directoryDescriptorToFileDescriptor)
-
-            DirectoryPanel.directoryPanel.setValues(directoryPanel, {
-                name: clickedItem.name,
-                items
-            })
-        }
-        if (clickedItem.mimeType.startsWith('audio/')) {
-            audioJukebox.addAndPlay(clickedItem)
-
-            // set an unroller
-            if (childIndex >= lastDisplayedFiles.length - 1) {
-                audioJukebox.setItemUnroller(null)
-            }
-            else {
-                let term = lastSearchTerm
-                let unrolledItems = lastDisplayedFiles.slice(childIndex + 1).filter(f => f.mimeType.startsWith('audio/'))
-                let unrollIndex = 0
-                if (unrolledItems.length) {
-                    audioJukebox.setItemUnroller({
-                        name: () => {
-                            if (unrollIndex >= 0 && unrollIndex < unrolledItems.length)
-                                return `then '${unrolledItems[unrollIndex].name.substr(0, 20)}' and ${unrolledItems.length - unrollIndex - 1} other '${term}' searched items...`
-                            return `finished '${term} songs`
-                        },
-                        unroll: () => unrolledItems[unrollIndex++],
-                        hasNext: () => unrollIndex >= 0 && unrollIndex < unrolledItems.length
-                    })
-                }
-            }
-        }
+directoryPanel.root.addEventListener('click', async event => {
+    // todo : knownledge to do that is in files-panel
+    let { element, childIndex } = Templates.templateGetEventLocation(directoryPanel, event)
+    if (lastDisplayedFiles && element == directoryPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
+        itemDefaultAction(childIndex)
     }
 })
