@@ -170,12 +170,12 @@ function directoryDescriptorToFileDescriptor(d: Rest.DirectoryDescriptorFile): R
 }
 
 function goLoadDirectory(sha: string, name: string) {
+    document.scrollingElement.scrollTop = 0
     const url = `#/directories/${sha}?name=${encodeURIComponent(name)}`
     window.location.href = url
 }
 
 async function loadDirectory(item: Rest.FileDescriptor) {
-    document.scrollingElement.scrollTop = 0
     setContent(directoryPanel.root)
 
     DirectoryPanel.directoryPanel.setLoading(directoryPanel, item.name)
