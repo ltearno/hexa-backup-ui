@@ -4,6 +4,7 @@ const UiTool = require("./ui-tool");
 const SearchPanel = require("./search-panel");
 const SearchResultPanel = require("./search-result-panel");
 const AudioPanel = require("./audio-panel");
+const DirectoryPanel = require("./directory-panel");
 const Rest = require("./rest");
 const Auth = require("./auth");
 const Templates = require("./templates");
@@ -20,6 +21,7 @@ function clearContents() {
 const searchPanel = SearchPanel.searchPanel.create();
 const searchResultPanel = SearchResultPanel.searchResultPanel.create();
 const audioPanel = AudioPanel.audioPanel.create();
+const directoryPanel = DirectoryPanel.directoryPanel.create();
 document.body.appendChild(audioPanel.root);
 addContent(searchPanel.root);
 const audioJukebox = new AudioPanel.AudioJukebox(audioPanel);
@@ -61,26 +63,36 @@ searchPanel.form.addEventListener('submit', async (event) => {
 searchResultPanel.root.addEventListener('click', event => {
     // todo : knownledge to do that is in files-panel
     let { element, childIndex } = Templates.templateGetEventLocation(searchResultPanel, event);
-    if (lastDisplayedFiles && element == searchResultPanel.files && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
-        audioJukebox.addAndPlay(lastDisplayedFiles[childIndex]);
-        // set an unroller
-        if (childIndex >= lastDisplayedFiles.length - 1) {
-            audioJukebox.setItemUnroller(null);
+    if (lastDisplayedFiles && element == searchResultPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
+        let clickedItem = lastDisplayedFiles[childIndex];
+        if (clickedItem.mimeType == 'application/directory') {
+            DirectoryPanel.directoryPanel.setValues(directoryPanel, {
+                name: clickedItem.name,
+                items: []
+            });
+            addContent(directoryPanel.root);
         }
-        else {
-            let term = lastSearchTerm;
-            let unrolledItems = lastDisplayedFiles.slice(childIndex + 1).filter(f => f.mimeType.startsWith('audio/'));
-            let unrollIndex = 0;
-            if (unrolledItems.length) {
-                audioJukebox.setItemUnroller({
-                    name: () => {
-                        if (unrollIndex >= 0 && unrollIndex < unrolledItems.length)
-                            return `then '${unrolledItems[unrollIndex].name.substr(0, 20)}' and ${unrolledItems.length - unrollIndex - 1} other '${term}' searched items...`;
-                        return `finished '${term} songs`;
-                    },
-                    unroll: () => unrolledItems[unrollIndex++],
-                    hasNext: () => unrollIndex >= 0 && unrollIndex < unrolledItems.length
-                });
+        if (clickedItem.mimeType.startsWith('audio/')) {
+            audioJukebox.addAndPlay(clickedItem);
+            // set an unroller
+            if (childIndex >= lastDisplayedFiles.length - 1) {
+                audioJukebox.setItemUnroller(null);
+            }
+            else {
+                let term = lastSearchTerm;
+                let unrolledItems = lastDisplayedFiles.slice(childIndex + 1).filter(f => f.mimeType.startsWith('audio/'));
+                let unrollIndex = 0;
+                if (unrolledItems.length) {
+                    audioJukebox.setItemUnroller({
+                        name: () => {
+                            if (unrollIndex >= 0 && unrollIndex < unrolledItems.length)
+                                return `then '${unrolledItems[unrollIndex].name.substr(0, 20)}' and ${unrolledItems.length - unrollIndex - 1} other '${term}' searched items...`;
+                            return `finished '${term} songs`;
+                        },
+                        unroll: () => unrolledItems[unrollIndex++],
+                        hasNext: () => unrollIndex >= 0 && unrollIndex < unrolledItems.length
+                    });
+                }
             }
         }
     }
