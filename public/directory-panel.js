@@ -12,6 +12,7 @@ exports.directoryPanel = {
     create: () => templates_1.createTemplateInstance(templateHtml),
     setLoading: (elements, title) => {
         elements.title.innerHTML = `Loading '${title}' ...`;
+        elements.items.innerHTML = ``;
     },
     setValues: (elements, values) => {
         elements.title.innerHTML = `${values.name}`;

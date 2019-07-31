@@ -18,6 +18,7 @@ export const directoryPanel = {
 
     setLoading: (elements: DirectoryPanelElements, title: string) => {
         elements.title.innerHTML = `Loading '${title}' ...`
+        elements.items.innerHTML = ``
     },
 
     setValues: (elements: DirectoryPanelElements, values: { name: string, items: any[] }) => {

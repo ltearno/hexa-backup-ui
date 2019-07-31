@@ -12,6 +12,7 @@ exports.searchResultPanel = {
     create: () => templates_1.createTemplateInstance(templateHtml),
     displaySearching: (elements, term) => {
         elements.title.innerHTML = `<div class="mui--text-dark-hint">Searching '${term}' ...</div>`;
+        elements.items.innerHTML = ``;
     },
     setValues: (elements, values) => {
         elements.title.innerHTML = `Results for '${values.term}'`;

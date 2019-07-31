@@ -18,6 +18,7 @@ export const searchResultPanel = {
 
     displaySearching: (elements: SearchResultPanelElements, term: string) => {
         elements.title.innerHTML = `<div class="mui--text-dark-hint">Searching '${term}' ...</div>`
+        elements.items.innerHTML = ``
     },
 
     setValues: (elements: SearchResultPanelElements, values: { term: string, items: any[] }) => {
