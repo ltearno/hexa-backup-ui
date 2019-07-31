@@ -174,6 +174,7 @@ function goLoadDirectory(sha: string, name: string) {
 }
 
 async function loadDirectory(item: Rest.FileDescriptor) {
+    document.scrollingElement.scrollTop = 0
     setContent(directoryPanel.root)
 
     DirectoryPanel.directoryPanel.setLoading(directoryPanel, item.name)

@@ -140,6 +140,7 @@ function goLoadDirectory(sha, name) {
     window.location.href = url;
 }
 async function loadDirectory(item) {
+    document.scrollingElement.scrollTop = 0;
     setContent(directoryPanel.root);
     DirectoryPanel.directoryPanel.setLoading(directoryPanel, item.name);
     let directoryDescriptor = await Rest.getDirectoryDescriptor(item.sha);
