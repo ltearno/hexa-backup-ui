@@ -57,3 +57,10 @@ export async function search(searchText: string, mimeType: string): Promise<Sear
 export async function getDirectoryDescriptor(sha: string): Promise<DirectoryDescriptor> {
     return await Network.getData(`${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`)
 }
+
+export function getShaContentUrl(sha: string, mimeType: string, name: string, isDownload: boolean) {
+    let base = `${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${encodeURIComponent(mimeType)}`
+    if (isDownload)
+        base += `&fileName=${encodeURIComponent(name || sha)}`
+    return base
+}

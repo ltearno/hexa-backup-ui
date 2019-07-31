@@ -1,3 +1,4 @@
+import * as Rest from './rest'
 import { TemplateElements, createTemplateInstance } from './templates'
 
 export interface DirectoryPanelElements extends TemplateElements {
@@ -28,7 +29,10 @@ export const directoryPanel = {
             elements.items.innerHTML = values.items.map(f => {
                 if (f.mimeType == 'application/directory')
                     return `<div class="onclick"><i>${f.name} ...</i></div>`
-                return `<div x-for-sha="${f.sha.substr(0, 5)}" class="onclick">${f.name}</div>`
+                else if (f.mimeType.startsWith('audio/'))
+                    return `<div x-for-sha="${f.sha.substr(0, 5)}" class="onclick">${f.name}</div>`
+                else
+                    return `<div x-for-sha="${f.sha.substr(0, 5)}" class="onclick"><a href="${Rest.getShaContentUrl(f.sha, f.mimeType, f.name, false)}" target="_blank">${f.name}</a></div>`
             }).join('')
         }
         else {

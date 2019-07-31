@@ -245,9 +245,6 @@ function itemDefaultAction(childIndex: number) {
             }
         }
     }
-    else {
-        window.location.href = `${Rest.HEXA_BACKUP_BASE_URL}/sha/${item.sha}/content?type=${item.mimeType}`
-    }
 }
 
 searchResultPanel.root.addEventListener('click', async event => {
