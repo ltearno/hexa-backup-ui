@@ -143,10 +143,6 @@ class AudioJukebox {
         this.refreshTimer = setTimeout(() => this.realRefreshPlaylist(), 10);
     }
     realRefreshPlaylist() {
-        if (this.largeDisplay)
-            this.expandedElements.forEach(e => e.classList.remove('is-hidden'));
-        else
-            this.expandedElements.forEach(e => e.classList.add('is-hidden'));
         if (!this.queue || !this.queue.length) {
             if (this.largeDisplay)
                 this.audioPanel.playlist.innerHTML = '<span class="mui--text-dark-secondary">There are no items in your playlist. Click on songs to play them.</span>';
@@ -154,24 +150,31 @@ class AudioJukebox {
                 this.audioPanel.playlist.innerHTML = '';
             return;
         }
+        let html = ``;
         if (this.largeDisplay) {
-            let html = ``;
+            this.expandedElements.forEach(e => e.classList.remove('is-hidden'));
             for (let i = 0; i < this.queue.length; i++) {
                 let item = this.queue[i];
                 html += this.playlistItemHtml(i, item.name, false);
             }
-            this.audioPanel.playlist.innerHTML = html;
+            if (this.itemUnroller && this.itemUnroller.hasNext())
+                html += `<div style="flex-shrink: 0;" x-queue-index="${this.queue.length}" class="onclick mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`;
+            html += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`;
         }
         else {
+            this.expandedElements.forEach(e => e.classList.add('is-hidden'));
             if (this.currentIndex >= 0 && this.currentIndex < this.queue.length)
                 this.audioPanel.playlist.innerHTML = this.playlistItemHtml(this.currentIndex, this.queue[this.currentIndex].name, true);
             else
                 this.audioPanel.playlist.innerHTML = "";
+            if (this.currentIndex < this.queue.length - 1) {
+                html += `<div style="flex-shrink: 0;" x-queue-index="${this.currentIndex + 1}" class="onclick mui--text-dark-secondary is-onelinetext">${this.queue[this.currentIndex + 1]}</div>`;
+            }
+            else if (this.itemUnroller && this.itemUnroller.hasNext()) {
+                html += `<div style="flex-shrink: 0;" x-queue-index="${this.queue.length}" class="onclick mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`;
+            }
         }
-        if (this.itemUnroller && this.itemUnroller.hasNext())
-            this.audioPanel.playlist.innerHTML += `<div style="flex-shrink: 0;" x-queue-index="${this.queue.length}" class="onclick mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`;
-        if (this.largeDisplay)
-            this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`;
+        this.audioPanel.playlist.innerHTML = html;
         // after refresh steps
         if (this.largeDisplay && this.scrollToPlayingItem) {
             this.scrollToPlayingItem = false;
