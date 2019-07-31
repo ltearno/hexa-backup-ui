@@ -190,14 +190,12 @@ async function loadReferences() {
         size: 0
     }));
     waiting.done();
-    setContent(directoryPanel.root);
-    DirectoryPanel.directoryPanel.setValues(directoryPanel, {
-        name: "References (still loading)",
-        items
-    });
     waiting = beginWait(() => {
         setContent(directoryPanel.root);
-        DirectoryPanel.directoryPanel.setLoading(directoryPanel, "Commits");
+        DirectoryPanel.directoryPanel.setValues(directoryPanel, {
+            name: "References (still loading)",
+            items
+        });
     });
     for (let item of items) {
         let reference = await Rest.getReference(item.name);
