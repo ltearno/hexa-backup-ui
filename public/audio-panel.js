@@ -171,7 +171,7 @@ class AudioJukebox {
                 this.audioPanel.playlist.innerHTML = "";
         }
         if (this.itemUnroller && this.itemUnroller.hasNext())
-            this.audioPanel.playlist.innerHTML += `<div x-queue-index="${this.queue.length}" class="onclick mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`;
+            this.audioPanel.playlist.innerHTML += `<div style="flex-shrink: 0;" x-queue-index="${this.queue.length}" class="onclick mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`;
         if (this.largeDisplay)
             this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`;
         // after refresh steps
