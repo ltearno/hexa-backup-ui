@@ -196,6 +196,7 @@ directoryPanel.root.addEventListener('click', async (event) => {
 });
 readHashAndAct();
 window.onpopstate = function (event) {
+    debugger;
     readHashAndAct();
     /*if (event.state) {
         currentDirectoryDescriptorSha = event.state.currentDirectoryDescriptorSha
