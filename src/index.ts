@@ -216,13 +216,13 @@ async function loadDirectory(item: Rest.FileDescriptor) {
 }
 
 function itemDefaultAction(childIndex: number) {
-    let clickedItem = lastDisplayedFiles[childIndex]
+    let item = lastDisplayedFiles[childIndex]
 
-    if (clickedItem.mimeType == 'application/directory') {
-        goLoadDirectory(clickedItem.sha, clickedItem.name)
+    if (item.mimeType == 'application/directory') {
+        goLoadDirectory(item.sha, item.name)
     }
-    if (clickedItem.mimeType.startsWith('audio/')) {
-        audioJukebox.addAndPlay(clickedItem)
+    if (item.mimeType.startsWith('audio/')) {
+        audioJukebox.addAndPlay(item)
 
         // set an unroller
         if (childIndex >= lastDisplayedFiles.length - 1) {
@@ -244,6 +244,9 @@ function itemDefaultAction(childIndex: number) {
                 })
             }
         }
+    }
+    else {
+        window.location.href = `${Rest.HEXA_BACKUP_BASE_URL}/sha/${item.sha}/content?type=${item.mimeType}`
     }
 }
 

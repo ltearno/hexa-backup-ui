@@ -173,12 +173,12 @@ async function loadDirectory(item) {
     });
 }
 function itemDefaultAction(childIndex) {
-    let clickedItem = lastDisplayedFiles[childIndex];
-    if (clickedItem.mimeType == 'application/directory') {
-        goLoadDirectory(clickedItem.sha, clickedItem.name);
+    let item = lastDisplayedFiles[childIndex];
+    if (item.mimeType == 'application/directory') {
+        goLoadDirectory(item.sha, item.name);
     }
-    if (clickedItem.mimeType.startsWith('audio/')) {
-        audioJukebox.addAndPlay(clickedItem);
+    if (item.mimeType.startsWith('audio/')) {
+        audioJukebox.addAndPlay(item);
         // set an unroller
         if (childIndex >= lastDisplayedFiles.length - 1) {
             audioJukebox.setItemUnroller(null);
@@ -199,6 +199,9 @@ function itemDefaultAction(childIndex) {
                 });
             }
         }
+    }
+    else {
+        window.location.href = `${Rest.HEXA_BACKUP_BASE_URL}/sha/${item.sha}/content?type=${item.mimeType}`;
     }
 }
 searchResultPanel.root.addEventListener('click', async (event) => {
