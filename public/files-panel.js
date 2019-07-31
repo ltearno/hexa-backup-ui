@@ -13,8 +13,7 @@ const templateHtml = `
 exports.filesPanel = {
     create: () => templates_1.createTemplateInstance(templateHtml),
     displaySearching: (elements, term) => {
-        elements.term.innerText = term;
-        elements.files.innerHTML = `<div class="mui--text-dark-hint">Searching ...</div>`;
+        elements.term.innerHTML = `<div class="mui--text-dark-hint">Searching '${term}...'</div>`;
     },
     setValues: (elements, values) => {
         elements.term.innerText = values.term;
