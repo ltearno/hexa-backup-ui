@@ -114,6 +114,9 @@ class AudioJukebox {
             const item = this.queue[index];
             exports.audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType);
         }
+        if (index == this.queue.length - 1) {
+            this.audioPanel.playlist.scrollTop = 100000;
+        }
     }
     refreshPlaylist() {
         if (this.refreshTimer)
