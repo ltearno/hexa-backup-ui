@@ -113,7 +113,7 @@ function goSearchItems(term: string) {
 }
 
 async function searchItems(term: string) {
-    searchPanel.term.value = term
+    //searchPanel.term.value = term
 
     SearchPanel.searchPanel.displayTitle(searchPanel, false)
     SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term)

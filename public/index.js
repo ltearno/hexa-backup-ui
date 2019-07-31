@@ -94,7 +94,7 @@ function goSearchItems(term) {
     window.location.href = url;
 }
 async function searchItems(term) {
-    searchPanel.term.value = term;
+    //searchPanel.term.value = term
     SearchPanel.searchPanel.displayTitle(searchPanel, false);
     SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term);
     if (!searchResultPanel.root.isConnected)
