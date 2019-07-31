@@ -66,6 +66,10 @@ export class AudioJukebox {
         this.audioPanel.expander.addEventListener('click', () => {
             this.largeDisplay = !this.largeDisplay
             this.refreshPlaylist()
+            if (this.currentIndex >= 0) {
+                let e = this.audioPanel.playlist.querySelector(`[x-queue-index='${this.currentIndex}']`)
+                e && e.scrollIntoView()
+            }
         })
 
         this.audioPanel.root.addEventListener('click', event => {
