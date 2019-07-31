@@ -90,6 +90,9 @@ function beautifyNames(items) {
         return file;
     });
 }
+function goSearchItems(term) {
+    history.pushState(null, `Raccoon search '${term}'`, `${window.location.pathname}#/search/${term}`);
+}
 async function searchItems(term) {
     searchPanel.term.value = term;
     SearchPanel.searchPanel.displayTitle(searchPanel, false);
@@ -110,7 +113,7 @@ async function searchItems(term) {
 searchPanel.form.addEventListener('submit', event => {
     UiTool.stopEvent(event);
     let term = searchPanel.term.value;
-    searchItems(term);
+    goSearchItems(term);
 });
 function getMimeType(f) {
     if (f.isDirectory)
@@ -132,6 +135,9 @@ function directoryDescriptorToFileDescriptor(d) {
         size: d.size
     };
 }
+function goLoadDirectory(sha, name) {
+    history.pushState(null, `Raccoon directory '${name}'`, `${window.location.pathname}#/directory/${sha}?name=${encodeURIComponent(name)}`);
+}
 async function loadDirectory(item) {
     setContent(directoryPanel.root);
     DirectoryPanel.directoryPanel.setLoading(directoryPanel, item.name);
@@ -148,7 +154,7 @@ async function loadDirectory(item) {
 function itemDefaultAction(childIndex) {
     let clickedItem = lastDisplayedFiles[childIndex];
     if (clickedItem.mimeType == 'application/directory') {
-        loadDirectory(clickedItem);
+        goLoadDirectory(clickedItem.sha, clickedItem.name);
     }
     if (clickedItem.mimeType.startsWith('audio/')) {
         audioJukebox.addAndPlay(clickedItem);
@@ -175,18 +181,36 @@ function itemDefaultAction(childIndex) {
     }
 }
 searchResultPanel.root.addEventListener('click', async (event) => {
-    // todo : knownledge to do that is in files-panel
+    // todo : knownledge to do that is in searchResultPanel
     let { element, childIndex } = Templates.templateGetEventLocation(searchResultPanel, event);
     if (lastDisplayedFiles && element == searchResultPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
         itemDefaultAction(childIndex);
     }
 });
 directoryPanel.root.addEventListener('click', async (event) => {
-    // todo : knownledge to do that is in files-panel
+    // todo : knownledge to do that is in directoryPanel
     let { element, childIndex } = Templates.templateGetEventLocation(directoryPanel, event);
     if (lastDisplayedFiles && element == directoryPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
         itemDefaultAction(childIndex);
     }
 });
 readHashAndAct();
+window.onpopstate = function (event) {
+    readHashAndAct();
+    /*if (event.state) {
+        currentDirectoryDescriptorSha = event.state.currentDirectoryDescriptorSha
+        currentClientId = event.state.currentClientId
+        currentPictureIndex = event.state.currentPictureIndex || 0
+
+        if (!currentClientId)
+            el("#menu").classList.remove("is-hidden")
+
+        syncUi()
+    }
+    else {
+        fromHash()
+
+        syncUi()
+    }*/
+};
 //# sourceMappingURL=index.js.map

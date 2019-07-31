@@ -108,6 +108,10 @@ function beautifyNames(items: Rest.FileDescriptor[]) {
     })
 }
 
+function goSearchItems(term: string) {
+    history.pushState(null, `Raccoon search '${term}'`, `${window.location.pathname}#/search/${term}`)
+}
+
 async function searchItems(term: string) {
     searchPanel.term.value = term
 
@@ -137,7 +141,7 @@ searchPanel.form.addEventListener('submit', event => {
 
     let term = searchPanel.term.value
 
-    searchItems(term)
+    goSearchItems(term)
 })
 
 function getMimeType(f: Rest.DirectoryDescriptorFile) {
@@ -164,6 +168,10 @@ function directoryDescriptorToFileDescriptor(d: Rest.DirectoryDescriptorFile): R
     }
 }
 
+function goLoadDirectory(sha: string, name: string) {
+    history.pushState(null, `Raccoon directory '${name}'`, `${window.location.pathname}#/directory/${sha}?name=${encodeURIComponent(name)}`)
+}
+
 async function loadDirectory(item: Rest.FileDescriptor) {
     setContent(directoryPanel.root)
 
@@ -187,7 +195,7 @@ function itemDefaultAction(childIndex: number) {
     let clickedItem = lastDisplayedFiles[childIndex]
 
     if (clickedItem.mimeType == 'application/directory') {
-        loadDirectory(clickedItem)
+        goLoadDirectory(clickedItem.sha, clickedItem.name)
     }
     if (clickedItem.mimeType.startsWith('audio/')) {
         audioJukebox.addAndPlay(clickedItem)
@@ -216,7 +224,7 @@ function itemDefaultAction(childIndex: number) {
 }
 
 searchResultPanel.root.addEventListener('click', async event => {
-    // todo : knownledge to do that is in files-panel
+    // todo : knownledge to do that is in searchResultPanel
     let { element, childIndex } = Templates.templateGetEventLocation(searchResultPanel, event)
     if (lastDisplayedFiles && element == searchResultPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
         itemDefaultAction(childIndex)
@@ -224,7 +232,7 @@ searchResultPanel.root.addEventListener('click', async event => {
 })
 
 directoryPanel.root.addEventListener('click', async event => {
-    // todo : knownledge to do that is in files-panel
+    // todo : knownledge to do that is in directoryPanel
     let { element, childIndex } = Templates.templateGetEventLocation(directoryPanel, event)
     if (lastDisplayedFiles && element == directoryPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
         itemDefaultAction(childIndex)
@@ -232,3 +240,22 @@ directoryPanel.root.addEventListener('click', async event => {
 })
 
 readHashAndAct()
+
+window.onpopstate = function (event) {
+    readHashAndAct()
+    /*if (event.state) {
+        currentDirectoryDescriptorSha = event.state.currentDirectoryDescriptorSha
+        currentClientId = event.state.currentClientId
+        currentPictureIndex = event.state.currentPictureIndex || 0
+
+        if (!currentClientId)
+            el("#menu").classList.remove("is-hidden")
+
+        syncUi()
+    }
+    else {
+        fromHash()
+
+        syncUi()
+    }*/
+}
