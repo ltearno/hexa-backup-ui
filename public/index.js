@@ -54,8 +54,7 @@ async function searchItems(term) {
     let res = await Rest.search(term, 'audio/%');
     // first files then directories
     res.items = res.items.filter(i => !i.mimeType.startsWith('application/directory')).concat(res.items.filter(i => i.mimeType.startsWith('application/directory')));
-    //res.items = beautifyNames(res.files)
-    console.log('items', res.items);
+    res.items = beautifyNames(res.items);
     lastDisplayedFiles = res.items;
     lastSearchTerm = term;
     SearchResultPanel.searchResultPanel.setValues(searchResultPanel, {
