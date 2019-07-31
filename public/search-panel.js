@@ -5,7 +5,7 @@ const templateHtml = `
 <div class='mui-container-fluid'>
     <div class="mui--text-center">
         <h1 x-id="title" class="animated--quick">Raccoon</h1>
-        <h4 x-id="subTitle"></h4>
+        <h4 x-id="subTitle">Search for songs</h4>
         <form x-id="form" class="mui-form--inline">
             <!--this is a little hack to have things centered-->
             <div class="mui-btn mui-btn--flat" style="visibility: hidden;">🔍</div>
