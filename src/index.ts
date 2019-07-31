@@ -246,7 +246,7 @@ function itemDefaultAction(childIndex: number) {
         }
     }
     else {
-        window.location.href = `${Rest.HEXA_BACKUP_BASE_URL}/sha/${item.sha}/content?type=${item.mimeType}`
+        window.location.href = `${Rest.HEXA_BACKUP_BASE_URL}/sha/${item.sha}/content?type=${item.mimeType}&name=${item.name}`
     }
 }
 

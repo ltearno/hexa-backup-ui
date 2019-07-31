@@ -201,7 +201,7 @@ function itemDefaultAction(childIndex) {
         }
     }
     else {
-        window.location.href = `${Rest.HEXA_BACKUP_BASE_URL}/sha/${item.sha}/content?type=${item.mimeType}`;
+        window.location.href = `${Rest.HEXA_BACKUP_BASE_URL}/sha/${item.sha}/content?type=${item.mimeType}&name=${item.name}`;
     }
 }
 searchResultPanel.root.addEventListener('click', async (event) => {
