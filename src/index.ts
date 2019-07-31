@@ -108,14 +108,13 @@ function beautifyNames(items: Rest.FileDescriptor[]) {
 }
 
 function goSearchItems(term: string) {
+    document.scrollingElement.scrollTop = 0
     const url = `#/search/${term}`
     window.location.href = url
 }
 
 async function searchItems(term: string) {
     //searchPanel.term.value = term
-
-    document.scrollingElement.scrollTop = 0
 
     SearchPanel.searchPanel.displayTitle(searchPanel, false)
     SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term)

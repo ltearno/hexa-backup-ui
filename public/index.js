@@ -90,12 +90,12 @@ function beautifyNames(items) {
     });
 }
 function goSearchItems(term) {
+    document.scrollingElement.scrollTop = 0;
     const url = `#/search/${term}`;
     window.location.href = url;
 }
 async function searchItems(term) {
     //searchPanel.term.value = term
-    document.scrollingElement.scrollTop = 0;
     SearchPanel.searchPanel.displayTitle(searchPanel, false);
     SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term);
     if (!searchResultPanel.root.isConnected)
