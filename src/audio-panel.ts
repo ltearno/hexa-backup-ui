@@ -157,7 +157,7 @@ export class AudioJukebox {
         }
 
         if (index == this.queue.length - 1) {
-            this.audioPanel.playlist.scrollTop = 100000
+            this.audioPanel.playlist.scrollTop += 100000
         }
     }
 
