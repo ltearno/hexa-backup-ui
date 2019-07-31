@@ -16,6 +16,8 @@ hash urls :
 - '#'                               home
 - '#/search/:term                   search
 - '#/directories/:sha?name=xxx      directory
+- '#/browse'
+- '#/refs/:name'
 */
 
 function parseURL(url: string) {
@@ -59,6 +61,10 @@ function readHashAndAct() {
     }
     else if (parsed.pathname.startsWith('/browse')) {
         loadReferences()
+    }
+    else if (parsed.pathname.startsWith('/refs/')) {
+        const name = parsed.pathname.substring('/refs/'.length)
+        loadReference(name)
     }
 }
 
@@ -194,6 +200,11 @@ function goLoadDirectory(sha: string, name: string) {
     window.location.href = url
 }
 
+function goReference(name: string) {
+    const url = `#/refs/${name}`
+    window.location.href = url
+}
+
 async function loadDirectory(item: Rest.FileDescriptor) {
     const waiting = beginWait(() => {
         setContent(directoryPanel.root)
@@ -228,25 +239,10 @@ async function loadReferences() {
     let items: Rest.FileDescriptor[] = references.map(reference => ({
         name: reference,
         lastWrite: 0,
-        mimeType: 'application/directory',
-        sha: null,
+        mimeType: 'application/reference',
+        sha: reference,
         size: 0
     }))
-
-    waiting.done()
-    waiting = beginWait(() => {
-        setContent(directoryPanel.root)
-        DirectoryPanel.directoryPanel.setValues(directoryPanel, {
-            name: "References (still loading)",
-            items
-        })
-    })
-
-    for (let item of items) {
-        let reference = await Rest.getReference(item.name)
-        let commit = await Rest.getCommit(reference.currentCommitSha)
-        item.sha = commit.directoryDescriptorSha
-    }
 
     lastDisplayedFiles = items
     lastSearchTerm = ''
@@ -259,11 +255,34 @@ async function loadReferences() {
     })
 }
 
+async function loadReference(name: string) {
+    const waiting = beginWait(() => {
+        setContent(directoryPanel.root)
+        DirectoryPanel.directoryPanel.setLoading(directoryPanel, `Reference '${name}'`)
+    })
+
+    let reference = await Rest.getReference(name)
+    let commit = await Rest.getCommit(reference.currentCommitSha)
+
+    waiting.done()
+
+    await loadDirectory({
+        sha: commit.directoryDescriptorSha,
+        name,
+        mimeType: 'application/directory',
+        lastWrite: 0,
+        size: 0
+    })
+}
+
 function itemDefaultAction(childIndex: number) {
     let item = lastDisplayedFiles[childIndex]
 
     if (item.mimeType == 'application/directory') {
         goLoadDirectory(item.sha, item.name)
+    }
+    else if (item.mimeType == 'application/reference') {
+        goReference(item.sha)
     }
     else if (item.mimeType.startsWith('audio/')) {
         audioJukebox.addAndPlay(item)
@@ -315,15 +334,15 @@ window.onpopstate = function (event) {
         currentDirectoryDescriptorSha = event.state.currentDirectoryDescriptorSha
         currentClientId = event.state.currentClientId
         currentPictureIndex = event.state.currentPictureIndex || 0
-
+ 
         if (!currentClientId)
             el("#menu").classList.remove("is-hidden")
-
+ 
         syncUi()
     }
     else {
         fromHash()
-
+ 
         syncUi()
     }*/
 }
