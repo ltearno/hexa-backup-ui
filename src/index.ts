@@ -170,7 +170,7 @@ function directoryDescriptorToFileDescriptor(d: Rest.DirectoryDescriptorFile): R
 }
 
 function goLoadDirectory(sha: string, name: string) {
-    const url = `#/directory/${sha}?name=${encodeURIComponent(name)}`
+    const url = `#/directories/${sha}?name=${encodeURIComponent(name)}`
     window.location.href = url
 }
 

@@ -137,7 +137,7 @@ function directoryDescriptorToFileDescriptor(d) {
     };
 }
 function goLoadDirectory(sha, name) {
-    const url = `#/directory/${sha}?name=${encodeURIComponent(name)}`;
+    const url = `#/directories/${sha}?name=${encodeURIComponent(name)}`;
     window.location.href = url;
 }
 async function loadDirectory(item) {
