@@ -49,6 +49,9 @@ export class AudioJukebox {
     private currentIndex: number = -1
     private itemUnroller: JukeboxItemUnroller
 
+    // if scroll to playing item is required after a playlist redraw
+    private scrollToPlayingItem = true
+
     constructor(private audioPanel: AudioPanelElements) {
         try {
             let queue = JSON.parse(localStorage.getItem('playlist-backup'))
@@ -65,11 +68,8 @@ export class AudioJukebox {
 
         this.audioPanel.expander.addEventListener('click', () => {
             this.largeDisplay = !this.largeDisplay
+            this.scrollToPlayingItem = true
             this.refreshPlaylist()
-            if (this.currentIndex >= 0) {
-                let e = this.audioPanel.playlist.querySelector(`[x-queue-index='${this.currentIndex}']`)
-                setTimeout(() => e.scrollIntoView(), 10)
-            }
         })
 
         this.audioPanel.root.addEventListener('click', event => {
@@ -201,6 +201,16 @@ export class AudioJukebox {
 
         if (this.largeDisplay)
             this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`
+
+        // after refresh steps
+        if (this.scrollToPlayingItem) {
+            this.scrollToPlayingItem = false
+
+            if (this.currentIndex >= 0) {
+                let e = this.audioPanel.playlist.querySelector(`[x-queue-index='${this.currentIndex}']`)
+                e && e.scrollIntoView()
+            }
+        }
     }
 
     private playlistItemHtml(index: number, name: string, oneLineText: boolean) {

@@ -26,6 +26,8 @@ class AudioJukebox {
         this.largeDisplay = false;
         this.queue = [];
         this.currentIndex = -1;
+        // if scroll to playing item is required after a playlist redraw
+        this.scrollToPlayingItem = true;
         try {
             let queue = JSON.parse(localStorage.getItem('playlist-backup'));
             if (queue && queue instanceof Array)
@@ -39,11 +41,8 @@ class AudioJukebox {
         });
         this.audioPanel.expander.addEventListener('click', () => {
             this.largeDisplay = !this.largeDisplay;
+            this.scrollToPlayingItem = true;
             this.refreshPlaylist();
-            if (this.currentIndex >= 0) {
-                let e = this.audioPanel.playlist.querySelector(`[x-queue-index='${this.currentIndex}']`);
-                setTimeout(() => e.scrollIntoView(), 10);
-            }
         });
         this.audioPanel.root.addEventListener('click', event => {
             const { element, childIndex } = templates_1.templateGetEventLocation(this.audioPanel, event);
@@ -153,6 +152,14 @@ class AudioJukebox {
             this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`;
         if (this.largeDisplay)
             this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`;
+        // after refresh steps
+        if (this.scrollToPlayingItem) {
+            this.scrollToPlayingItem = false;
+            if (this.currentIndex >= 0) {
+                let e = this.audioPanel.playlist.querySelector(`[x-queue-index='${this.currentIndex}']`);
+                e && e.scrollIntoView();
+            }
+        }
     }
     playlistItemHtml(index, name, oneLineText) {
         return `<div x-queue-index="${index}" class="onclick ${oneLineText ? 'is-onelinetext' : ''} ${index == this.currentIndex ? 'mui--text-headline' : ''}">${name}</div>`;
