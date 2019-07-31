@@ -264,3 +264,12 @@ html, body, input, textarea, button {
     overflow-y: auto;
     width: 100%;
 }
+
+.is-onelinetext {
+    overflow: hidden;
+    line-height: 1em;
+    height: 1em;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
