@@ -1,6 +1,6 @@
 import * as UiTool from './ui-tool'
 import * as SearchPanel from './search-panel'
-import * as FilesPanel from './files-panel'
+import * as SearchResultPanel from './search-result-panel'
 import * as AudioPanel from './audio-panel'
 import * as Rest from './rest'
 import * as Auth from './auth'
@@ -18,7 +18,7 @@ function clearContents() {
 }
 
 const searchPanel = SearchPanel.searchPanel.create()
-const filesPanel = FilesPanel.filesPanel.create()
+const searchResultPanel = SearchResultPanel.searchResultPanel.create()
 const audioPanel = AudioPanel.audioPanel.create()
 document.body.appendChild(audioPanel.root)
 
@@ -41,9 +41,9 @@ searchPanel.form.addEventListener('submit', async event => {
     let term = searchPanel.term.value
 
     SearchPanel.searchPanel.displayTitle(searchPanel, false)
-    FilesPanel.filesPanel.displaySearching(filesPanel, term)
-    if (!filesPanel.root.isConnected)
-        addContent(filesPanel.root)
+    SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term)
+    if (!searchResultPanel.root.isConnected)
+        addContent(searchResultPanel.root)
 
     let res = await Rest.search(term, 'audio/%')
 
@@ -64,16 +64,16 @@ searchPanel.form.addEventListener('submit', async event => {
     lastDisplayedFiles = res.items
     lastSearchTerm = term
 
-    FilesPanel.filesPanel.setValues(filesPanel, {
+    SearchResultPanel.searchResultPanel.setValues(searchResultPanel, {
         term: searchPanel.term.value,
         items: res.items
     })
 })
 
-filesPanel.root.addEventListener('click', event => {
+searchResultPanel.root.addEventListener('click', event => {
     // todo : knownledge to do that is in files-panel
-    let { element, childIndex } = Templates.templateGetEventLocation(filesPanel, event)
-    if (lastDisplayedFiles && element == filesPanel.files && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
+    let { element, childIndex } = Templates.templateGetEventLocation(searchResultPanel, event)
+    if (lastDisplayedFiles && element == searchResultPanel.files && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
         audioJukebox.addAndPlay(lastDisplayedFiles[childIndex])
 
         // set an unroller
