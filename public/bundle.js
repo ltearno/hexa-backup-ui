@@ -218,7 +218,10 @@ class AudioJukebox {
     }
     realRefreshPlaylist() {
         if (!this.queue || !this.queue.length) {
-            this.audioPanel.playlist.innerHTML = '';
+            if (this.largeDisplay)
+                this.audioPanel.playlist.innerHTML = '<span>There are no items in your playlist. Click on songs to play them.</span>';
+            else
+                this.audioPanel.playlist.innerHTML = '';
             return;
         }
         if (this.largeDisplay) {
