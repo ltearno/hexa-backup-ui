@@ -110,6 +110,8 @@ searchResultPanel.root.addEventListener('click', async event => {
         if (clickedItem.mimeType == 'application/directory') {
             addContent(directoryPanel.root)
 
+            DirectoryPanel.directoryPanel.setLoading(directoryPanel, clickedItem.name)
+
             let directoryDescriptor = await Rest.getDirectoryDescriptor(clickedItem.sha)
             let items = directoryDescriptor.files.map(directoryDescriptorToFileDescriptor)
 
