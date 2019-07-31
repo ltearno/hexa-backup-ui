@@ -24,6 +24,18 @@ async function getDirectoryDescriptor(sha) {
     return await Network.getData(`${exports.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`);
 }
 exports.getDirectoryDescriptor = getDirectoryDescriptor;
+async function getReferences() {
+    return await Network.getData(`${exports.HEXA_BACKUP_BASE_URL}/refs`);
+}
+exports.getReferences = getReferences;
+async function getReference(name) {
+    return await Network.getData(`${exports.HEXA_BACKUP_BASE_URL}/refs/${name}`);
+}
+exports.getReference = getReference;
+async function getCommit(sha) {
+    return await Network.getData(`${exports.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`);
+}
+exports.getCommit = getCommit;
 function getShaContentUrl(sha, mimeType, name, isDownload) {
     let base = `${exports.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${encodeURIComponent(mimeType)}`;
     if (isDownload)

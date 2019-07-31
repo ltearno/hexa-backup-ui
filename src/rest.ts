@@ -58,6 +58,18 @@ export async function getDirectoryDescriptor(sha: string): Promise<DirectoryDesc
     return await Network.getData(`${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`)
 }
 
+export async function getReferences(): Promise<string[]> {
+    return await Network.getData(`${HEXA_BACKUP_BASE_URL}/refs`)
+}
+
+export async function getReference(name: string): Promise<{ currentCommitSha: string }> {
+    return await Network.getData(`${HEXA_BACKUP_BASE_URL}/refs/${name}`)
+}
+
+export async function getCommit(sha: string): Promise<{ directoryDescriptorSha: string }> {
+    return await Network.getData(`${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`)
+}
+
 export function getShaContentUrl(sha: string, mimeType: string, name: string, isDownload: boolean) {
     let base = `${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${encodeURIComponent(mimeType)}`
     if (isDownload)

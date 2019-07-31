@@ -57,6 +57,9 @@ function readHashAndAct() {
             name
         })
     }
+    else if (parsed.pathname.startsWith('/browse')) {
+        loadReferences()
+    }
 }
 
 const searchPanel = SearchPanel.searchPanel.create()
@@ -212,6 +215,38 @@ async function loadDirectory(item: Rest.FileDescriptor) {
     setContent(directoryPanel.root)
     DirectoryPanel.directoryPanel.setValues(directoryPanel, {
         name: item.name,
+        items
+    })
+}
+
+async function loadReferences() {
+    const waiting = beginWait(() => {
+        setContent(directoryPanel.root)
+        DirectoryPanel.directoryPanel.setLoading(directoryPanel, "References")
+    })
+
+    let items: Rest.FileDescriptor[] = []
+    let references = await Rest.getReferences()
+    for (let name of references) {
+        let reference = await Rest.getReference(name)
+        let commit = await Rest.getCommit(reference.currentCommitSha)
+        items.push({
+            name,
+            lastWrite: 0,
+            mimeType: 'application/directory',
+            sha: commit.directoryDescriptorSha,
+            size: 0
+        })
+    }
+
+    lastDisplayedFiles = items
+    lastSearchTerm = '/'
+
+    waiting.done()
+
+    setContent(directoryPanel.root)
+    DirectoryPanel.directoryPanel.setValues(directoryPanel, {
+        name: "References",
         items
     })
 }
