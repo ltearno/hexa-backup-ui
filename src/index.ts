@@ -47,6 +47,16 @@ searchPanel.form.addEventListener('submit', async event => {
 
     let res = await Rest.search(term, 'audio/%')
 
+    // HACK seulement parceque c'est de l'audio
+    res.files = res.files.map(file => {
+        let dot = file.name.lastIndexOf('.')
+        if (dot)
+            file.name = file.name.substring(0, dot)
+        file.name = file.name.replace('_', ' ')
+        file.name = file.name.replace('  ', ' ')
+        return file
+    })
+
     lastDisplayedFiles = res.files
     lastSearchTerm = term
 
@@ -69,7 +79,7 @@ filesPanel.root.addEventListener('click', event => {
         audioJukebox.setItemUnroller({
             name: () => {
                 if (unrollIndex >= 0 && unrollIndex < files.length)
-                    return `then '${files[unrollIndex].name.substr(0, 20)}' and other '${term}' songs...`
+                    return `then '${files[unrollIndex].name.substr(0, 20)}' and other '${term}' search...`
                 return `finished '${term} songs`
             },
             unroll: () => files[unrollIndex++],
