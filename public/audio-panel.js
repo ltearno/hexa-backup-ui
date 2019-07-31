@@ -164,8 +164,8 @@ class AudioJukebox {
             if (this.currentIndex >= 0) {
                 let e = this.audioPanel.playlist.querySelector(`[x-queue-index='${this.currentIndex}']`);
                 if (e) {
-                    e.scrollIntoView();
-                    this.audioPanel.playlist.scrollTop += 1000; //e.clientHeight * 2
+                    //e.scrollIntoView()
+                    this.audioPanel.playlist.scrollTop = this.audioPanel.playlist.scrollHeight; //e.clientHeight * 2
                 }
             }
         }
