@@ -68,6 +68,11 @@ export class AudioJukebox {
             this.playNext()
         })
 
+        this.audioPanel.player.addEventListener('stalled', () => {
+            console.log('stalled, try next')
+            this.playNext()
+        })
+
         this.audioPanel.expander.addEventListener('click', () => {
             this.largeDisplay = !this.largeDisplay
             this.scrollToPlayingItem = true
