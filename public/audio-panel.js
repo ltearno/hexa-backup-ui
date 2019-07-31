@@ -161,15 +161,12 @@ class AudioJukebox {
         // after refresh steps
         if (this.largeDisplay && this.scrollToPlayingItem) {
             this.scrollToPlayingItem = false;
-            setTimeout(() => {
-                if (this.currentIndex >= 0) {
-                    let e = this.audioPanel.playlist.querySelector(`[x-queue-index='${this.currentIndex}']`);
-                    if (e) {
-                        //e.scrollIntoView()
-                        this.audioPanel.playlist.scrollTop = this.audioPanel.playlist.scrollHeight; //e.clientHeight * 2
-                    }
+            if (this.currentIndex >= 0) {
+                let e = this.audioPanel.playlist.querySelector(`[x-queue-index='${this.currentIndex}']`);
+                if (e) {
+                    e.scrollIntoView();
                 }
-            }, 10);
+            }
         }
     }
     playlistItemHtml(index, name, oneLineText) {
