@@ -63,7 +63,8 @@ searchPanel.form.addEventListener('submit', async event => {
 
     FilesPanel.filesPanel.setValues(filesPanel, {
         term: searchPanel.term.value,
-        files: res.files
+        files: res.files,
+        directories: res.directories
     })
 })
 

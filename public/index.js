@@ -51,7 +51,8 @@ searchPanel.form.addEventListener('submit', async (event) => {
     lastSearchTerm = term;
     FilesPanel.filesPanel.setValues(filesPanel, {
         term: searchPanel.term.value,
-        files: res.files
+        files: res.files,
+        directories: res.directories
     });
 });
 filesPanel.root.addEventListener('click', event => {
