@@ -135,9 +135,6 @@ class AudioJukebox {
             exports.audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType);
             document.querySelectorAll(`[x-for-sha='${item.sha.substr(0, 5)}']`).forEach(e => e.classList.add('is-weighted'));
         }
-        if (index == this.queue.length - 1) {
-            this.audioPanel.playlist.scrollTop = this.audioPanel.playlist.scrollHeight;
-        }
     }
     refreshPlaylist() {
         if (this.refreshTimer)
@@ -177,13 +174,7 @@ class AudioJukebox {
         // after refresh steps
         if (this.largeDisplay && this.scrollToPlayingItem) {
             this.scrollToPlayingItem = false;
-            if (this.currentIndex >= 0) {
-                //let e = this.audioPanel.playlist.querySelector(`[x-queue-index='${this.currentIndex}']`)
-                let e = this.audioPanel.playlist.querySelector(`[x-id='clear-playlist']`);
-                if (e) {
-                    e.scrollIntoView();
-                }
-            }
+            this.audioPanel.playlist.scrollTop = this.audioPanel.playlist.scrollHeight;
         }
     }
     playlistItemHtml(index, name, oneLineText) {

@@ -180,10 +180,6 @@ export class AudioJukebox {
 
             document.querySelectorAll(`[x-for-sha='${item.sha.substr(0, 5)}']`).forEach(e => e.classList.add('is-weighted'))
         }
-
-        if (index == this.queue.length - 1) {
-            this.audioPanel.playlist.scrollTop = this.audioPanel.playlist.scrollHeight
-        }
     }
 
     private refreshTimer
@@ -232,13 +228,7 @@ export class AudioJukebox {
         if (this.largeDisplay && this.scrollToPlayingItem) {
             this.scrollToPlayingItem = false
 
-            if (this.currentIndex >= 0) {
-                //let e = this.audioPanel.playlist.querySelector(`[x-queue-index='${this.currentIndex}']`)
-                let e = this.audioPanel.playlist.querySelector(`[x-id='clear-playlist']`)
-                if (e) {
-                    e.scrollIntoView()
-                }
-            }
+            this.audioPanel.playlist.scrollTop = this.audioPanel.playlist.scrollHeight
         }
     }
 
