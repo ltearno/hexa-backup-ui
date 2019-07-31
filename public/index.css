@@ -259,6 +259,10 @@ html, body, input, textarea, button {
     width: 100%;
 }
 
+.is-weighted {
+    font-weight: 150%;
+}
+
 [x-id=playlist] {
     max-height: 70vh;
     overflow-y: auto;
@@ -269,7 +273,6 @@ html, body, input, textarea, button {
     overflow: hidden;
     line-height: 1em;
     height: 1em;
-
     text-overflow: ellipsis;
     white-space: nowrap;
 }
