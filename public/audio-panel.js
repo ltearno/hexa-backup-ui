@@ -163,15 +163,14 @@ class AudioJukebox {
         }
         else {
             this.expandedElements.forEach(e => e.classList.add('is-hidden'));
-            if (this.currentIndex >= 0 && this.currentIndex < this.queue.length)
-                this.audioPanel.playlist.innerHTML = this.playlistItemHtml(this.currentIndex, this.queue[this.currentIndex].name, true);
-            else
-                this.audioPanel.playlist.innerHTML = "";
-            if (this.currentIndex < this.queue.length - 1) {
-                html += `<div style="flex-shrink: 0;" x-queue-index="${this.currentIndex + 1}" class="onclick mui--text-dark-secondary is-onelinetext">${this.queue[this.currentIndex + 1]}</div>`;
-            }
-            else if (this.itemUnroller && this.itemUnroller.hasNext()) {
-                html += `<div style="flex-shrink: 0;" x-queue-index="${this.queue.length}" class="onclick mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`;
+            if (this.currentIndex >= 0 && this.currentIndex < this.queue.length) {
+                html += this.playlistItemHtml(this.currentIndex, this.queue[this.currentIndex].name, true);
+                if (this.currentIndex < this.queue.length - 1) {
+                    html += `<div style="flex-shrink: 0;" x-queue-index="${this.currentIndex + 1}" class="onclick mui--text-dark-secondary is-onelinetext">${this.queue[this.currentIndex + 1].name}</div>`;
+                }
+                else if (this.itemUnroller && this.itemUnroller.hasNext()) {
+                    html += `<div style="flex-shrink: 0;" x-queue-index="${this.queue.length}" class="onclick mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`;
+                }
             }
         }
         this.audioPanel.playlist.innerHTML = html;
