@@ -20,7 +20,7 @@ export const filesPanel = {
     create: () => createTemplateInstance(templateHtml) as FilesPanelElements,
 
     displaySearching: (elements: FilesPanelElements, term: string) => {
-        elements.title.innerHTML = `<div class="mui--text-dark-hint">Searching '${term}...'</div>`
+        elements.title.innerHTML = `<div class="mui--text-dark-hint">Searching '${term}' ...</div>`
     },
 
     setValues: (elements: FilesPanelElements, values: { term: string, files: any[] }) => {
