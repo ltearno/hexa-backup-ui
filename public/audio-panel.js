@@ -93,8 +93,6 @@ class AudioJukebox {
             name: item.name,
             mimeType: item.mimeType
         };
-        if (!item.mimeType.startsWith('audio/'))
-            return;
         let currentItem = this.currentItem();
         if (currentItem && currentItem.sha == item.sha)
             return;
@@ -127,6 +125,8 @@ class AudioJukebox {
         this.refreshPlaylist();
     }
     pushQueueAndPlay(item) {
+        if (!item.mimeType.startsWith('audio/'))
+            return;
         this.scrollToPlayingItem = true;
         this.queue.push(item);
         localStorage.setItem('playlist-backup', JSON.stringify(this.queue));

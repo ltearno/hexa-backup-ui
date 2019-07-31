@@ -129,9 +129,6 @@ export class AudioJukebox {
             mimeType: item.mimeType
         }
 
-        if (!item.mimeType.startsWith('audio/'))
-            return
-
         let currentItem = this.currentItem()
         if (currentItem && currentItem.sha == item.sha)
             return
@@ -169,6 +166,9 @@ export class AudioJukebox {
     }
 
     private pushQueueAndPlay(item: JukeboxItem) {
+        if (!item.mimeType.startsWith('audio/'))
+            return
+            
         this.scrollToPlayingItem = true
         this.queue.push(item)
         localStorage.setItem('playlist-backup', JSON.stringify(this.queue))
