@@ -37,6 +37,8 @@ searchPanel.form.addEventListener('submit', async (event) => {
     if (!searchResultPanel.root.isConnected)
         addContent(searchResultPanel.root);
     let res = await Rest.search(term, 'audio/%');
+    // first files then directories
+    res.items = res.items.filter(i => !i.mimeType.startsWith('application/directory')).concat(res.items.filter(i => i.mimeType.startsWith('application/directory')));
     // arrange and beautify names
     res.items = res.items.map(file => {
         if (file.mimeType.startsWith('audio/')) {
