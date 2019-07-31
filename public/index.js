@@ -55,12 +55,12 @@ async function searchItems(term) {
     // first files then directories
     res.items = res.items.filter(i => !i.mimeType.startsWith('application/directory')).concat(res.items.filter(i => i.mimeType.startsWith('application/directory')));
     res.items = beautifyNames(res.files);
+    lastDisplayedFiles = res.items;
+    lastSearchTerm = term;
     SearchResultPanel.searchResultPanel.setValues(searchResultPanel, {
         term: searchPanel.term.value,
         items: res.items
     });
-    lastDisplayedFiles = res.items;
-    lastSearchTerm = term;
 }
 searchPanel.form.addEventListener('submit', event => {
     UiTool.stopEvent(event);

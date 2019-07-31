@@ -69,13 +69,13 @@ async function searchItems(term: string) {
 
     res.items = beautifyNames(res.files)
 
+    lastDisplayedFiles = res.items
+    lastSearchTerm = term
+
     SearchResultPanel.searchResultPanel.setValues(searchResultPanel, {
         term: searchPanel.term.value,
         items: res.items
     })
-
-    lastDisplayedFiles = res.items
-    lastSearchTerm = term
 }
 
 searchPanel.form.addEventListener('submit', event => {
