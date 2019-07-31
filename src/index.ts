@@ -53,7 +53,8 @@ searchPanel.form.addEventListener('submit', async event => {
         if (dot)
             file.name = file.name.substring(0, dot)
         file.name = file.name.replace(/'_'/g, ' ')
-        file.name = file.name.replace(/'  '/g, ' ')
+            .replace(/'  '/g, ' ')
+            .replace(/[ ]*-[ ]*/g, ' - ')
         return file
     })
 
