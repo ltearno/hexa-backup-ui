@@ -133,6 +133,9 @@ async function loadDirectory(item: Rest.FileDescriptor) {
 
     items = beautifyNames(items)
 
+    lastDisplayedFiles = items
+    lastSearchTerm = item.name
+
     DirectoryPanel.directoryPanel.setValues(directoryPanel, {
         name: item.name,
         items

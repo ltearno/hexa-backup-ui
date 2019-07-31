@@ -102,6 +102,8 @@ async function loadDirectory(item) {
     let directoryDescriptor = await Rest.getDirectoryDescriptor(item.sha);
     let items = directoryDescriptor.files.map(directoryDescriptorToFileDescriptor);
     items = beautifyNames(items);
+    lastDisplayedFiles = items;
+    lastSearchTerm = item.name;
     DirectoryPanel.directoryPanel.setValues(directoryPanel, {
         name: item.name,
         items
