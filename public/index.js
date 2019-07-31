@@ -195,7 +195,7 @@ async function loadReferences() {
         });
     }
     lastDisplayedFiles = items;
-    lastSearchTerm = '/';
+    lastSearchTerm = '';
     waiting.done();
     setContent(directoryPanel.root);
     DirectoryPanel.directoryPanel.setValues(directoryPanel, {

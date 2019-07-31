@@ -240,7 +240,7 @@ async function loadReferences() {
     }
 
     lastDisplayedFiles = items
-    lastSearchTerm = '/'
+    lastSearchTerm = ''
 
     waiting.done()
 
