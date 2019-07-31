@@ -192,7 +192,7 @@ function directoryDescriptorToFileDescriptor(d: Rest.DirectoryDescriptorFile): R
 
 function goLoadDirectory(sha: string, name: string) {
     document.scrollingElement.scrollTop = 0
-    const url = `#/directories/${sha}?name=${encodeURIComponent(lastSearchTerm ? (lastSearchTerm + '/' + name) : name)}`
+    const url = `#/directories/${sha}?name=${encodeURIComponent(lastSearchTerm ? (lastSearchTerm + '/' + name) : ('/' + name))}`
     window.location.href = url
 }
 
