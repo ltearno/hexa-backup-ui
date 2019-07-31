@@ -31,8 +31,7 @@ function parseURL(url: string) {
         searchObject[split[0]] = decodeURIComponent(split[1])
     }
     return {
-        pathname: parser.pathname,
-        search: parser.search,
+        pathname: decodeURIComponent(parser.pathname),
         searchObject: searchObject as any
     }
 }
