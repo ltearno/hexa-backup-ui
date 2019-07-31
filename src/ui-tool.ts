@@ -18,11 +18,8 @@ export function stopEvent(event: Event) {
 }
 
 export function* iter_path_to_root_element(start: HTMLElement) {
-    do {
+    while (start) {
         yield start
-        if (!start)
-            break
         start = start.parentElement
     }
-    while (true)
 }

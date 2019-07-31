@@ -20,12 +20,10 @@ function stopEvent(event) {
 }
 exports.stopEvent = stopEvent;
 function* iter_path_to_root_element(start) {
-    do {
+    while (start) {
         yield start;
-        if (!start)
-            break;
         start = start.parentElement;
-    } while (true);
+    }
 }
 exports.iter_path_to_root_element = iter_path_to_root_element;
 //# sourceMappingURL=ui-tool.js.map
