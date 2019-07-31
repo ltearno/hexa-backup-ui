@@ -8,7 +8,7 @@ const PLAYLIST = 'playlist';
 const EXPANDER = 'expander';
 const templateHtml = `
 <div class="audio-footer mui-panel">
-    <h3>Playlist</h3>
+    <h3 class="x-when-large-display">Playlist</h3>
     <div x-id="${PLAYLIST}" class="mui--text-center"></div>
     <div x-id="${EXPANDER}" class="onclick mui--text-center">☰</div>
     <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
@@ -75,6 +75,7 @@ class AudioJukebox {
                 }
             }
         });
+        this.expandedElements = UiTools.els(this.audioPanel.root, '.x-when-large-display');
         this.refreshPlaylist();
     }
     currentItem() {
@@ -139,6 +140,10 @@ class AudioJukebox {
         this.refreshTimer = setTimeout(() => this.realRefreshPlaylist(), 10);
     }
     realRefreshPlaylist() {
+        if (this.largeDisplay)
+            this.expandedElements.forEach(e => e.classList.remove('is-hidden'));
+        else
+            this.expandedElements.forEach(e => e.classList.add('is-hidden'));
         if (!this.queue || !this.queue.length) {
             if (this.largeDisplay)
                 this.audioPanel.playlist.innerHTML = '<span class="mui--text-dark-secondary">There are no items in your playlist. Click on songs to play them.</span>';
