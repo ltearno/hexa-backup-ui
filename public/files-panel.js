@@ -17,6 +17,7 @@ exports.filesPanel = {
     setValues: (elements, values) => {
         elements.title.innerHTML = `Results for '${values.term}'`;
         if (values.directories && values.directories.length) {
+            console.log('dirs', values.directories);
             elements.directories.innerHTML = values.directories.map(d => `<div>${JSON.stringify(d)}</div>`).join('');
         }
         if (values.files && values.files.length)
