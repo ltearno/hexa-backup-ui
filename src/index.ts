@@ -253,6 +253,7 @@ async function loadReferences() {
 
     waiting.done()
 
+    setContent(directoryPanel.root)
     DirectoryPanel.directoryPanel.setValues(directoryPanel, {
         name: "References",
         items

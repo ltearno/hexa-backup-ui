@@ -204,6 +204,7 @@ async function loadReferences() {
     lastDisplayedFiles = items;
     lastSearchTerm = '';
     waiting.done();
+    setContent(directoryPanel.root);
     DirectoryPanel.directoryPanel.setValues(directoryPanel, {
         name: "References",
         items
