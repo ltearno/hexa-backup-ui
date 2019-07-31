@@ -8,27 +8,40 @@ import * as Auth from './auth'
 import * as Templates from './templates'
 import * as MimeTypes from './mime-types-module'
 
-let contents: HTMLElement[] = []
-function addContent(content: HTMLElement) {
-    contents.push(content)
-    UiTool.el('content-wrapper').insertBefore(content, UiTool.el('first-element-after-contents'))
-}
+/*
+hash urls :
 
-function clearContents() {
-    const contentWrapper = UiTool.el('content-wrapper')
-    contents.forEach(element => contentWrapper.removeChild(element))
-    contents = []
-}
+- ''                                search
+- '#/'                              search
+- '#'                               search
+- '#/search                         search
+- '#/directories/:sha?name=xxx      directory
+*/
+
 
 const searchPanel = SearchPanel.searchPanel.create()
 const searchResultPanel = SearchResultPanel.searchResultPanel.create()
 const audioPanel = AudioPanel.audioPanel.create()
-const directoryPanel = DirectoryPanel.directoryPanel.create()
-document.body.appendChild(audioPanel.root)
-
-addContent(searchPanel.root)
-
 const audioJukebox = new AudioPanel.AudioJukebox(audioPanel)
+const directoryPanel = DirectoryPanel.directoryPanel.create()
+
+
+let actualContent: HTMLElement = null
+function setContent(content: HTMLElement) {
+    if (content === actualContent)
+        return
+
+    if (actualContent)
+        actualContent.parentElement && actualContent.parentElement.removeChild(actualContent)
+
+    actualContent = content
+
+    if (actualContent)
+        UiTool.el('content-wrapper').insertBefore(content, UiTool.el('first-element-after-contents'))
+}
+
+document.body.appendChild(audioPanel.root)
+UiTool.el('content-wrapper').insertBefore(searchPanel.root, UiTool.el('first-element-after-contents'))
 
 Auth.autoRenewAuth()
 
@@ -60,7 +73,7 @@ async function searchItems(term: string) {
     SearchPanel.searchPanel.displayTitle(searchPanel, false)
     SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term)
     if (!searchResultPanel.root.isConnected)
-        addContent(searchResultPanel.root)
+        setContent(searchResultPanel.root)
 
     let res = await Rest.search(term, 'audio/%')
 
@@ -111,7 +124,7 @@ function directoryDescriptorToFileDescriptor(d: Rest.DirectoryDescriptorFile): R
 }
 
 async function loadDirectory(item: Rest.FileDescriptor) {
-    addContent(directoryPanel.root)
+    setContent(directoryPanel.root)
 
     DirectoryPanel.directoryPanel.setLoading(directoryPanel, item.name)
 

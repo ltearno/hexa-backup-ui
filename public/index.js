@@ -9,23 +9,32 @@ const Rest = require("./rest");
 const Auth = require("./auth");
 const Templates = require("./templates");
 const MimeTypes = require("./mime-types-module");
-let contents = [];
-function addContent(content) {
-    contents.push(content);
-    UiTool.el('content-wrapper').insertBefore(content, UiTool.el('first-element-after-contents'));
-}
-function clearContents() {
-    const contentWrapper = UiTool.el('content-wrapper');
-    contents.forEach(element => contentWrapper.removeChild(element));
-    contents = [];
-}
+/*
+hash urls :
+
+- ''                                search
+- '#/'                              search
+- '#'                               search
+- '#/search                         search
+- '#/directories/:sha?name=xxx      directory
+*/
 const searchPanel = SearchPanel.searchPanel.create();
 const searchResultPanel = SearchResultPanel.searchResultPanel.create();
 const audioPanel = AudioPanel.audioPanel.create();
-const directoryPanel = DirectoryPanel.directoryPanel.create();
-document.body.appendChild(audioPanel.root);
-addContent(searchPanel.root);
 const audioJukebox = new AudioPanel.AudioJukebox(audioPanel);
+const directoryPanel = DirectoryPanel.directoryPanel.create();
+let actualContent = null;
+function setContent(content) {
+    if (content === actualContent)
+        return;
+    if (actualContent)
+        actualContent.parentElement && actualContent.parentElement.removeChild(actualContent);
+    actualContent = content;
+    if (actualContent)
+        UiTool.el('content-wrapper').insertBefore(content, UiTool.el('first-element-after-contents'));
+}
+document.body.appendChild(audioPanel.root);
+UiTool.el('content-wrapper').insertBefore(searchPanel.root, UiTool.el('first-element-after-contents'));
 Auth.autoRenewAuth();
 /**
  * Events
@@ -50,7 +59,7 @@ async function searchItems(term) {
     SearchPanel.searchPanel.displayTitle(searchPanel, false);
     SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term);
     if (!searchResultPanel.root.isConnected)
-        addContent(searchResultPanel.root);
+        setContent(searchResultPanel.root);
     let res = await Rest.search(term, 'audio/%');
     // first files then directories
     res.items = res.items.filter(i => !i.mimeType.startsWith('application/directory')).concat(res.items.filter(i => i.mimeType.startsWith('application/directory')));
@@ -88,7 +97,7 @@ function directoryDescriptorToFileDescriptor(d) {
     };
 }
 async function loadDirectory(item) {
-    addContent(directoryPanel.root);
+    setContent(directoryPanel.root);
     DirectoryPanel.directoryPanel.setLoading(directoryPanel, item.name);
     let directoryDescriptor = await Rest.getDirectoryDescriptor(item.sha);
     let items = directoryDescriptor.files.map(directoryDescriptorToFileDescriptor);
