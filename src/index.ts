@@ -67,7 +67,8 @@ async function searchItems(term: string) {
     // first files then directories
     res.items = res.items.filter(i => !i.mimeType.startsWith('application/directory')).concat(res.items.filter(i => i.mimeType.startsWith('application/directory')))
 
-    res.items = beautifyNames(res.files)
+    //res.items = beautifyNames(res.files)
+    console.log('items', res.items)
 
     lastDisplayedFiles = res.items
     lastSearchTerm = term
