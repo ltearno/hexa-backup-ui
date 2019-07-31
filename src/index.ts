@@ -109,7 +109,7 @@ function beautifyNames(items: Rest.FileDescriptor[]) {
 }
 
 function goSearchItems(term: string) {
-    const url = `${window.location.pathname}#/search/${term}`
+    const url = `#/search/${term}`
     history.pushState(url, `Raccoon search '${term}'`, url)
 }
 
@@ -170,7 +170,7 @@ function directoryDescriptorToFileDescriptor(d: Rest.DirectoryDescriptorFile): R
 }
 
 function goLoadDirectory(sha: string, name: string) {
-    const url = `${window.location.pathname}#/directory/${sha}?name=${encodeURIComponent(name)}`
+    const url = `#/directory/${sha}?name=${encodeURIComponent(name)}`
     history.pushState(url, `Raccoon directory '${name}'`, url)
 }
 
