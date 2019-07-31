@@ -115,13 +115,14 @@ class AudioJukebox {
         this.play(this.queue.length - 1);
     }
     play(index) {
+        if (index < 0)
+            index = -1;
         this.currentIndex = index;
-        if (this.currentIndex < 0)
-            this.currentIndex = -1;
         this.refreshPlaylist();
         if (index >= 0 && index < this.queue.length) {
             const item = this.queue[index];
             exports.audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType);
+            document.querySelectorAll(`[x-for-sha='${item.sha.substr(0, 5)}']`).forEach(e => e.classList.add('is-weighted'));
         }
         if (index == this.queue.length - 1) {
             this.audioPanel.playlist.scrollTop += 100000;

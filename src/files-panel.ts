@@ -27,7 +27,7 @@ export const filesPanel = {
     setValues: (elements: FilesPanelElements, values: { term: string, files: any[] }) => {
         elements.term.innerText = values.term
         if (values.files && values.files.length)
-            elements.files.innerHTML = values.files.map(f => `<div class="onclick">${f.name}</div>`).join('')
+            elements.files.innerHTML = values.files.map(f => `<div x-for-sha="${f.sha.substr(0, 5)}" class="onclick">${f.name}</div>`).join('')
         else
             elements.files.innerHTML = `<div class="mui--text-dark-hint">No results</div>`
     },
