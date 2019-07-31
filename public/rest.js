@@ -21,7 +21,7 @@ async function search(searchText, mimeType) {
 }
 exports.search = search;
 async function getDirectoryDescriptor(sha) {
-    return await Network.getData(`${exports.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=text/json`);
+    return await Network.getData(`${exports.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`);
 }
 exports.getDirectoryDescriptor = getDirectoryDescriptor;
 //# sourceMappingURL=rest.js.map

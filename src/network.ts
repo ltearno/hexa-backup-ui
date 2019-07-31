@@ -25,9 +25,8 @@ export function getData<T>(url: string, headers: { [key: string]: string } = nul
     }
     if (headers)
         options.headers = headers
-        
-    return fetch(
-        url, options)
+
+    return fetch(url, options)
         .then(afterFetch)
 }
 
