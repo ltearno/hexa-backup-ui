@@ -260,7 +260,7 @@ html, body, input, textarea, button {
 }
 
 .is-weighted {
-    font-weight: 150%;
+    font-weight: bold;
 }
 
 [x-id=playlist] {
