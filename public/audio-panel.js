@@ -166,7 +166,7 @@ class AudioJukebox {
             if (this.currentIndex >= 0 && this.currentIndex < this.queue.length) {
                 html += this.playlistItemHtml(this.currentIndex, this.queue[this.currentIndex].name, true);
                 if (this.currentIndex < this.queue.length - 1) {
-                    html += `<div style="flex-shrink: 0;" x-queue-index="${this.currentIndex + 1}" class="onclick mui--text-dark-secondary is-onelinetext">${this.queue[this.currentIndex + 1].name}</div>`;
+                    html += `<div style="flex-shrink: 0;" x-queue-index="${this.currentIndex + 1}" class="onclick mui--text-dark-secondary is-onelinetext">followed by '${this.queue[this.currentIndex + 1].name.substr(0, 20)}' ...</div>`;
                 }
                 else if (this.itemUnroller && this.itemUnroller.hasNext()) {
                     html += `<div style="flex-shrink: 0;" x-queue-index="${this.queue.length}" class="onclick mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`;
