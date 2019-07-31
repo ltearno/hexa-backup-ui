@@ -188,8 +188,8 @@ export class AudioJukebox {
                 this.audioPanel.playlist.innerHTML = ""
         }
 
-        if (this.itemUnroller)
-            this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary">followed by ${this.itemUnroller.name()}...</div>`
+        if (this.itemUnroller && this.itemUnroller.hasNext())
+            this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary">${this.itemUnroller.name()}</div>`
 
         if (this.largeDisplay)
             this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`

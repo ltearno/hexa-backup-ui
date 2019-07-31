@@ -238,8 +238,8 @@ class AudioJukebox {
             else
                 this.audioPanel.playlist.innerHTML = "";
         }
-        if (this.itemUnroller)
-            this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary">followed by ${this.itemUnroller.name()}...</div>`;
+        if (this.itemUnroller && this.itemUnroller.hasNext())
+            this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary">${this.itemUnroller.name()}</div>`;
         if (this.largeDisplay)
             this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`;
     }
@@ -406,7 +406,11 @@ filesPanel.root.addEventListener('click', event => {
         let unrollIndex = childIndex + 1;
         let files = lastDisplayedFiles;
         audioJukebox.setItemUnroller({
-            name: () => `'${term}' songs`,
+            name: () => {
+                if (unrollIndex >= 0 && unrollIndex < files.length)
+                    return `then '${files[unrollIndex].name.substr(0, 20)}' and other '${term}' songs...`;
+                return `finished '${term} songs`;
+            },
             unroll: () => files[unrollIndex++],
             hasNext: () => unrollIndex >= 0 && unrollIndex < files.length
         });

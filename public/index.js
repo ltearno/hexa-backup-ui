@@ -54,7 +54,11 @@ filesPanel.root.addEventListener('click', event => {
         let unrollIndex = childIndex + 1;
         let files = lastDisplayedFiles;
         audioJukebox.setItemUnroller({
-            name: () => `'${term}' songs`,
+            name: () => {
+                if (unrollIndex >= 0 && unrollIndex < files.length)
+                    return `then '${files[unrollIndex].name.substr(0, 20)}' and other '${term}' songs...`;
+                return `finished '${term} songs`;
+            },
             unroll: () => files[unrollIndex++],
             hasNext: () => unrollIndex >= 0 && unrollIndex < files.length
         });
