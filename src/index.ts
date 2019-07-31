@@ -221,7 +221,7 @@ function itemDefaultAction(childIndex: number) {
     if (item.mimeType == 'application/directory') {
         goLoadDirectory(item.sha, item.name)
     }
-    if (item.mimeType.startsWith('audio/')) {
+    else if (item.mimeType.startsWith('audio/')) {
         audioJukebox.addAndPlay(item)
 
         // set an unroller
@@ -246,7 +246,7 @@ function itemDefaultAction(childIndex: number) {
         }
     }
     else {
-        window.location.href = `${Rest.HEXA_BACKUP_BASE_URL}/sha/${item.sha}/content?type=${item.mimeType}&name=${item.name}`
+        window.location.href = `${Rest.HEXA_BACKUP_BASE_URL}/sha/${item.sha}/content?type=${item.mimeType}`
     }
 }
 
