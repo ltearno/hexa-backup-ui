@@ -115,6 +115,8 @@ function goSearchItems(term: string) {
 async function searchItems(term: string) {
     //searchPanel.term.value = term
 
+    document.scrollingElement.scrollTop = 0
+
     SearchPanel.searchPanel.displayTitle(searchPanel, false)
     SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term)
     if (!searchResultPanel.root.isConnected)
