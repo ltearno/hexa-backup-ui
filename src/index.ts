@@ -6,6 +6,7 @@ import * as DirectoryPanel from './directory-panel'
 import * as Rest from './rest'
 import * as Auth from './auth'
 import * as Templates from './templates'
+import * as MimeTypes from './mime-types'
 
 let contents: HTMLElement[] = []
 function addContent(content: HTMLElement) {
@@ -76,19 +77,46 @@ searchPanel.form.addEventListener('submit', async event => {
     })
 })
 
-searchResultPanel.root.addEventListener('click', event => {
+function getMimeType(f: Rest.DirectoryDescriptorFile) {
+    if (f.isDirectory)
+        return 'application/directory'
+
+    let pos = f.name.lastIndexOf('.')
+    if (pos >= 0) {
+        let extension = f.name.substr(pos + 1).toLocaleLowerCase()
+        if (extension in MimeTypes)
+            return MimeTypes[extension]
+    }
+
+    return 'application/octet-stream'
+}
+
+function directoryDescriptorToFileDescriptor(d: Rest.DirectoryDescriptorFile): Rest.FileDescriptor {
+    return {
+        sha: d.contentSha,
+        name: d.name,
+        mimeType: getMimeType(d),
+        lastWrite: d.lastWrite,
+        size: d.size
+    }
+}
+
+searchResultPanel.root.addEventListener('click', async event => {
     // todo : knownledge to do that is in files-panel
     let { element, childIndex } = Templates.templateGetEventLocation(searchResultPanel, event)
     if (lastDisplayedFiles && element == searchResultPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
         let clickedItem = lastDisplayedFiles[childIndex]
 
         if (clickedItem.mimeType == 'application/directory') {
+            addContent(directoryPanel.root)
+
+            let directoryDescriptor = await Rest.getDirectoryDescriptor(clickedItem.sha)
+            let items = directoryDescriptor.files.map(directoryDescriptorToFileDescriptor)
+
             DirectoryPanel.directoryPanel.setValues(directoryPanel, {
                 name: clickedItem.name,
-                items: []
+                items
             })
-
-            addContent(directoryPanel.root)
         }
         if (clickedItem.mimeType.startsWith('audio/')) {
             audioJukebox.addAndPlay(clickedItem)

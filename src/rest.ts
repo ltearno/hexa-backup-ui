@@ -14,6 +14,18 @@ export interface FileDescriptor {
     lastWrite: number
 }
 
+export interface DirectoryDescriptorFile {
+    name: string
+    isDirectory: boolean
+    size: number
+    lastWrite: number
+    contentSha: string
+}
+
+export interface DirectoryDescriptor {
+    files: DirectoryDescriptorFile[]
+}
+
 export interface SearchResult {
     directories: DirectorySearchResult[]
     files: FileDescriptor[]
@@ -40,4 +52,8 @@ export async function search(searchText: string, mimeType: string): Promise<Sear
     catch (err) {
         return null
     }
+}
+
+export async function getDirectoryDescriptor(sha: string): Promise<DirectoryDescriptor> {
+    return await Network.getData(`${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`)
 }
