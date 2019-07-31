@@ -21,7 +21,7 @@ export const directoryPanel = {
     },
 
     setValues: (elements: DirectoryPanelElements, values: { name: string, items: any[] }) => {
-        elements.title.innerHTML = `Directory '${values.name}'`
+        elements.title.innerHTML = `${values.name}`
 
         if (values.items && values.items.length) {
             elements.items.innerHTML = values.items.map(f => {

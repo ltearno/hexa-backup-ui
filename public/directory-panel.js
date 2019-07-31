@@ -14,7 +14,7 @@ exports.directoryPanel = {
         elements.title.innerHTML = `Loading '${title}' ...`;
     },
     setValues: (elements, values) => {
-        elements.title.innerHTML = `Directory '${values.name}'`;
+        elements.title.innerHTML = `${values.name}`;
         if (values.items && values.items.length) {
             elements.items.innerHTML = values.items.map(f => {
                 if (f.mimeType == 'application/directory')
