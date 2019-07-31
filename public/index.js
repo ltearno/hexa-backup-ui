@@ -8,7 +8,7 @@ const DirectoryPanel = require("./directory-panel");
 const Rest = require("./rest");
 const Auth = require("./auth");
 const Templates = require("./templates");
-const MimeTypes = require("./mime-types");
+const MimeTypes = require("./mime-types-module");
 let contents = [];
 function addContent(content) {
     contents.push(content);
@@ -73,8 +73,8 @@ function getMimeType(f) {
     let pos = f.name.lastIndexOf('.');
     if (pos >= 0) {
         let extension = f.name.substr(pos + 1).toLocaleLowerCase();
-        if (extension in MimeTypes)
-            return MimeTypes[extension];
+        if (extension in MimeTypes.MimeTypes)
+            return MimeTypes.MimeTypes[extension];
     }
     return 'application/octet-stream';
 }

@@ -6,7 +6,7 @@ import * as DirectoryPanel from './directory-panel'
 import * as Rest from './rest'
 import * as Auth from './auth'
 import * as Templates from './templates'
-import * as MimeTypes from './mime-types'
+import * as MimeTypes from './mime-types-module'
 
 let contents: HTMLElement[] = []
 function addContent(content: HTMLElement) {
@@ -93,8 +93,8 @@ function getMimeType(f: Rest.DirectoryDescriptorFile) {
     let pos = f.name.lastIndexOf('.')
     if (pos >= 0) {
         let extension = f.name.substr(pos + 1).toLocaleLowerCase()
-        if (extension in MimeTypes)
-            return MimeTypes[extension]
+        if (extension in MimeTypes.MimeTypes)
+            return MimeTypes.MimeTypes[extension]
     }
 
     return 'application/octet-stream'
