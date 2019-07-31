@@ -176,9 +176,24 @@ function goLoadDirectory(sha: string, name: string) {
 }
 
 async function loadDirectory(item: Rest.FileDescriptor) {
-    setContent(directoryPanel.root)
+    function wait(duration) {
+        return new Promise(resolve => setTimeout(resolve, duration))
+    }
 
-    DirectoryPanel.directoryPanel.setLoading(directoryPanel, item.name)
+    const beginWait = (callback: () => any) => {
+        let isDone = false
+        wait(100).then(() => isDone || callback())
+        return {
+            done: () => {
+                isDone = true
+            }
+        }
+    }
+
+    const waiting = beginWait(() => {
+        setContent(directoryPanel.root)
+        DirectoryPanel.directoryPanel.setLoading(directoryPanel, item.name)
+    })
 
     let directoryDescriptor = await Rest.getDirectoryDescriptor(item.sha)
     let items = directoryDescriptor.files.map(directoryDescriptorToFileDescriptor)
@@ -188,6 +203,9 @@ async function loadDirectory(item: Rest.FileDescriptor) {
     lastDisplayedFiles = items
     lastSearchTerm = item.name
 
+    waiting.done()
+
+    setContent(directoryPanel.root)
     DirectoryPanel.directoryPanel.setValues(directoryPanel, {
         name: item.name,
         items
