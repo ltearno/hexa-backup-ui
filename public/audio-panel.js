@@ -135,13 +135,13 @@ class AudioJukebox {
             let html = `<h3>Playlist</h3>`;
             for (let i = 0; i < this.queue.length; i++) {
                 let item = this.queue[i];
-                html += this.playlistItemHtml(i, item.name);
+                html += this.playlistItemHtml(i, item.name, false);
             }
             this.audioPanel.playlist.innerHTML = html;
         }
         else {
             if (this.currentIndex >= 0 && this.currentIndex < this.queue.length)
-                this.audioPanel.playlist.innerHTML = this.playlistItemHtml(this.currentIndex, this.queue[this.currentIndex].name);
+                this.audioPanel.playlist.innerHTML = this.playlistItemHtml(this.currentIndex, this.queue[this.currentIndex].name, true);
             else
                 this.audioPanel.playlist.innerHTML = "";
         }
@@ -150,8 +150,8 @@ class AudioJukebox {
         if (this.largeDisplay)
             this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`;
     }
-    playlistItemHtml(index, name) {
-        return `<div x-queue-index="${index}" class="onclick is-onelinetext ${index == this.currentIndex ? 'mui--text-headline' : ''}">${name}</div>`;
+    playlistItemHtml(index, name, oneLineText) {
+        return `<div x-queue-index="${index}" class="onclick ${oneLineText ? 'is-onelinetext' : ''} ${index == this.currentIndex ? 'mui--text-headline' : ''}">${name}</div>`;
     }
 }
 exports.AudioJukebox = AudioJukebox;
