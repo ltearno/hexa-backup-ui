@@ -129,6 +129,9 @@ export class AudioJukebox {
             mimeType: item.mimeType
         }
 
+        if (!item.mimeType.startsWith('audio/'))
+            return
+
         let currentItem = this.currentItem()
         if (currentItem && currentItem.sha == item.sha)
             return
