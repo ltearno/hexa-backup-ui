@@ -1,1 +1,662 @@
-!function(e){var t={};function n(i){if(t[i])return t[i].exports;var r=t[i]={i:i,l:!1,exports:{}};return e[i].call(r.exports,r,r.exports,n),r.l=!0,r.exports}n.m=e,n.c=t,n.d=function(e,t,i){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:i})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var i=Object.create(null);if(n.r(i),Object.defineProperty(i,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var r in e)n.d(i,r,function(t){return e[t]}.bind(null,r));return i},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=3)}([function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});const i=n(1),r=new WeakMap;function l(e,t){let n=i.elFromHtml(t);return e.root=n,i.els(n,"[x-id]").forEach(t=>e[t.getAttribute("x-id")]=t),r.set(n,e),n}function s(e){return r.get(e)}t.createElementAndLocateChildren=l,t.getTemplateInstanceData=s,t.createTemplateInstance=function(e){return s(l({},e))};const a={element:null,childIndex:-1};t.templateGetEventLocation=function(e,t){let n=new Set(Object.values(e)),i=t.target,r=null;do{if(n.has(i))return{element:i,childIndex:r&&Array.prototype.indexOf.call(i.children,r)};if(i==e.root)return a;r=i,i=i.parentElement}while(i);return a}},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.el=function(e){return document.getElementById(e)},t.els=function(e,t){return e.querySelectorAll(t)},t.elFromHtml=function(e){const t=document.createElement("div");return t.innerHTML=e,t.children.item(0)},t.stopEvent=function(e){e.preventDefault(),e.stopPropagation()}},function(e,t,n){"use strict";async function i(e){if(!e||!e.ok)return console.error(`bad response : ${JSON.stringify(e)}`),null;let t=e.headers.get("Content-Type")||"application/json",n=t.indexOf(";");return n>=0&&(t=t.substr(0,n)),"application/json"==t?await e.json():await e.text()}Object.defineProperty(t,"__esModule",{value:!0}),t.getData=function(e,t=null){return fetch(e,{method:"GET",mode:"cors",cache:"no-cache",credentials:"same-origin",redirect:"follow",referrer:"no-referrer",headers:t}).then(i)},t.postData=function(e,t={},n="application/json"){return fetch(e,{method:"POST",mode:"cors",cache:"no-cache",credentials:"same-origin",redirect:"follow",referrer:"no-referrer",headers:{"Content-Type":n},body:"application/json"==n?JSON.stringify(t):t}).then(i)},t.putData=function(e,t={},n="application/json"){return fetch(e,{method:"PUT",mode:"cors",cache:"no-cache",credentials:"same-origin",redirect:"follow",referrer:"no-referrer",headers:{"Content-Type":n},body:"application/json"==n?JSON.stringify(t):t}).then(i)},t.deleteData=function(e,t={},n="application/json"){return fetch(e,{method:"DELETE",mode:"cors",cache:"no-cache",credentials:"same-origin",redirect:"follow",referrer:"no-referrer",headers:{"Content-Type":n},body:"application/json"==n?JSON.stringify(t):t}).then(i)}},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});const i=n(1),r=n(4),l=n(5),s=n(6),a=n(7),o=n(8),u=n(0);let c=[];function d(e){c.push(e),i.el("content-wrapper").insertBefore(e,i.el("first-element-after-contents"))}const h=r.searchPanel.create(),f=l.filesPanel.create(),p=s.audioPanel.create();document.body.appendChild(p.root),d(h.root);const m=new s.AudioJukebox(p);o.autoRenewAuth();let y=null,v=null;h.form.addEventListener("submit",async e=>{i.stopEvent(e);let t=h.term.value;r.searchPanel.displayTitle(h,!1),l.filesPanel.displaySearching(f,t),f.root.isConnected||d(f.root);let n=await a.search(t,"audio/%");y=n.files,v=t,l.filesPanel.setValues(f,{term:h.term.value,files:n.files})}),f.root.addEventListener("click",e=>{let{element:t,childIndex:n}=u.templateGetEventLocation(f,e);if(y&&t==f.files&&n>=0&&n<y.length){m.addAndPlay(y[n]);let e=v,t=n+1,i=y;m.setItemUnroller({name:()=>`'${e}' songs`,unroll:()=>i[t++],hasNext:()=>t>=0&&t<i.length})}})},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});const i=n(0);t.searchPanel={create:()=>i.createTemplateInstance('\n<div class=\'mui-container-fluid\'>\n    <div class="mui--text-center">\n        <h1 x-id="title" class="animated--quick">Raccoon</h1>\n        <form x-id="form" class="mui-form--inline">\n            \x3c!--this is a little hack to have things centered--\x3e\n            <div class="mui-btn mui-btn--flat" style="visibility: hidden;">🔍</div>\n            <div class="mui-textfield">\n                <input placeholder="Search an audio title" x-id="term" type="text" autofocus>\n            </div>\n            <button role="submit" class="mui-btn mui-btn--flat">🔍</button>\n        </form>\n        <br />\n    </div>\n</div>'),displayTitle:(e,t)=>{t?e.title.classList.remove("hexa--reduced"):e.title.classList.add("hexa--reduced")}}},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});const i=n(0);t.filesPanel={create:()=>i.createTemplateInstance('\n<div class=\'mui-container-fluid\'>\n    <div class="mui--text-center">\n        <h2>Results for \'<span x-id="term"></span>\'</h2>\n        <div x-id="files"></div>\n    </div>\n</div>'),displaySearching:(e,t)=>{e.term.innerText=t,e.files.innerHTML='<div class="mui--text-dark-hint">Searching ...</div>'},setValues:(e,t)=>{e.term.innerText=t.term,t.files&&t.files.length?e.files.innerHTML=t.files.map(e=>`<div class="onclick">${e.name}</div>`).join(""):e.files.innerHTML='<div class="mui--text-dark-hint">No results</div>'}}},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});const i=n(0),r=n(7);t.audioPanel={create:()=>i.createTemplateInstance('\n<div class="audio-footer mui-panel">\n    <div x-id="playlist" class="is-fullwidth mui--text-center"></div>\n    <div x-id="expander" class="onclick mui--text-center">☰</div>\n    <audio x-id="player" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>\n</div>'),play:(e,t,n,i)=>{e.player.setAttribute("src",`${r.HEXA_BACKUP_BASE_URL}/sha/${n}/content?type=${i}`),e.player.setAttribute("type",i),e.player.play(),e.root.classList.remove("is-hidden")}};t.AudioJukebox=class{constructor(e){this.audioPanel=e,this.largeDisplay=!1,this.queue=[],this.currentIndex=-1;try{let e=JSON.parse(localStorage.getItem("playlist-backup"));e&&e instanceof Array&&(this.queue=e)}catch(e){console.error("error",e)}this.audioPanel.player.addEventListener("ended",()=>{this.playNext()}),this.audioPanel.expander.addEventListener("click",()=>{this.largeDisplay=!this.largeDisplay,this.refreshPlaylist()}),this.audioPanel.root.addEventListener("click",e=>{const{element:t,childIndex:n}=i.templateGetEventLocation(this.audioPanel,e);if(t==this.audioPanel.playlist&&n>=0){let i=t.children.item(n).getAttribute("x-queue-index");if(i.length&&this.play(parseInt(i)),e.target==this.audioPanel.playlist.querySelector("[x-id='clear-playlist']")){let e=this.currentItem();e?(this.queue=[e],this.currentIndex=0):this.queue=[],localStorage.removeItem("playlist-backup"),this.refreshPlaylist()}}}),this.refreshPlaylist()}currentItem(){return this.currentIndex<0||this.currentIndex>=this.queue.length?null:this.queue[this.currentIndex]}addAndPlay(e){e={sha:e.sha,name:e.name,mimeType:e.mimeType};let t=this.currentItem();t&&t.sha==e.sha||this.pushQueueAndPlay(e)}playNext(){if(this.currentIndex+1<this.queue.length)this.play(this.currentIndex+1);else if(this.itemUnroller){let e=this.itemUnroller.unroll();e?(this.itemUnroller.hasNext()||(this.itemUnroller=null),this.pushQueueAndPlay(e)):(this.itemUnroller=null,this.refreshPlaylist())}}setItemUnroller(e){this.itemUnroller=e,this.refreshPlaylist()}pushQueueAndPlay(e){this.queue.push(e),localStorage.setItem("playlist-backup",JSON.stringify(this.queue)),this.play(this.queue.length-1)}play(e){if(this.currentIndex=e,this.currentIndex<0&&(this.currentIndex=-1),this.refreshPlaylist(),e>=0&&e<this.queue.length){const n=this.queue[e];t.audioPanel.play(this.audioPanel,n.name,n.sha,n.mimeType)}}refreshPlaylist(){this.refreshTimer&&clearTimeout(this.refreshTimer),this.refreshTimer=setTimeout(()=>this.realRefreshPlaylist(),10)}realRefreshPlaylist(){if(this.queue&&this.queue.length){if(this.largeDisplay){let e="<h3>Playlist</h3>";for(let t=0;t<this.queue.length;t++){let n=this.queue[t];e+=this.playlistItemHtml(t,n.name)}this.audioPanel.playlist.innerHTML=e}else this.currentIndex>=0&&this.currentIndex<this.queue.length?this.audioPanel.playlist.innerHTML=this.playlistItemHtml(this.currentIndex,this.queue[this.currentIndex].name):this.audioPanel.playlist.innerHTML="";this.itemUnroller&&(this.audioPanel.playlist.innerHTML+=`<div class="mui--text-dark-secondary">followed by ${this.itemUnroller.name()}...</div>`),this.largeDisplay&&(this.audioPanel.playlist.innerHTML+="<div class=\"mui--text-dark-secondary\"><a x-id='clear-playlist' href='#'>clear playlist</a></div>")}else this.audioPanel.playlist.innerHTML=""}playlistItemHtml(e,t){return`<div x-queue-index="${e}" class="onclick ${e==this.currentIndex?"mui--text-headline":""}">${t}</div>`}}},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});const i=n(2);t.HEXA_BACKUP_BASE_URL="home.lteconsulting.fr"==window.location.hostname?"https://home.lteconsulting.fr":"https://localhost:5005",t.search=async function(e,n){try{let r={name:e,mimeType:n};const{resultDirectories:l,resultFilesddd:s}=await i.postData(`${t.HEXA_BACKUP_BASE_URL}/search`,r);return{directories:l,files:s}}catch(e){return null}}},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});const i=n(2);function r(e){return new Promise(t=>setTimeout(t,e))}class l{onError(){window.location.reload()}async loop(){for(;;){try{let e=await i.postData("https://home.lteconsulting.fr/auth");if(e&&e.token){let t=await i.getData("https://home.lteconsulting.fr/well-known/v1/setCookie",{Authorization:`Bearer ${e.token}`});t&&t.lifetime||(console.error("cannot setCookie",t),this.onError())}else console.error("cannot obtain auth token"),this.onError()}catch(e){console.error(`cannot refresh auth (${e})`),this.onError()}await r(18e5)}}}t.autoRenewAuth=function(){(new l).loop()}}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./public/index.js");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./public/audio-panel.js":
+/*!*******************************!*\
+  !*** ./public/audio-panel.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+﻿
+Object.defineProperty(exports, "__esModule", { value: true });
+const templates_1 = __webpack_require__(/*! ./templates */ "./public/templates.js");
+const Rest = __webpack_require__(/*! ./rest */ "./public/rest.js");
+const PLAYER = 'player';
+const PLAYLIST = 'playlist';
+const EXPANDER = 'expander';
+const templateHtml = `
+<div class="audio-footer mui-panel">
+    <div x-id="${PLAYLIST}" class="is-fullwidth mui--text-center"></div>
+    <div x-id="${EXPANDER}" class="onclick mui--text-center">☰</div>
+    <audio x-id="${PLAYER}" class="audio-player" class="mui--pull-right" controls preload="metadata"></audio>
+</div>`;
+exports.audioPanel = {
+    create: () => templates_1.createTemplateInstance(templateHtml),
+    play: (elements, name, sha, mimeType) => {
+        elements.player.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`);
+        elements.player.setAttribute('type', mimeType);
+        elements.player.play();
+        elements.root.classList.remove("is-hidden");
+    },
+};
+class AudioJukebox {
+    constructor(audioPanel) {
+        this.audioPanel = audioPanel;
+        this.largeDisplay = false;
+        this.queue = [];
+        this.currentIndex = -1;
+        try {
+            let queue = JSON.parse(localStorage.getItem('playlist-backup'));
+            if (queue && queue instanceof Array)
+                this.queue = queue;
+        }
+        catch (err) {
+            console.error(`error`, err);
+        }
+        this.audioPanel.player.addEventListener('ended', () => {
+            this.playNext();
+        });
+        this.audioPanel.expander.addEventListener('click', () => {
+            this.largeDisplay = !this.largeDisplay;
+            this.refreshPlaylist();
+        });
+        this.audioPanel.root.addEventListener('click', event => {
+            const { element, childIndex } = templates_1.templateGetEventLocation(this.audioPanel, event);
+            if (element == this.audioPanel.playlist && childIndex >= 0) {
+                let queueIndex = element.children.item(childIndex).getAttribute('x-queue-index');
+                if (queueIndex && queueIndex.length)
+                    this.play(parseInt(queueIndex));
+                if (event.target == this.audioPanel.playlist.querySelector(`[x-id='clear-playlist']`)) {
+                    let currentItem = this.currentItem();
+                    if (currentItem) {
+                        this.queue = [currentItem];
+                        this.currentIndex = 0;
+                    }
+                    else {
+                        this.queue = [];
+                    }
+                    localStorage.removeItem('playlist-backup');
+                    this.refreshPlaylist();
+                }
+            }
+        });
+        this.refreshPlaylist();
+    }
+    currentItem() {
+        if (this.currentIndex < 0 || this.currentIndex >= this.queue.length)
+            return null;
+        return this.queue[this.currentIndex];
+    }
+    addAndPlay(item) {
+        item = {
+            sha: item.sha,
+            name: item.name,
+            mimeType: item.mimeType
+        };
+        let currentItem = this.currentItem();
+        if (currentItem && currentItem.sha == item.sha)
+            return;
+        this.pushQueueAndPlay(item);
+    }
+    playNext() {
+        if (this.currentIndex + 1 < this.queue.length) {
+            this.play(this.currentIndex + 1);
+        }
+        else if (this.itemUnroller) {
+            let item = this.itemUnroller.unroll();
+            if (item) {
+                if (!this.itemUnroller.hasNext())
+                    this.itemUnroller = null;
+                this.pushQueueAndPlay(item);
+            }
+            else {
+                this.itemUnroller = null;
+                this.refreshPlaylist();
+            }
+        }
+    }
+    setItemUnroller(itemUnroller) {
+        this.itemUnroller = itemUnroller;
+        this.refreshPlaylist();
+    }
+    pushQueueAndPlay(item) {
+        this.queue.push(item);
+        localStorage.setItem('playlist-backup', JSON.stringify(this.queue));
+        this.play(this.queue.length - 1);
+    }
+    play(index) {
+        this.currentIndex = index;
+        if (this.currentIndex < 0)
+            this.currentIndex = -1;
+        this.refreshPlaylist();
+        if (index >= 0 && index < this.queue.length) {
+            const item = this.queue[index];
+            exports.audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType);
+        }
+    }
+    refreshPlaylist() {
+        if (this.refreshTimer)
+            clearTimeout(this.refreshTimer);
+        this.refreshTimer = setTimeout(() => this.realRefreshPlaylist(), 10);
+    }
+    realRefreshPlaylist() {
+        if (!this.queue || !this.queue.length) {
+            this.audioPanel.playlist.innerHTML = '';
+            return;
+        }
+        if (this.largeDisplay) {
+            let html = `<h3>Playlist</h3>`;
+            for (let i = 0; i < this.queue.length; i++) {
+                let item = this.queue[i];
+                html += this.playlistItemHtml(i, item.name);
+            }
+            this.audioPanel.playlist.innerHTML = html;
+        }
+        else {
+            if (this.currentIndex >= 0 && this.currentIndex < this.queue.length)
+                this.audioPanel.playlist.innerHTML = this.playlistItemHtml(this.currentIndex, this.queue[this.currentIndex].name);
+            else
+                this.audioPanel.playlist.innerHTML = "";
+        }
+        if (this.itemUnroller)
+            this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary">followed by ${this.itemUnroller.name()}...</div>`;
+        if (this.largeDisplay)
+            this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`;
+    }
+    playlistItemHtml(index, name) {
+        return `<div x-queue-index="${index}" class="onclick ${index == this.currentIndex ? 'mui--text-headline' : ''}">${name}</div>`;
+    }
+}
+exports.AudioJukebox = AudioJukebox;
+//# sourceMappingURL=audio-panel.js.map
+
+/***/ }),
+
+/***/ "./public/auth.js":
+/*!************************!*\
+  !*** ./public/auth.js ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+﻿
+Object.defineProperty(exports, "__esModule", { value: true });
+const Network = __webpack_require__(/*! ./network */ "./public/network.js");
+function wait(duration) {
+    return new Promise(resolve => setTimeout(resolve, duration));
+}
+class Auth {
+    onError() {
+        window.location.reload();
+    }
+    async loop() {
+        while (true) {
+            try {
+                let response = await Network.postData(`https://home.lteconsulting.fr/auth`);
+                if (response && response.token) {
+                    let res = await Network.getData(`https://home.lteconsulting.fr/well-known/v1/setCookie`, { 'Authorization': `Bearer ${response.token}` });
+                    if (!res || !res.lifetime) {
+                        console.error(`cannot setCookie`, res);
+                        this.onError();
+                    }
+                }
+                else {
+                    console.error(`cannot obtain auth token`);
+                    this.onError();
+                }
+            }
+            catch (err) {
+                console.error(`cannot refresh auth (${err})`);
+                this.onError();
+            }
+            // every 30 minutes
+            await wait(1000 * 60 * 30);
+        }
+    }
+}
+function autoRenewAuth() {
+    let auth = new Auth();
+    auth.loop();
+}
+exports.autoRenewAuth = autoRenewAuth;
+//# sourceMappingURL=auth.js.map
+
+/***/ }),
+
+/***/ "./public/files-panel.js":
+/*!*******************************!*\
+  !*** ./public/files-panel.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+﻿
+Object.defineProperty(exports, "__esModule", { value: true });
+const templates_1 = __webpack_require__(/*! ./templates */ "./public/templates.js");
+const TID_SearchTerm = 'term';
+const TID_Files = 'files';
+const templateHtml = `
+<div class='mui-container-fluid'>
+    <div class="mui--text-center">
+        <h2>Results for '<span x-id="${TID_SearchTerm}"></span>'</h2>
+        <div x-id="${TID_Files}"></div>
+    </div>
+</div>`;
+exports.filesPanel = {
+    create: () => templates_1.createTemplateInstance(templateHtml),
+    displaySearching: (elements, term) => {
+        elements.term.innerText = term;
+        elements.files.innerHTML = `<div class="mui--text-dark-hint">Searching ...</div>`;
+    },
+    setValues: (elements, values) => {
+        elements.term.innerText = values.term;
+        if (values.files && values.files.length)
+            elements.files.innerHTML = values.files.map(f => `<div class="onclick">${f.name}</div>`).join('');
+        else
+            elements.files.innerHTML = `<div class="mui--text-dark-hint">No results</div>`;
+    },
+};
+//# sourceMappingURL=files-panel.js.map
+
+/***/ }),
+
+/***/ "./public/index.js":
+/*!*************************!*\
+  !*** ./public/index.js ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+﻿
+Object.defineProperty(exports, "__esModule", { value: true });
+const UiTool = __webpack_require__(/*! ./ui-tool */ "./public/ui-tool.js");
+const SearchPanel = __webpack_require__(/*! ./search-panel */ "./public/search-panel.js");
+const FilesPanel = __webpack_require__(/*! ./files-panel */ "./public/files-panel.js");
+const AudioPanel = __webpack_require__(/*! ./audio-panel */ "./public/audio-panel.js");
+const Rest = __webpack_require__(/*! ./rest */ "./public/rest.js");
+const Auth = __webpack_require__(/*! ./auth */ "./public/auth.js");
+const Templates = __webpack_require__(/*! ./templates */ "./public/templates.js");
+let contents = [];
+function addContent(content) {
+    contents.push(content);
+    UiTool.el('content-wrapper').insertBefore(content, UiTool.el('first-element-after-contents'));
+}
+function clearContents() {
+    const contentWrapper = UiTool.el('content-wrapper');
+    contents.forEach(element => contentWrapper.removeChild(element));
+    contents = [];
+}
+const searchPanel = SearchPanel.searchPanel.create();
+const filesPanel = FilesPanel.filesPanel.create();
+const audioPanel = AudioPanel.audioPanel.create();
+document.body.appendChild(audioPanel.root);
+addContent(searchPanel.root);
+const audioJukebox = new AudioPanel.AudioJukebox(audioPanel);
+Auth.autoRenewAuth();
+/**
+ * Events
+ */
+let lastDisplayedFiles = null;
+let lastSearchTerm = null; // HACK very temporary
+searchPanel.form.addEventListener('submit', async (event) => {
+    UiTool.stopEvent(event);
+    let term = searchPanel.term.value;
+    SearchPanel.searchPanel.displayTitle(searchPanel, false);
+    FilesPanel.filesPanel.displaySearching(filesPanel, term);
+    if (!filesPanel.root.isConnected)
+        addContent(filesPanel.root);
+    let res = await Rest.search(term, 'audio/%');
+    lastDisplayedFiles = res.files;
+    lastSearchTerm = term;
+    FilesPanel.filesPanel.setValues(filesPanel, {
+        term: searchPanel.term.value,
+        files: res.files
+    });
+});
+filesPanel.root.addEventListener('click', event => {
+    // todo : knownledge to do that is in files-panel
+    let { element, childIndex } = Templates.templateGetEventLocation(filesPanel, event);
+    if (lastDisplayedFiles && element == filesPanel.files && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
+        audioJukebox.addAndPlay(lastDisplayedFiles[childIndex]);
+        // set an unroller
+        let term = lastSearchTerm;
+        let unrollIndex = childIndex + 1;
+        let files = lastDisplayedFiles;
+        audioJukebox.setItemUnroller({
+            name: () => `'${term}' songs`,
+            unroll: () => files[unrollIndex++],
+            hasNext: () => unrollIndex >= 0 && unrollIndex < files.length
+        });
+    }
+});
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "./public/network.js":
+/*!***************************!*\
+  !*** ./public/network.js ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+﻿
+Object.defineProperty(exports, "__esModule", { value: true });
+async function afterFetch(response) {
+    if (!response || !response.ok) {
+        console.error(`bad response : ${JSON.stringify(response)}`);
+        return null;
+    }
+    let receivedContentType = response.headers.get('Content-Type') || 'application/json';
+    let sci = receivedContentType.indexOf(';');
+    if (sci >= 0)
+        receivedContentType = receivedContentType.substr(0, sci);
+    if (receivedContentType == 'application/json')
+        return await response.json();
+    else
+        return await response.text();
+}
+function getData(url, headers = null) {
+    return fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        redirect: 'follow',
+        referrer: 'no-referrer',
+        headers
+    })
+        .then(afterFetch);
+}
+exports.getData = getData;
+function postData(url, data = {}, contentType = 'application/json') {
+    return fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        redirect: 'follow',
+        referrer: 'no-referrer',
+        headers: { "Content-Type": contentType },
+        body: contentType == 'application/json' ? JSON.stringify(data) : data
+    })
+        .then(afterFetch);
+}
+exports.postData = postData;
+function putData(url, data = {}, contentType = 'application/json') {
+    return fetch(url, {
+        method: 'PUT',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        redirect: 'follow',
+        referrer: 'no-referrer',
+        headers: { "Content-Type": contentType },
+        body: contentType == 'application/json' ? JSON.stringify(data) : data
+    })
+        .then(afterFetch);
+}
+exports.putData = putData;
+function deleteData(url, data = {}, contentType = 'application/json') {
+    return fetch(url, {
+        method: 'DELETE',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        redirect: 'follow',
+        referrer: 'no-referrer',
+        headers: { "Content-Type": contentType },
+        body: contentType == 'application/json' ? JSON.stringify(data) : data
+    })
+        .then(afterFetch);
+}
+exports.deleteData = deleteData;
+//# sourceMappingURL=network.js.map
+
+/***/ }),
+
+/***/ "./public/rest.js":
+/*!************************!*\
+  !*** ./public/rest.js ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+﻿
+Object.defineProperty(exports, "__esModule", { value: true });
+const Network = __webpack_require__(/*! ./network */ "./public/network.js");
+exports.HEXA_BACKUP_BASE_URL = window.location.hostname == "home.lteconsulting.fr" ? "https://home.lteconsulting.fr" : "https://localhost:5005";
+async function search(searchText, mimeType) {
+    try {
+        let searchSpec = {
+            name: searchText,
+            mimeType: mimeType
+        };
+        const { resultDirectories, resultFilesddd } = await Network.postData(`${exports.HEXA_BACKUP_BASE_URL}/search`, searchSpec);
+        return {
+            directories: resultDirectories,
+            files: resultFilesddd
+        };
+    }
+    catch (err) {
+        return null;
+    }
+}
+exports.search = search;
+//# sourceMappingURL=rest.js.map
+
+/***/ }),
+
+/***/ "./public/search-panel.js":
+/*!********************************!*\
+  !*** ./public/search-panel.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+﻿
+Object.defineProperty(exports, "__esModule", { value: true });
+const templates_1 = __webpack_require__(/*! ./templates */ "./public/templates.js");
+const TID_Title = 'title';
+const TID_SearchForm = 'form';
+const TID_SearchTerm = 'term';
+const templateHtml = `
+<div class='mui-container-fluid'>
+    <div class="mui--text-center">
+        <h1 x-id="${TID_Title}" class="animated--quick">Raccoon</h1>
+        <form x-id="${TID_SearchForm}" class="mui-form--inline">
+            <!--this is a little hack to have things centered-->
+            <div class="mui-btn mui-btn--flat" style="visibility: hidden;">🔍</div>
+            <div class="mui-textfield">
+                <input placeholder="Search an audio title" x-id="${TID_SearchTerm}" type="text" autofocus>
+            </div>
+            <button role="submit" class="mui-btn mui-btn--flat">🔍</button>
+        </form>
+        <br />
+    </div>
+</div>`;
+exports.searchPanel = {
+    create: () => templates_1.createTemplateInstance(templateHtml),
+    displayTitle: (template, displayed) => {
+        if (displayed)
+            template.title.classList.remove('hexa--reduced');
+        else
+            template.title.classList.add('hexa--reduced');
+    }
+};
+//# sourceMappingURL=search-panel.js.map
+
+/***/ }),
+
+/***/ "./public/templates.js":
+/*!*****************************!*\
+  !*** ./public/templates.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+﻿
+Object.defineProperty(exports, "__esModule", { value: true });
+const UiTools = __webpack_require__(/*! ./ui-tool */ "./public/ui-tool.js");
+const elementsData = new WeakMap();
+function createElementAndLocateChildren(obj, html) {
+    let root = UiTools.elFromHtml(html);
+    obj['root'] = root;
+    UiTools.els(root, `[x-id]`).forEach(e => obj[e.getAttribute('x-id')] = e);
+    elementsData.set(root, obj);
+    return root;
+}
+exports.createElementAndLocateChildren = createElementAndLocateChildren;
+function getTemplateInstanceData(root) {
+    const data = elementsData.get(root);
+    return data;
+}
+exports.getTemplateInstanceData = getTemplateInstanceData;
+function createTemplateInstance(html) {
+    let root = createElementAndLocateChildren({}, html);
+    return getTemplateInstanceData(root);
+}
+exports.createTemplateInstance = createTemplateInstance;
+const EMPTY_LOCATION = { element: null, childIndex: -1 };
+function templateGetEventLocation(elements, event) {
+    let els = new Set(Object.values(elements));
+    let c = event.target;
+    let p = null;
+    do {
+        if (els.has(c)) {
+            return {
+                element: c,
+                childIndex: p && Array.prototype.indexOf.call(c.children, p)
+            };
+        }
+        if (c == elements.root)
+            return EMPTY_LOCATION;
+        p = c;
+        c = c.parentElement;
+    } while (c);
+    return EMPTY_LOCATION;
+}
+exports.templateGetEventLocation = templateGetEventLocation;
+//# sourceMappingURL=templates.js.map
+
+/***/ }),
+
+/***/ "./public/ui-tool.js":
+/*!***************************!*\
+  !*** ./public/ui-tool.js ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+﻿
+Object.defineProperty(exports, "__esModule", { value: true });
+function el(id) {
+    return document.getElementById(id);
+}
+exports.el = el;
+function els(element, selector) {
+    return element.querySelectorAll(selector);
+}
+exports.els = els;
+function elFromHtml(html) {
+    const parent = document.createElement('div');
+    parent.innerHTML = html;
+    return parent.children.item(0);
+}
+exports.elFromHtml = elFromHtml;
+function stopEvent(event) {
+    event.preventDefault();
+    event.stopPropagation();
+}
+exports.stopEvent = stopEvent;
+//# sourceMappingURL=ui-tool.js.map
+
+/***/ })
+
+/******/ });
+//# sourceMappingURL=bundle.js.map

@@ -45,7 +45,7 @@ class AudioJukebox {
             const { element, childIndex } = templates_1.templateGetEventLocation(this.audioPanel, event);
             if (element == this.audioPanel.playlist && childIndex >= 0) {
                 let queueIndex = element.children.item(childIndex).getAttribute('x-queue-index');
-                if (queueIndex.length)
+                if (queueIndex && queueIndex.length)
                     this.play(parseInt(queueIndex));
                 if (event.target == this.audioPanel.playlist.querySelector(`[x-id='clear-playlist']`)) {
                     let currentItem = this.currentItem();

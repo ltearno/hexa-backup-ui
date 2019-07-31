@@ -73,7 +73,7 @@ export class AudioJukebox {
 
             if (element == this.audioPanel.playlist && childIndex >= 0) {
                 let queueIndex = element.children.item(childIndex).getAttribute('x-queue-index')
-                if (queueIndex.length)
+                if (queueIndex && queueIndex.length)
                     this.play(parseInt(queueIndex))
 
                 if (event.target == this.audioPanel.playlist.querySelector(`[x-id='clear-playlist']`)) {
