@@ -80,10 +80,10 @@ export class AudioJukebox {
                 if (typeof indexAttr === 'string') {
                     let index = parseInt(indexAttr)
                     if (index !== NaN) {
-                        if (index < this.queue.length)
+                        if (index >= 0 && index < this.queue.length)
                             this.play(index)
                         else
-                            this.playNext() // will fetch from unroller if present
+                            this.playNextUnrolled()
                     }
                 }
             }
@@ -135,7 +135,13 @@ export class AudioJukebox {
         if (this.currentIndex + 1 < this.queue.length) {
             this.play(this.currentIndex + 1)
         }
-        else if (this.itemUnroller) {
+        else {
+            this.playNextUnrolled()
+        }
+    }
+
+    playNextUnrolled() {
+        if (this.itemUnroller) {
             let item = this.itemUnroller.unroll()
             if (item) {
                 if (!this.itemUnroller.hasNext())
