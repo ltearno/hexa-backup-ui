@@ -203,7 +203,7 @@ export class AudioJukebox {
             this.audioPanel.playlist.innerHTML += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`
 
         // after refresh steps
-        if (this.scrollToPlayingItem) {
+        if (this.largeDisplay && this.scrollToPlayingItem) {
             this.scrollToPlayingItem = false
 
             if (this.currentIndex >= 0) {
