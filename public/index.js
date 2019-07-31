@@ -91,7 +91,8 @@ function beautifyNames(items) {
     });
 }
 function goSearchItems(term) {
-    history.pushState(null, `Raccoon search '${term}'`, `${window.location.pathname}#/search/${term}`);
+    const url = `${window.location.pathname}#/search/${term}`;
+    history.pushState(url, `Raccoon search '${term}'`, url);
 }
 async function searchItems(term) {
     searchPanel.term.value = term;
@@ -136,7 +137,8 @@ function directoryDescriptorToFileDescriptor(d) {
     };
 }
 function goLoadDirectory(sha, name) {
-    history.pushState(null, `Raccoon directory '${name}'`, `${window.location.pathname}#/directory/${sha}?name=${encodeURIComponent(name)}`);
+    const url = `${window.location.pathname}#/directory/${sha}?name=${encodeURIComponent(name)}`;
+    history.pushState(url, `Raccoon directory '${name}'`, url);
 }
 async function loadDirectory(item) {
     setContent(directoryPanel.root);
