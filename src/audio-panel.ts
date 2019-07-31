@@ -233,7 +233,8 @@ export class AudioJukebox {
             this.scrollToPlayingItem = false
 
             if (this.currentIndex >= 0) {
-                let e = this.audioPanel.playlist.querySelector(`[x-queue-index='${this.currentIndex}']`)
+                //let e = this.audioPanel.playlist.querySelector(`[x-queue-index='${this.currentIndex}']`)
+                let e = this.audioPanel.playlist.querySelector(`[x-id='clear-playlist']`)
                 if (e) {
                     e.scrollIntoView()
                 }
