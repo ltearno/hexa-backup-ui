@@ -55,5 +55,5 @@ export async function search(searchText: string, mimeType: string): Promise<Sear
 }
 
 export async function getDirectoryDescriptor(sha: string): Promise<DirectoryDescriptor> {
-    return await Network.getData(`${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`)
+    return await Network.getData(`${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=text/json`)
 }
