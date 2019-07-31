@@ -158,6 +158,7 @@ searchPanel.form.addEventListener('submit', event => {
     UiTool.stopEvent(event)
 
     let term = searchPanel.term.value
+    searchPanel.term.blur()
 
     goSearchItems(term)
 })
