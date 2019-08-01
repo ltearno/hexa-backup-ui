@@ -51,7 +51,7 @@ exports.directoryPanel = {
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     let lazyImage = entry.target;
-                    lazyImage.src = lazyImage.dataset.src;
+                    lazyImage.src = lazyImage.getAttribute('data-src');
                     lazyImageObserver.unobserve(lazyImage);
                 }
             });

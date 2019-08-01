@@ -66,7 +66,7 @@ export const directoryPanel = {
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     let lazyImage = entry.target as HTMLImageElement;
-                    lazyImage.src = lazyImage.dataset.src
+                    lazyImage.src = lazyImage.getAttribute('data-src')
                     lazyImageObserver.unobserve(lazyImage)
                 }
             })
