@@ -61,6 +61,10 @@ function readHashAndAct() {
         const name = parsed.pathname.substring('/refs/'.length);
         loadReference(name);
     }
+    else if (parsed.pathname.startsWith('/playlists/')) {
+        const name = parsed.pathname.substring('/playlists/'.length);
+        loadPlaylist(name);
+    }
     else {
         console.log(`unkown path ${parsed.pathname}`);
     }
@@ -207,6 +211,22 @@ async function loadReferences() {
     DirectoryPanel.directoryPanel.setValues(directoryPanel, {
         name: "References",
         items
+    });
+}
+async function loadPlaylist(name) {
+    const waiting = beginWait(() => {
+        setContent(directoryPanel.root);
+        DirectoryPanel.directoryPanel.setLoading(directoryPanel, `Playlist '${name}'`);
+    });
+    let reference = await Rest.getReference(`PLUGIN-PLAYLISTS-LTEARNO-${name.toUpperCase()}`);
+    let commit = await Rest.getCommit(reference.currentCommitSha);
+    waiting.done();
+    await loadDirectory({
+        sha: commit.directoryDescriptorSha,
+        name,
+        mimeType: 'application/directory',
+        lastWrite: 0,
+        size: 0
     });
 }
 async function loadReference(name) {
