@@ -61,21 +61,23 @@ export const directoryPanel = {
             }
         }).join('')
 
-        let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
-            console.log(`here obs`)
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    let lazyImage = entry.target as HTMLImageElement;
-                    lazyImage.src = lazyImage.getAttribute('data-src')
-                    lazyImageObserver.unobserve(lazyImage)
+        setTimeout(() => {
+            let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
+                console.log(`here obs`)
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        let lazyImage = entry.target as HTMLImageElement;
+                        lazyImage.src = lazyImage.getAttribute('data-src')
+                        lazyImageObserver.unobserve(lazyImage)
+                    }
+                })
+            })
+
+            values.items.forEach((item, index) => {
+                if (item.mimeType.startsWith('image/')) {
+                    lazyImageObserver.observe(elements.items.children.item(index))
                 }
             })
-        })
-
-        values.items.forEach((item, index) => {
-            if (item.mimeType.startsWith('image/')) {
-                lazyImageObserver.observe(elements.items.children.item(index))
-            }
-        })
+        }, 50)
     },
 }
