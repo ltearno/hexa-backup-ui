@@ -10,7 +10,7 @@ const templateHtml = `
     <div x-id="expander" class="onclick mui--text-center">☰</div>
     <div class="x-horizontal-flex">
         <audio x-id="player" class="audio-player" controls preload="metadata"></audio>
-        <a x-id="addPlaylistButton" href="#" style="text-align: center;">add to playlist</div>
+        <a x-id="addPlaylistButton" href="#toto" style="text-align: center;">add to playlist</a></div>
     </div>
 </div>`;
 exports.audioPanel = {
