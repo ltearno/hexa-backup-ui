@@ -1,5 +1,6 @@
 ﻿"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Rest = require("./rest");
 const templates_1 = require("./templates");
 const Snippets = require("./html-snippets");
 const templateHtml = `
@@ -32,7 +33,7 @@ exports.directoryPanel = {
         elements.title.innerHTML = values.term;
         elements.items.innerHTML = values.items.map(item => {
             if (item.mimeType.startsWith('image/'))
-                return `<div><img loading="lazy" src="${HEXA_BACKUP_BASE_URL}/sha/${item.sha}/plugins/image/thumbnail?type=${item.mimeType}"/></div>`;
+                return `<div><img loading="lazy" src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/></div>`;
             else
                 return `<div>${Snippets.itemToHtml(item)}</div>`;
         }).join('');

@@ -44,7 +44,7 @@ export const directoryPanel = {
 
         elements.items.innerHTML = values.items.map(item => {
             if (item.mimeType.startsWith('image/'))
-                return `<div><img loading="lazy" src="${HEXA_BACKUP_BASE_URL}/sha/${item.sha}/plugins/image/thumbnail?type=${item.mimeType}"/></div>`
+                return `<div><img loading="lazy" src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/></div>`
             else
                 return `<div>${Snippets.itemToHtml(item)}</div>`
         }).join('')

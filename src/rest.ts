@@ -80,6 +80,10 @@ export function getShaContentUrl(sha: string, mimeType: string, name: string, is
     return base
 }
 
+export function getShaImageThumbnailUrl(sha: string, mimeType: string) {
+    return `${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}`
+}
+
 export async function putItemToPlaylist(playlistName: string, sha: string, mimeType: string, name: string): Promise<any> {
     let payload = {
         items: [

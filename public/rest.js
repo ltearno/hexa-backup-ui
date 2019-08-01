@@ -45,6 +45,10 @@ function getShaContentUrl(sha, mimeType, name, isDownload) {
     return base;
 }
 exports.getShaContentUrl = getShaContentUrl;
+function getShaImageThumbnailUrl(sha, mimeType) {
+    return `${exports.HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/thumbnail?type=${mimeType}`;
+}
+exports.getShaImageThumbnailUrl = getShaImageThumbnailUrl;
 async function putItemToPlaylist(playlistName, sha, mimeType, name) {
     let payload = {
         items: [
