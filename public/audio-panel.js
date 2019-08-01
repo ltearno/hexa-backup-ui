@@ -91,7 +91,7 @@ class AudioJukebox {
             const playlist = 'favorites'; // todo should be a parameter...
             let item = this.currentItem();
             if (!item) {
-                Messages.displayMessage(`cannot add to playlist, nothing playing`);
+                Messages.displayMessage(`Cannot add to playlist, nothing playing`);
                 return;
             }
             let extension = MimeTypes.extensionFromMimeType(item.mimeType);

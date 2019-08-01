@@ -126,7 +126,7 @@ export class AudioJukebox {
 
             let item = this.currentItem()
             if (!item) {
-                Messages.displayMessage(`cannot add to playlist, nothing playing`)
+                Messages.displayMessage(`Cannot add to playlist, nothing playing`)
                 return
             }
 
