@@ -11,10 +11,11 @@ const templateHtml = `
         <div x-id="items" class="mui-panel x-slideshow"></div>
         <input x-id="interval" type="range" min="0" max="100" value="50"/>
         <input x-id="date" type="date"/>
+        <div x-id="remark"></div>
     </div>
 </div>`
 
-const NB_MAX_IMAGES = 10
+const NB_MAX_IMAGES = 18
 
 export function create() {
     let els = createTemplateInstance(templateHtml) as {
@@ -22,6 +23,7 @@ export function create() {
         items: HTMLElement
         interval: HTMLInputElement
         date: HTMLInputElement
+        remark: HTMLElement
     }
 
     (async () => {
@@ -48,6 +50,8 @@ export function create() {
             }
 
             if (possibleImages) {
+                els.remark.innerHTML = `${possibleImages.length} possible images`
+
                 let imageElement: HTMLImageElement = null
                 if (els.items.children.length < NB_MAX_IMAGES) {
                     imageElement = document.createElement('img')
@@ -60,8 +64,11 @@ export function create() {
                 let item = possibleImages[Math.floor(Math.random() * possibleImages.length)]
                 imageElement.src = Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)
             }
+            else {
+                els.remark.innerHTML = `no possible image !`
+            }
 
-            await wait(2000)
+            await wait(500)
         }
     })()
 

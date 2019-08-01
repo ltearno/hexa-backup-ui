@@ -10,9 +10,10 @@ const templateHtml = `
         <div x-id="items" class="mui-panel x-slideshow"></div>
         <input x-id="interval" type="range" min="0" max="100" value="50"/>
         <input x-id="date" type="date"/>
+        <div x-id="remark"></div>
     </div>
 </div>`;
-const NB_MAX_IMAGES = 10;
+const NB_MAX_IMAGES = 18;
 function create() {
     let els = templates_1.createTemplateInstance(templateHtml);
     (async () => {
@@ -34,6 +35,7 @@ function create() {
                 possibleImages = (await Rest.searchEx(searchSpec)).items;
             }
             if (possibleImages) {
+                els.remark.innerHTML = `${possibleImages.length} possible images`;
                 let imageElement = null;
                 if (els.items.children.length < NB_MAX_IMAGES) {
                     imageElement = document.createElement('img');
@@ -45,7 +47,10 @@ function create() {
                 let item = possibleImages[Math.floor(Math.random() * possibleImages.length)];
                 imageElement.src = Rest.getShaImageThumbnailUrl(item.sha, item.mimeType);
             }
-            await wait(2000);
+            else {
+                els.remark.innerHTML = `no possible image !`;
+            }
+            await wait(500);
         }
     })();
     return els;

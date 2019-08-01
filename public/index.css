@@ -323,7 +323,7 @@ html, body, input, textarea, button {
 }
 
 .x-slideshow>img {
-    height: 100px;
+    height: 80px;
     max-width: 100%;
     padding: 1px;
 }
