@@ -24,5 +24,8 @@ exports.searchResultPanel = {
             elements.items.innerHTML = `<div class="mui--text-dark-hint">No results</div>`;
         }
     },
+    setImages: (elements, values) => {
+        elements.title.innerHTML = `Not done yet !`;
+    },
 };
 //# sourceMappingURL=search-result-panel.js.map

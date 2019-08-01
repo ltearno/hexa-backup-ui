@@ -144,10 +144,7 @@ function goPlaylist(name) {
 }
 async function searchItems(term) {
     SearchPanel.searchPanel.displayTitle(searchPanel, false);
-    const waiting = beginWait(() => {
-        setContent(searchResultPanel.root);
-        SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term);
-    });
+    const waiting = beginWait(() => Messages.displayMessage(`Still searching '${term}' ...`, 0));
     let mimeType = '%';
     switch (currentMode) {
         case Mode.Audio:
@@ -160,20 +157,31 @@ async function searchItems(term) {
     let res = await Rest.search(term, mimeType);
     if (!res) {
         waiting.done();
-        setContent(searchResultPanel.root);
-        SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, `Error occurred, retry please...`);
+        Messages.displayMessage(`Error occurred, retry please...`, -1);
     }
     // first files then directories
-    res.items = res.items.filter(i => !i.mimeType.startsWith('application/directory')).concat(res.items.filter(i => i.mimeType.startsWith('application/directory')));
+    res.items = res.items
+        .filter(i => !i.mimeType.startsWith('application/directory'))
+        .concat(res.items.filter(i => i.mimeType.startsWith('application/directory')));
     res.items = beautifyNames(res.items);
     lastDisplayedFiles = res.items;
     lastSearchTerm = term;
     waiting.done();
     setContent(searchResultPanel.root);
-    SearchResultPanel.searchResultPanel.setValues(searchResultPanel, {
-        term: term,
-        items: res.items
-    });
+    switch (currentMode) {
+        case Mode.Audio:
+            SearchResultPanel.searchResultPanel.setValues(searchResultPanel, {
+                term: term,
+                items: res.items
+            });
+            break;
+        case Mode.Image:
+            SearchResultPanel.searchResultPanel.setImages(searchResultPanel, {
+                term: term,
+                items: res.items.filter(item => item.mimeType.startsWith('image/'))
+            });
+            break;
+    }
 }
 searchPanel.form.addEventListener('submit', event => {
     UiTool.stopEvent(event);

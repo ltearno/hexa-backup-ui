@@ -33,4 +33,8 @@ export const searchResultPanel = {
             elements.items.innerHTML = `<div class="mui--text-dark-hint">No results</div>`
         }
     },
+
+    setImages: (elements: SearchResultPanelElements, values: { term: string, items: Rest.FileDescriptor[] }) => {
+        elements.title.innerHTML = `Not done yet !`
+    },
 }
