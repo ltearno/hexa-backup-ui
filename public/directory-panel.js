@@ -43,23 +43,23 @@ exports.directoryPanel = {
                 return `<div>${Snippets.itemToHtml(item)}</div>`;
             }
         }).join('');
-        setTimeout(() => {
-            let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
-                console.log(`here obs`);
-                entries.forEach(function (entry) {
-                    if (entry.isIntersecting) {
-                        let lazyImage = entry.target;
-                        lazyImage.src = lazyImage.getAttribute('data-src');
-                        lazyImageObserver.unobserve(lazyImage);
-                    }
-                });
-            });
-            values.items.forEach((item, index) => {
-                if (item.mimeType.startsWith('image/')) {
-                    lazyImageObserver.observe(elements.items.children.item(index).children.item(0));
+        //setTimeout(() => {
+        let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
+            console.log(`here obs`);
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    let lazyImage = entry.target;
+                    lazyImage.src = lazyImage.getAttribute('data-src');
+                    lazyImageObserver.unobserve(lazyImage);
                 }
             });
-        }, 50);
+        });
+        values.items.forEach((item, index) => {
+            if (item.mimeType.startsWith('image/')) {
+                lazyImageObserver.observe(elements.items.children.item(index).children.item(0));
+            }
+        });
+        //}, 50)
     },
 };
 //# sourceMappingURL=directory-panel.js.map

@@ -57,7 +57,7 @@ export const directoryPanel = {
             }
         }).join('')
 
-        setTimeout(() => {
+        //setTimeout(() => {
             let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
                 console.log(`here obs`)
                 entries.forEach(function (entry) {
@@ -74,6 +74,6 @@ export const directoryPanel = {
                     lazyImageObserver.observe(elements.items.children.item(index).children.item(0))
                 }
             })
-        }, 50)
+        //}, 50)
     },
 }
