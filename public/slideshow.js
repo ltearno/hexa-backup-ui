@@ -13,7 +13,7 @@ const templateHtml = `
         <div x-id="remark"></div>
     </div>
 </div>`;
-const NB_MAX_IMAGES = 18;
+const NB_MAX_IMAGES = 12;
 function create() {
     let els = templates_1.createTemplateInstance(templateHtml);
     (async () => {

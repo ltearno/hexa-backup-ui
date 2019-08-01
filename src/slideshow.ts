@@ -15,7 +15,7 @@ const templateHtml = `
     </div>
 </div>`
 
-const NB_MAX_IMAGES = 18
+const NB_MAX_IMAGES = 12
 
 export function create() {
     let els = createTemplateInstance(templateHtml) as {
