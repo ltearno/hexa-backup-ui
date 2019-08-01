@@ -66,7 +66,7 @@ export const directoryPanel = {
                 console.log(`here obs`)
                 entries.forEach(function (entry) {
                     if (entry.isIntersecting) {
-                        let lazyImage = entry.target as HTMLImageElement;
+                        let lazyImage = entry.target as HTMLImageElement
                         lazyImage.src = lazyImage.getAttribute('data-src')
                         lazyImageObserver.unobserve(lazyImage)
                     }
@@ -75,7 +75,7 @@ export const directoryPanel = {
 
             values.items.forEach((item, index) => {
                 if (item.mimeType.startsWith('image/')) {
-                    lazyImageObserver.observe(elements.items.children.item(index))
+                    lazyImageObserver.observe(elements.items.children.item(index).children.item(0))
                 }
             })
         }, 50)

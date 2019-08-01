@@ -59,7 +59,7 @@ exports.directoryPanel = {
             });
             values.items.forEach((item, index) => {
                 if (item.mimeType.startsWith('image/')) {
-                    lazyImageObserver.observe(elements.items.children.item(index));
+                    lazyImageObserver.observe(elements.items.children.item(index).children.item(0));
                 }
             });
         }, 50);
