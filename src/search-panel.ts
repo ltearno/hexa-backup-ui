@@ -5,6 +5,8 @@ export interface SearchPanelElements extends TemplateElements {
     subTitle: HTMLElement
     form: HTMLFormElement
     term: HTMLInputElement
+    audioMode: HTMLElement
+    imageMode: HTMLElement
 }
 
 const templateHtml = `
@@ -20,7 +22,7 @@ const templateHtml = `
             </div>
             <button role="submit" class="mui-btn mui-btn--flat">🔍</button>
         </form>
-        <span><a x-id='audio-mode' href="#">🎶</a><a x-id='image-mode' href="#">️🎞️</a></span>
+        <span><a x-id='audioMode' href="#">🎶</a><a x-id='imageMode' href="#">️🎞️</a></span>
         <br />
     </div>
 </div>`

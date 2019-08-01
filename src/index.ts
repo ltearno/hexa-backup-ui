@@ -7,6 +7,7 @@ import * as Rest from './rest'
 import * as Auth from './auth'
 import * as Templates from './templates'
 import * as MimeTypes from './mime-types-module'
+import * as Messages from './messages'
 
 /*
 hash urls :
@@ -78,14 +79,22 @@ function readHashAndAct() {
     }
 }
 
+enum Mode {
+    Audio = 0,
+    Image = 1
+}
+
 const searchPanel = SearchPanel.searchPanel.create()
 const searchResultPanel = SearchResultPanel.searchResultPanel.create()
 const audioPanel = AudioPanel.audioPanel.create()
 const audioJukebox = new AudioPanel.AudioJukebox(audioPanel)
 const directoryPanel = DirectoryPanel.directoryPanel.create()
 
-
+let lastDisplayedFiles: Rest.FileDescriptor[] = null
+let lastSearchTerm: string = null // HACK very temporary
 let actualContent: HTMLElement = null
+let currentMode = Mode.Audio
+
 function setContent(content: HTMLElement) {
     if (content === actualContent)
         return
@@ -121,9 +130,6 @@ const beginWait = (callback: () => any) => {
 /**
  * Events
  */
-
-let lastDisplayedFiles: Rest.FileDescriptor[] = null
-let lastSearchTerm: string = null // HACK very temporary
 
 function beautifyNames(items: Rest.FileDescriptor[]) {
     return items.map(file => {
@@ -399,6 +405,22 @@ directoryPanel.root.addEventListener('click', async event => {
     if (lastDisplayedFiles && element == directoryPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
         itemDefaultAction(childIndex)
     }
+})
+
+searchPanel.audioMode.addEventListener('click', event => {
+    UiTool.stopEvent(event)
+
+    if (currentMode == Mode.Audio) {
+        Messages.displayMessage(`Audio mode already activated`, 0)
+        return
+    }
+
+    Messages.displayMessage(`Audio mode activated`, 0)
+
+    currentMode = Mode.Audio
+    // todo should redraw the content panel
+    // redraw searchPanel, directoryPanel
+    // if imagePanel is displayed, remove it and display ...
 })
 
 readHashAndAct()
