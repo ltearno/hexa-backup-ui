@@ -215,6 +215,10 @@ function goReference(name: string) {
     window.location.href = url
 }
 
+function goPlaylist(name: string) {
+    window.location.href = `#/playlists/${name}`
+}
+
 async function loadDirectory(item: Rest.FileDescriptor) {
     const waiting = beginWait(() => {
         setContent(directoryPanel.root)
@@ -348,6 +352,9 @@ function itemDefaultAction(childIndex: number) {
     }
     else if (item.mimeType == 'application/reference') {
         goReference(item.sha)
+    }
+    else if (item.mimeType == 'application/playlist') {
+        goPlaylist(item.sha)
     }
     else if (item.mimeType.startsWith('audio/')) {
         audioJukebox.addAndPlay(item)

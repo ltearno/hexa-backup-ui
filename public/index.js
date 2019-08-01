@@ -177,6 +177,9 @@ function goReference(name) {
     const url = `#/refs/${name}`;
     window.location.href = url;
 }
+function goPlaylist(name) {
+    window.location.href = `#/playlists/${name}`;
+}
 async function loadDirectory(item) {
     const waiting = beginWait(() => {
         setContent(directoryPanel.root);
@@ -282,6 +285,9 @@ function itemDefaultAction(childIndex) {
     }
     else if (item.mimeType == 'application/reference') {
         goReference(item.sha);
+    }
+    else if (item.mimeType == 'application/playlist') {
+        goPlaylist(item.sha);
     }
     else if (item.mimeType.startsWith('audio/')) {
         audioJukebox.addAndPlay(item);
