@@ -285,5 +285,5 @@ html, body, input, textarea, button {
 
 .x-horizontal-flex {
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: row nowrap;
 }
