@@ -310,6 +310,6 @@ html, body, input, textarea, button {
 }
 
 .x-image-panel>div>img {
-    height: 140px;
-    max-width: 40vh;
+    height: 120px;
+    max-width: 200px;
 }
