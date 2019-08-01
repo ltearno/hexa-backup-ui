@@ -7,7 +7,7 @@ const popupTemplate = `
     </div>`;
 let popup = templates_1.createTemplateInstance(popupTemplate);
 function refresh() {
-    popup.messages.innerHTML = messages.map(html => `<div class="mui-panel x-message-panel">${html}</div>`).join('');
+    popup.messages.innerHTML = messages.map(html => `<div class="mui-panel x-message-panel" style="background-color: #F44336;">${html}</div>`).join('');
 }
 function displayMessage(html) {
     messages.push(html);
