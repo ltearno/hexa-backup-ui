@@ -22,6 +22,8 @@ exports.directoryPanel = {
     },
     setValues: (elements, values) => {
         elements.title.innerHTML = `${values.name}`;
+        elements.items.classList.remove('x-image-panel');
+        elements.items.classList.add('x-items-panel');
         if (values.items && values.items.length) {
             elements.items.innerHTML = values.items.map(Snippets.itemToHtml).join('');
         }
@@ -32,6 +34,7 @@ exports.directoryPanel = {
     setImages: (elements, values) => {
         elements.title.innerHTML = values.term;
         elements.items.classList.add('x-image-panel');
+        elements.items.classList.remove('x-items-panel');
         elements.items.innerHTML = values.items.map(item => {
             if (item.mimeType.startsWith('image/'))
                 return `<div><img loading="lazy" src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/></div>`;

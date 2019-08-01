@@ -31,6 +31,9 @@ export const directoryPanel = {
     setValues: (elements: DirectoryPanelElements, values: { name: string, items: Rest.FileDescriptor[] }) => {
         elements.title.innerHTML = `${values.name}`
 
+        elements.items.classList.remove('x-image-panel')
+        elements.items.classList.add('x-items-panel')
+
         if (values.items && values.items.length) {
             elements.items.innerHTML = values.items.map(Snippets.itemToHtml).join('')
         }
@@ -43,6 +46,7 @@ export const directoryPanel = {
         elements.title.innerHTML = values.term
 
         elements.items.classList.add('x-image-panel')
+        elements.items.classList.remove('x-items-panel')
 
         elements.items.innerHTML = values.items.map(item => {
             if (item.mimeType.startsWith('image/'))

@@ -299,6 +299,10 @@ html, body, input, textarea, button {
     bottom: 80px;
 }
 
+.x-items-panel {
+    display: inline-block;
+}
+
 .x-image-panel {
     display: flex;
     flex-flow: row wrap;
