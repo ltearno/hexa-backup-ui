@@ -7,7 +7,7 @@ const templateHtml = `
     <h3 class="x-when-large-display">Playlist</h3>
     <div x-id="playlist"></div>
     <div x-id="expander" class="onclick mui--text-center">☰</div>
-    <div class="x-horizontal-flex">
+    <div class="x-horizontal-flex" style="width:100%;">
         <audio x-id="player" class="audio-player" controls preload="metadata"></audio>
         <a x-id="addPlaylistButton" href="#toto" style="text-align: center;">add to playlist</a></div>
     </div>
