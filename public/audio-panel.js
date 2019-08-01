@@ -42,6 +42,10 @@ class AudioJukebox {
         this.audioPanel.player.addEventListener('ended', () => {
             this.playNext();
         });
+        this.audioPanel.player.addEventListener('error', () => {
+            console.log(`audio player error`);
+            this.playNext();
+        });
         this.audioPanel.player.addEventListener('stalled', () => {
             console.log('stalled, try next');
             this.playNext();
@@ -79,9 +83,6 @@ class AudioJukebox {
                     this.refreshPlaylist();
                 }
             }
-        });
-        this.audioPanel.addPlaylistButton.addEventListener('mouseover', async (event) => {
-            console.log(`mo`);
         });
         this.audioPanel.addPlaylistButton.addEventListener('click', async (event) => {
             UiTools.stopEvent(event);
