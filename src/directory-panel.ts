@@ -57,7 +57,7 @@ export const directoryPanel = {
             }
         }).join('')
 
-        let nbFirst = 17
+        let nbFirst = 25
         let timeAfter = 2000
 
         let toObserve = values.items
