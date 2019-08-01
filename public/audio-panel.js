@@ -80,6 +80,9 @@ class AudioJukebox {
                 }
             }
         });
+        this.audioPanel.addPlaylistButton.addEventListener('mouseover', async (event) => {
+            console.log(`mo`);
+        });
         this.audioPanel.addPlaylistButton.addEventListener('click', async (event) => {
             debugger;
             //if (event.target != this.audioPanel.addPlaylistButton)
