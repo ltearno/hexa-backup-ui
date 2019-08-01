@@ -46,5 +46,8 @@ export function autoRenewAuth() {
 }
 
 export async function me(): Promise<any> {
+    if (!authenticatedUser)
+        authenticatedUser = await Network.getData(`https://home.lteconsulting.fr/well-known/v1/me`)
+        
     return authenticatedUser
 }

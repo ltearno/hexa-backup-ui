@@ -41,6 +41,8 @@ function autoRenewAuth() {
 }
 exports.autoRenewAuth = autoRenewAuth;
 async function me() {
+    if (!authenticatedUser)
+        authenticatedUser = await Network.getData(`https://home.lteconsulting.fr/well-known/v1/me`);
     return authenticatedUser;
 }
 exports.me = me;
