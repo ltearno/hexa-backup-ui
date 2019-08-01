@@ -32,7 +32,7 @@ export function create() {
 
         while (true) {
             let searchSpec: any = {
-                name: "j",
+                name: "%",
                 mimeType: 'image/%',
                 noDirectory: true,
                 limit: 100
