@@ -20,6 +20,7 @@ const templateHtml = `
             </div>
             <button role="submit" class="mui-btn mui-btn--flat">🔍</button>
         </form>
+        <span><a x-id='audio-mode' href="#">🎶</a><a x-id='image-mode' href="#">️🎞️</a></span>
         <br />
     </div>
 </div>`
