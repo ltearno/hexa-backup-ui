@@ -433,7 +433,7 @@ function itemDefaultAction(childIndex: number) {
 function showSlideshow() {
     if (!slideshow)
         slideshow = Slideshow.create()
-    //setContent(slideshow.root)
+    setContent(slideshow.root)
 }
 
 
