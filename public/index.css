@@ -244,7 +244,8 @@ html, body, input, textarea, button {
 }
 
 .audio-player {
-    width: 100%;
+    flex-grow: 1;
+    flex-shrink: 1;
 }
 
 [onclick], .onclick {
@@ -280,4 +281,9 @@ html, body, input, textarea, button {
     height: 1em;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.x-horizontal-flex {
+    display: flex;
+    flex-flow: column nowrap;
 }
