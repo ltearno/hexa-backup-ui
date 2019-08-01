@@ -274,10 +274,14 @@ async function loadPlaylists() {
 
     let references = await Rest.getReferences()
 
+    const prefix = 'PLUGIN-PLAYLISTS-LTEARNO-'
+
     let items: Rest.FileDescriptor[] = references
-        .filter(reference => reference.toUpperCase().startsWith('PLUGIN-PLAYLISTS-LTEARNO-'))
+        .filter(reference => reference.toUpperCase().startsWith(prefix))
+        .map(reference => reference.substr(prefix.length))
+        .map(reference => reference.substr(0, 1).toUpperCase() + reference.substr(1).toLowerCase())
         .map(reference => ({
-            name: reference.substr(0, 1).toUpperCase() + reference.substr(1),
+            name: reference,
             lastWrite: 0,
             mimeType: 'application/playlist',
             sha: reference,
