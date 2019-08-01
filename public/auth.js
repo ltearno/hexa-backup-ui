@@ -40,7 +40,7 @@ function autoRenewAuth() {
     auth.loop();
 }
 exports.autoRenewAuth = autoRenewAuth;
-function me() {
+async function me() {
     return authenticatedUser;
 }
 exports.me = me;

@@ -45,6 +45,6 @@ export function autoRenewAuth() {
     auth.loop()
 }
 
-export function me(): any {
+export async function me(): Promise<any> {
     return authenticatedUser
 }
