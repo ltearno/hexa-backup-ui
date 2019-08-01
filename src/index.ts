@@ -211,7 +211,7 @@ async function searchItems(term: string) {
         case Mode.Image:
             SearchResultPanel.searchResultPanel.setImages(searchResultPanel, {
                 term: term,
-                items: res.items.filter(item => item.mimeType.startsWith('image/'))
+                items: res.items
             })
             break
     }
