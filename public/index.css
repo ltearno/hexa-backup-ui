@@ -288,3 +288,7 @@ html, body, input, textarea, button {
     flex-flow: row nowrap;
     align-items: center;
 }
+
+.x-message-panel {
+    margin: 2px;
+}
