@@ -126,14 +126,14 @@ export class AudioJukebox {
 
             let item = this.currentItem()
             if (!item) {
-                Messages.displayMessage(`Cannot add to playlist, nothing playing`)
+                Messages.displayMessage(`Cannot add to playlist, nothing playing`, -1)
                 return
             }
 
             let extension = MimeTypes.extensionFromMimeType(item.mimeType)
 
             await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`)
-            Messages.displayMessage(`👍 ${item.name} added to playlist '${playlist}'`)
+            Messages.displayMessage(`👍 ${item.name} added to playlist '${playlist}'`, 1)
         })
 
         this.refreshPlaylist()
