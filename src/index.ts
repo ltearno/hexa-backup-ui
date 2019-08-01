@@ -428,9 +428,8 @@ searchPanel.audioMode.addEventListener('click', event => {
     Messages.displayMessage(`Audio mode activated`, 0)
 
     currentMode = Mode.Audio
-    // todo should redraw the content panel
-    // redraw searchPanel, directoryPanel
-    // if imagePanel is displayed, remove it and display ...
+
+    readHashAndAct()
 })
 
 searchPanel.imageMode.addEventListener('click', event => {
@@ -444,9 +443,8 @@ searchPanel.imageMode.addEventListener('click', event => {
     Messages.displayMessage(`Image mode activated`, 0)
 
     currentMode = Mode.Image
-    // todo should redraw the content panel
-    // redraw searchPanel, directoryPanel
-    // if imagePanel is displayed, remove it and display ...
+
+    readHashAndAct()
 })
 
 readHashAndAct()
