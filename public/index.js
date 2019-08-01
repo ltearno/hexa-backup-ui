@@ -68,6 +68,9 @@ function readHashAndAct() {
         const name = parsed.pathname.substring('/playlists/'.length);
         loadPlaylist(name);
     }
+    else if (parsed.pathname == '/slideshow') {
+        showSlideshow();
+    }
     else {
         console.log(`unkown path ${parsed.pathname}`);
     }
@@ -351,6 +354,8 @@ function itemDefaultAction(childIndex) {
             }
         }
     }
+}
+function showSlideshow() {
 }
 directoryPanel.root.addEventListener('click', async (event) => {
     // todo : knownledge to do that is in directoryPanel

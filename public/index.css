@@ -314,3 +314,10 @@ html, body, input, textarea, button {
     max-width: 100%;
     padding: 1px;
 }
+
+.x-slideshow {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-content: center;
+}

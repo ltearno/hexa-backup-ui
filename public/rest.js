@@ -20,6 +20,20 @@ async function search(searchText, mimeType) {
     }
 }
 exports.search = search;
+async function searchEx(searchSpec) {
+    try {
+        const { resultDirectories, resultFilesddd, items } = await Network.postData(`${exports.HEXA_BACKUP_BASE_URL}/search`, searchSpec);
+        return {
+            directories: resultDirectories,
+            files: resultFilesddd,
+            items
+        };
+    }
+    catch (err) {
+        return null;
+    }
+}
+exports.searchEx = searchEx;
 async function getDirectoryDescriptor(sha) {
     return await Network.getData(`${exports.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`);
 }

@@ -54,6 +54,21 @@ export async function search(searchText: string, mimeType: string): Promise<Sear
     }
 }
 
+export async function searchEx(searchSpec: any): Promise<SearchResult> {
+    try {
+        const { resultDirectories, resultFilesddd, items } = await Network.postData(`${HEXA_BACKUP_BASE_URL}/search`, searchSpec)
+
+        return {
+            directories: resultDirectories,
+            files: resultFilesddd,
+            items
+        }
+    }
+    catch (err) {
+        return null
+    }
+}
+
 export async function getDirectoryDescriptor(sha: string): Promise<DirectoryDescriptor> {
     return await Network.getData(`${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`)
 }

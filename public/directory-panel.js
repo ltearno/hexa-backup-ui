@@ -42,7 +42,7 @@ exports.directoryPanel = {
             else {
                 return `<div>${Snippets.itemToHtml(item)}</div>`;
             }
-        }).join('');
+        }).concat([`<a href="/slideshow">Slideshow</a>`]).join('');
         let nbFirst = 25;
         let timeAfter = 2000;
         let toObserve = values.items
