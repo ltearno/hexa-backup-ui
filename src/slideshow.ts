@@ -69,7 +69,7 @@ export function create() {
                 els.remark.innerHTML = `no possible image !`
             }
 
-            await wait(500)
+            await wait(1000)
         }
     })()
 

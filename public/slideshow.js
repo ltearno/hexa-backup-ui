@@ -51,7 +51,7 @@ function create() {
             else {
                 els.remark.innerHTML = `no possible image !`;
             }
-            await wait(500);
+            await wait(1000);
         }
     })();
     return els;
