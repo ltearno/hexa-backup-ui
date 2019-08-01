@@ -1,3 +1,11 @@
+export function extensionFromMimeType(mimeType: string) {
+    for (let [extension, value] of Object.entries(MimeTypes)) {
+        if (mimeType == value)
+            return extension
+    }
+    return null
+}
+
 export const MimeTypes = {
     "3dml": "text/vnd.in3d.3dml",
     "3ds": "image/x-3ds",

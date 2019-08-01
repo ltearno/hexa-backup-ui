@@ -1,5 +1,13 @@
 ﻿"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+function extensionFromMimeType(mimeType) {
+    for (let [extension, value] of Object.entries(exports.MimeTypes)) {
+        if (mimeType == value)
+            return extension;
+    }
+    return null;
+}
+exports.extensionFromMimeType = extensionFromMimeType;
 exports.MimeTypes = {
     "3dml": "text/vnd.in3d.3dml",
     "3ds": "image/x-3ds",

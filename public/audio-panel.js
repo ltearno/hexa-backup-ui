@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const templates_1 = require("./templates");
 const Rest = require("./rest");
 const UiTools = require("./ui-tool");
+const MimeTypes = require("./mime-types-module");
 const templateHtml = `
 <div class="audio-footer mui-panel">
     <h3 class="x-when-large-display">Playlist</h3>
@@ -89,8 +90,9 @@ class AudioJukebox {
             let item = this.currentItem();
             if (!item)
                 return;
+            let extension = MimeTypes.extensionFromMimeType(item.mimeType);
             const playlist = 'favorites'; // todo should be a parameter...
-            let res = await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${item.mimeType.substr(item.mimeType.lastIndexOf('/') + 1)}`);
+            let res = await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`);
             console.log(`item added to playlist ${playlist}`, res);
         });
         this.refreshPlaylist();

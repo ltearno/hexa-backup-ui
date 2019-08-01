@@ -1,6 +1,7 @@
 import { TemplateElements, createTemplateInstance, templateGetEventLocation } from './templates'
 import * as Rest from './rest'
 import * as UiTools from './ui-tool'
+import * as MimeTypes from './mime-types-module'
 
 const templateHtml = `
 <div class="audio-footer mui-panel">
@@ -124,8 +125,10 @@ export class AudioJukebox {
             if (!item)
                 return
 
+            let extension = MimeTypes.extensionFromMimeType(item.mimeType)
+
             const playlist = 'favorites' // todo should be a parameter...
-            let res = await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${item.mimeType.substr(item.mimeType.lastIndexOf('/') + 1)}`)
+            let res = await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`)
             console.log(`item added to playlist ${playlist}`, res)
         })
 
