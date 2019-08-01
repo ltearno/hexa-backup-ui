@@ -298,3 +298,9 @@ html, body, input, textarea, button {
     right: 30px;
     bottom: 80px;
 }
+
+.x-image-panel {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+}

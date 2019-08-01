@@ -31,6 +31,7 @@ exports.directoryPanel = {
     },
     setImages: (elements, values) => {
         elements.title.innerHTML = values.term;
+        elements.items.classList.add('x-image-panel');
         elements.items.innerHTML = values.items.map(item => {
             if (item.mimeType.startsWith('image/'))
                 return `<div><img loading="lazy" src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/></div>`;
