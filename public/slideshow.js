@@ -45,6 +45,10 @@ function create() {
                     imageElement = document.createElement('img');
                     els.items.appendChild(imageElement);
                 }
+                else if (els.items.children.length > parseInt(els.nbImages.value)) {
+                    imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length));
+                    imageElement.parentElement.removeChild(imageElement);
+                }
                 else {
                     imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length));
                 }
