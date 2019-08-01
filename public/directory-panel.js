@@ -35,7 +35,7 @@ exports.directoryPanel = {
             .concat(values.items.filter(i => i.mimeType != 'application/directory'));
         elements.items.innerHTML = items.map(item => {
             if (item.mimeType.startsWith('image/'))
-                return `<img loading="lazy" src="${HEXA_BACKUP_BASE_URL}/sha/${item.sha}/plugins/image/thumbnail?type=${item.mimeType}"/>`;
+                return `<div><img loading="lazy" src="${HEXA_BACKUP_BASE_URL}/sha/${item.sha}/plugins/image/thumbnail?type=${item.mimeType}"/></div>`;
             else
                 return Snippets.itemToHtml(item);
         }).join('');
