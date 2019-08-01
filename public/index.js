@@ -9,6 +9,7 @@ const Auth = require("./auth");
 const Templates = require("./templates");
 const MimeTypes = require("./mime-types-module");
 const Messages = require("./messages");
+const Slideshow = require("./slideshow");
 /*
 hash urls :
 
@@ -84,6 +85,7 @@ const searchPanel = SearchPanel.searchPanel.create();
 const audioPanel = AudioPanel.audioPanel.create();
 const audioJukebox = new AudioPanel.AudioJukebox(audioPanel);
 const directoryPanel = DirectoryPanel.directoryPanel.create();
+let slideshow = null;
 let lastDisplayedFiles = null;
 let lastSearchTerm = null; // HACK very temporary
 let actualContent = null;
@@ -356,6 +358,9 @@ function itemDefaultAction(childIndex) {
     }
 }
 function showSlideshow() {
+    if (!slideshow)
+        slideshow = Slideshow.create();
+    setContent(slideshow.root);
 }
 directoryPanel.root.addEventListener('click', async (event) => {
     // todo : knownledge to do that is in directoryPanel

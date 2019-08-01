@@ -7,6 +7,7 @@ import * as Auth from './auth'
 import * as Templates from './templates'
 import * as MimeTypes from './mime-types-module'
 import * as Messages from './messages'
+import * as Slideshow from './slideshow'
 
 /*
 hash urls :
@@ -90,6 +91,7 @@ const searchPanel = SearchPanel.searchPanel.create()
 const audioPanel = AudioPanel.audioPanel.create()
 const audioJukebox = new AudioPanel.AudioJukebox(audioPanel)
 const directoryPanel = DirectoryPanel.directoryPanel.create()
+let slideshow = null
 
 let lastDisplayedFiles: Rest.FileDescriptor[] = null
 let lastSearchTerm: string = null // HACK very temporary
@@ -428,8 +430,10 @@ function itemDefaultAction(childIndex: number) {
 }
 
 
-function showSlideshow(){
-    
+function showSlideshow() {
+    if (!slideshow)
+        slideshow = Slideshow.create()
+    setContent(slideshow.root)
 }
 
 
