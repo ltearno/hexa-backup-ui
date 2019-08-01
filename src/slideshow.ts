@@ -31,7 +31,6 @@ export function create() {
         let lastSearchInterval = null
 
         while (true) {
-            break
             let searchSpec: any = {
                 mimeType: 'image/%',
                 noDirectory: true,
