@@ -81,6 +81,7 @@ class AudioJukebox {
             }
         });
         this.audioPanel.addPlaylistButton.addEventListener('click', async (event) => {
+            debugger;
             //if (event.target != this.audioPanel.addPlaylistButton)
             //    return
             UiTools.stopEvent(event);
