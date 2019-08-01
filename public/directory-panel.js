@@ -35,11 +35,14 @@ exports.directoryPanel = {
         elements.title.innerHTML = values.term;
         elements.items.classList.add('x-image-panel');
         elements.items.classList.remove('x-items-panel');
+        let placeholder = null;
         elements.items.innerHTML = values.items.map(item => {
-            if (item.mimeType.startsWith('image/'))
+            if (item.mimeType.startsWith('image/')) {
                 return `<div><img loading="lazy" src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/></div>`;
-            else
+            }
+            else {
                 return `<div>${Snippets.itemToHtml(item)}</div>`;
+            }
         }).join('');
     },
 };
