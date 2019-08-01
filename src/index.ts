@@ -184,6 +184,11 @@ async function searchItems(term: string) {
     }
 
     let res = await Rest.search(term, mimeType)
+    if(!res){
+        waiting.done()
+        setContent(searchResultPanel.root)
+        SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, `Error occurred, retry please...`)
+    }
 
     // first files then directories
     res.items = res.items.filter(i => !i.mimeType.startsWith('application/directory')).concat(res.items.filter(i => i.mimeType.startsWith('application/directory')))
