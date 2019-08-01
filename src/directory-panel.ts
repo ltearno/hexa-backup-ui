@@ -57,23 +57,29 @@ export const directoryPanel = {
             }
         }).join('')
 
-        //setTimeout(() => {
-            let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
-                console.log(`here obs`)
-                entries.forEach(function (entry) {
-                    if (entry.isIntersecting) {
-                        let lazyImage = entry.target as HTMLImageElement
-                        lazyImage.src = lazyImage.getAttribute('data-src')
-                        lazyImageObserver.unobserve(lazyImage)
-                    }
-                })
-            })
+        let nbFirst = 10
+        let timeAfter = 3000
 
-            values.items.forEach((item, index) => {
-                if (item.mimeType.startsWith('image/')) {
-                    lazyImageObserver.observe(elements.items.children.item(index).children.item(0))
+        let toObserve = values.items
+            .map((item, index) => ({ item, index }))
+            .filter(e => e.item.mimeType.startsWith('image/'))
+
+        let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    let lazyImage = entry.target as HTMLImageElement
+                    lazyImage.src = lazyImage.getAttribute('data-src')
+                    lazyImageObserver.unobserve(lazyImage)
                 }
             })
-        //}, 50)
+        })
+
+        toObserve.slice(0, nbFirst).forEach(e => lazyImageObserver.observe(elements.items.children.item(e.index).children.item(0)))
+
+        if (toObserve.length > nbFirst) {
+            setTimeout(() => {
+                toObserve.slice(nbFirst).forEach(e => lazyImageObserver.observe(elements.items.children.item(e.index).children.item(0)))
+            }, timeAfter)
+        }
     },
 }

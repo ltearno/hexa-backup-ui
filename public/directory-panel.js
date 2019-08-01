@@ -43,9 +43,12 @@ exports.directoryPanel = {
                 return `<div>${Snippets.itemToHtml(item)}</div>`;
             }
         }).join('');
-        //setTimeout(() => {
+        let nbFirst = 10;
+        let timeAfter = 3000;
+        let toObserve = values.items
+            .map((item, index) => ({ item, index }))
+            .filter(e => e.item.mimeType.startsWith('image/'));
         let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
-            console.log(`here obs`);
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     let lazyImage = entry.target;
@@ -54,12 +57,12 @@ exports.directoryPanel = {
                 }
             });
         });
-        values.items.forEach((item, index) => {
-            if (item.mimeType.startsWith('image/')) {
-                lazyImageObserver.observe(elements.items.children.item(index).children.item(0));
-            }
-        });
-        //}, 50)
+        toObserve.slice(0, nbFirst).forEach(e => lazyImageObserver.observe(elements.items.children.item(e.index).children.item(0)));
+        if (toObserve.length > nbFirst) {
+            setTimeout(() => {
+                toObserve.slice(nbFirst).forEach(e => lazyImageObserver.observe(elements.items.children.item(e.index).children.item(0)));
+            }, timeAfter);
+        }
     },
 };
 //# sourceMappingURL=directory-panel.js.map
