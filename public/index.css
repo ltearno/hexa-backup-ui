@@ -307,4 +307,5 @@ html, body, input, textarea, button {
     display: flex;
     flex-flow: row wrap;
     width: 100%;
+    justify-content: space-around;
 }
