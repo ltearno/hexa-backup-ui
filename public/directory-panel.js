@@ -7,7 +7,7 @@ const templateHtml = `
 <div class='mui-container'>
     <div class="mui--text-center">
         <h2 x-id="title"></h2>
-        <div x-id="items" class="mui-panel" style="display: inline-block;"></div>
+        <div x-id="items" class="mui-panel"></div>
     </div>
 </div>`;
 exports.directoryPanel = {
