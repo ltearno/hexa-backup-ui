@@ -306,7 +306,7 @@ html, body, input, textarea, button {
 .x-image-panel {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .x-image-panel>div>img {
