@@ -2,6 +2,7 @@ import { TemplateElements, createTemplateInstance, templateGetEventLocation } fr
 import * as Rest from './rest'
 import * as UiTools from './ui-tool'
 import * as MimeTypes from './mime-types-module'
+import * as Messages from './messages'
 
 const templateHtml = `
 <div class="audio-footer mui-panel">
@@ -122,14 +123,16 @@ export class AudioJukebox {
             UiTools.stopEvent(event)
 
             let item = this.currentItem()
-            if (!item)
+            if (!item){
+                Messages.displayMessage(`cannot add to playlist, nothing playing`)
                 return
+            }
 
             let extension = MimeTypes.extensionFromMimeType(item.mimeType)
 
             const playlist = 'favorites' // todo should be a parameter...
             let res = await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`)
-            console.log(`item added to playlist ${playlist}`, res)
+            Messages.displayMessage(`added to playlist '${playlist}'`)
         })
 
         this.refreshPlaylist()

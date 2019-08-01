@@ -4,6 +4,7 @@ const templates_1 = require("./templates");
 const Rest = require("./rest");
 const UiTools = require("./ui-tool");
 const MimeTypes = require("./mime-types-module");
+const Messages = require("./messages");
 const templateHtml = `
 <div class="audio-footer mui-panel">
     <h3 class="x-when-large-display">Playlist</h3>
@@ -88,12 +89,14 @@ class AudioJukebox {
         this.audioPanel.addPlaylistButton.addEventListener('click', async (event) => {
             UiTools.stopEvent(event);
             let item = this.currentItem();
-            if (!item)
+            if (!item) {
+                Messages.displayMessage(`cannot add to playlist, nothing playing`);
                 return;
+            }
             let extension = MimeTypes.extensionFromMimeType(item.mimeType);
             const playlist = 'favorites'; // todo should be a parameter...
             let res = await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`);
-            console.log(`item added to playlist ${playlist}`, res);
+            Messages.displayMessage(`added to playlist '${playlist}'`);
         });
         this.refreshPlaylist();
     }
