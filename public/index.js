@@ -54,12 +54,15 @@ function readHashAndAct() {
             name
         });
     }
-    else if (parsed.pathname.startsWith('/browse')) {
+    else if (parsed.pathname == '/browse') {
         loadReferences();
     }
     else if (parsed.pathname.startsWith('/refs/')) {
         const name = parsed.pathname.substring('/refs/'.length);
         loadReference(name);
+    }
+    else if (parsed.pathname == '/playlists') {
+        loadPlaylists();
     }
     else if (parsed.pathname.startsWith('/playlists/')) {
         const name = parsed.pathname.substring('/playlists/'.length);
@@ -210,6 +213,30 @@ async function loadReferences() {
     setContent(directoryPanel.root);
     DirectoryPanel.directoryPanel.setValues(directoryPanel, {
         name: "References",
+        items
+    });
+}
+async function loadPlaylists() {
+    let waiting = beginWait(() => {
+        setContent(directoryPanel.root);
+        DirectoryPanel.directoryPanel.setLoading(directoryPanel, "Playlists");
+    });
+    let references = await Rest.getReferences();
+    let items = references
+        .filter(reference => reference.toUpperCase().startsWith('PLUGIN-PLAYLISTS-LTEARNO-'))
+        .map(reference => ({
+        name: reference.substr(0, 1).toUpperCase() + reference.substr(1),
+        lastWrite: 0,
+        mimeType: 'application/playlist',
+        sha: reference,
+        size: 0
+    }));
+    lastDisplayedFiles = items;
+    lastSearchTerm = '';
+    waiting.done();
+    setContent(directoryPanel.root);
+    DirectoryPanel.directoryPanel.setValues(directoryPanel, {
+        name: "Playlists",
         items
     });
 }
