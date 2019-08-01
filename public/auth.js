@@ -38,4 +38,8 @@ function autoRenewAuth() {
     auth.loop();
 }
 exports.autoRenewAuth = autoRenewAuth;
+function me() {
+    return Network.getData(`https://home.lteconsulting.fr/well-known/v1/me`);
+}
+exports.me = me;
 //# sourceMappingURL=auth.js.map

@@ -225,7 +225,8 @@ async function loadPlaylists() {
         DirectoryPanel.directoryPanel.setLoading(directoryPanel, "Playlists");
     });
     let references = await Rest.getReferences();
-    const prefix = 'PLUGIN-PLAYLISTS-LTEARNO-';
+    let user = await Auth.me();
+    const prefix = `PLUGIN-PLAYLISTS-${user.uuid.toUpperCase()}-`;
     let items = references
         .filter(reference => reference.toUpperCase().startsWith(prefix))
         .map(reference => reference.substr(prefix.length))
@@ -251,7 +252,8 @@ async function loadPlaylist(name) {
         setContent(directoryPanel.root);
         DirectoryPanel.directoryPanel.setLoading(directoryPanel, `Playlist '${name}'`);
     });
-    let reference = await Rest.getReference(`PLUGIN-PLAYLISTS-LTEARNO-${name.toUpperCase()}`);
+    let user = await Auth.me();
+    let reference = await Rest.getReference(`PLUGIN-PLAYLISTS-${user.uuid.toUpperCase()}-${name.toUpperCase()}`);
     let commit = await Rest.getCommit(reference.currentCommitSha);
     waiting.done();
     await loadDirectory({

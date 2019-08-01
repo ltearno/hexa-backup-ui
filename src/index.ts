@@ -277,8 +277,9 @@ async function loadPlaylists() {
     })
 
     let references = await Rest.getReferences()
+    let user = await Auth.me()
 
-    const prefix = 'PLUGIN-PLAYLISTS-LTEARNO-'
+    const prefix = `PLUGIN-PLAYLISTS-${user.uuid.toUpperCase()}-`
 
     let items: Rest.FileDescriptor[] = references
         .filter(reference => reference.toUpperCase().startsWith(prefix))
@@ -310,7 +311,9 @@ async function loadPlaylist(name: string) {
         DirectoryPanel.directoryPanel.setLoading(directoryPanel, `Playlist '${name}'`)
     })
 
-    let reference = await Rest.getReference(`PLUGIN-PLAYLISTS-LTEARNO-${name.toUpperCase()}`)
+    let user = await Auth.me()
+
+    let reference = await Rest.getReference(`PLUGIN-PLAYLISTS-${user.uuid.toUpperCase()}-${name.toUpperCase()}`)
     let commit = await Rest.getCommit(reference.currentCommitSha)
 
     waiting.done()

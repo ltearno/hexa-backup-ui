@@ -40,3 +40,7 @@ export function autoRenewAuth() {
     let auth = new Auth()
     auth.loop()
 }
+
+export function me(): Promise<any> {
+    return Network.getData(`https://home.lteconsulting.fr/well-known/v1/me`)
+}
