@@ -290,5 +290,11 @@ html, body, input, textarea, button {
 }
 
 .x-message-panel {
-    margin: 2px;
+    margin: 4px;
+}
+
+[x-id='messages'] {
+    position: fixed;
+    right: 30px;
+    bottom: 80px;
 }
