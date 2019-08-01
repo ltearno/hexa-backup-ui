@@ -10,6 +10,7 @@ const templateHtml = `
         <h2>Slideshow</h2>
         <div x-id="items" class="mui-panel x-slideshow"></div>
         <input x-id="interval" type="range" min="0" max="100" value="50"/>
+        <input x-id="speed" type="range" min="100" max="3000" value="200"/>
         <input x-id="date" type="date"/>
         <div x-id="remark"></div>
     </div>
@@ -24,6 +25,7 @@ export function create() {
         interval: HTMLInputElement
         date: HTMLInputElement
         remark: HTMLElement
+        speed: HTMLInputElement
     }
 
     (async () => {
@@ -72,7 +74,7 @@ export function create() {
                 els.remark.innerHTML = `no possible image !`
             }
 
-            await wait(1000)
+            await wait(els.speed.value)
         }
     })()
 
