@@ -60,5 +60,21 @@ export const directoryPanel = {
                 return `<div>${Snippets.itemToHtml(item)}</div>`
             }
         }).join('')
+
+        let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    let lazyImage = entry.target as HTMLImageElement;
+                    lazyImage.src = lazyImage.dataset.src
+                    lazyImageObserver.unobserve(lazyImage)
+                }
+            })
+        })
+
+        values.items.forEach((item, index) => {
+            if (item.mimeType.startsWith('image/')) {
+                lazyImageObserver.observe(elements.items.children.item(index))
+            }
+        })
     },
 }
