@@ -421,3 +421,5 @@ window.onpopstate = function (event) {
         syncUi()
     }*/
 }
+
+Auth.me().then(user => UiTool.el('user-id').innerText = user.uuid)

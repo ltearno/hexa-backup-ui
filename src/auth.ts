@@ -4,6 +4,8 @@ function wait(duration) {
     return new Promise(resolve => setTimeout(resolve, duration))
 }
 
+let authenticatedUser = null
+
 class Auth {
     private onError() {
         window.location.reload()
@@ -19,6 +21,8 @@ class Auth {
                         console.error(`cannot setCookie`, res)
                         this.onError()
                     }
+
+                    authenticatedUser = await Network.getData(`https://home.lteconsulting.fr/well-known/v1/me`)
                 }
                 else {
                     console.error(`cannot obtain auth token`)
@@ -41,6 +45,6 @@ export function autoRenewAuth() {
     auth.loop()
 }
 
-export function me(): Promise<any> {
-    return Network.getData(`https://home.lteconsulting.fr/well-known/v1/me`)
+export function me(): any {
+    return authenticatedUser
 }

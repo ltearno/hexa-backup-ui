@@ -4,6 +4,7 @@ const Network = require("./network");
 function wait(duration) {
     return new Promise(resolve => setTimeout(resolve, duration));
 }
+let authenticatedUser = null;
 class Auth {
     onError() {
         window.location.reload();
@@ -18,6 +19,7 @@ class Auth {
                         console.error(`cannot setCookie`, res);
                         this.onError();
                     }
+                    authenticatedUser = await Network.getData(`https://home.lteconsulting.fr/well-known/v1/me`);
                 }
                 else {
                     console.error(`cannot obtain auth token`);
@@ -39,7 +41,7 @@ function autoRenewAuth() {
 }
 exports.autoRenewAuth = autoRenewAuth;
 function me() {
-    return Network.getData(`https://home.lteconsulting.fr/well-known/v1/me`);
+    return authenticatedUser;
 }
 exports.me = me;
 //# sourceMappingURL=auth.js.map
