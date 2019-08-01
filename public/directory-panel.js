@@ -15,6 +15,10 @@ exports.directoryPanel = {
         elements.title.innerHTML = `Loading '${title}' ...`;
         elements.items.innerHTML = ``;
     },
+    displaySearching: (elements, term) => {
+        elements.title.innerHTML = `<div class="mui--text-dark-hint">Searching '${term}' ...</div>`;
+        elements.items.innerHTML = ``;
+    },
     setValues: (elements, values) => {
         elements.title.innerHTML = `${values.name}`;
         if (values.items && values.items.length) {
@@ -23,6 +27,10 @@ exports.directoryPanel = {
         else {
             elements.items.innerHTML = `<div class="mui--text-dark-hint">No results</div>`;
         }
+    },
+    setImages: (elements, values) => {
+        elements.title.innerHTML = `Not done yet !`;
+        elements.items.innerHTML = ``;
     },
 };
 //# sourceMappingURL=directory-panel.js.map

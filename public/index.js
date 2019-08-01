@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const UiTool = require("./ui-tool");
 const SearchPanel = require("./search-panel");
-const SearchResultPanel = require("./search-result-panel");
 const AudioPanel = require("./audio-panel");
 const DirectoryPanel = require("./directory-panel");
 const Rest = require("./rest");
@@ -79,7 +78,6 @@ var Mode;
     Mode[Mode["Image"] = 1] = "Image";
 })(Mode || (Mode = {}));
 const searchPanel = SearchPanel.searchPanel.create();
-const searchResultPanel = SearchResultPanel.searchResultPanel.create();
 const audioPanel = AudioPanel.audioPanel.create();
 const audioJukebox = new AudioPanel.AudioJukebox(audioPanel);
 const directoryPanel = DirectoryPanel.directoryPanel.create();
@@ -167,16 +165,16 @@ async function searchItems(term) {
     lastDisplayedFiles = res.items;
     lastSearchTerm = term;
     waiting.done();
-    setContent(searchResultPanel.root);
+    setContent(directoryPanel.root);
     switch (currentMode) {
         case Mode.Audio:
-            SearchResultPanel.searchResultPanel.setValues(searchResultPanel, {
-                term: term,
+            DirectoryPanel.directoryPanel.setValues(directoryPanel, {
+                name: `Results for '${term}'`,
                 items: res.items
             });
             break;
         case Mode.Image:
-            SearchResultPanel.searchResultPanel.setImages(searchResultPanel, {
+            DirectoryPanel.directoryPanel.setImages(directoryPanel, {
                 term: term,
                 items: res.items
             });
@@ -344,13 +342,6 @@ function itemDefaultAction(childIndex) {
         }
     }
 }
-searchResultPanel.root.addEventListener('click', async (event) => {
-    // todo : knownledge to do that is in searchResultPanel
-    let { element, childIndex } = Templates.templateGetEventLocation(searchResultPanel, event);
-    if (lastDisplayedFiles && element == searchResultPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
-        itemDefaultAction(childIndex);
-    }
-});
 directoryPanel.root.addEventListener('click', async (event) => {
     // todo : knownledge to do that is in directoryPanel
     let { element, childIndex } = Templates.templateGetEventLocation(directoryPanel, event);

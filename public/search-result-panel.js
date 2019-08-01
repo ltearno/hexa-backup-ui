@@ -11,10 +11,6 @@ const templateHtml = `
 </div>`;
 exports.searchResultPanel = {
     create: () => templates_1.createTemplateInstance(templateHtml),
-    displaySearching: (elements, term) => {
-        elements.title.innerHTML = `<div class="mui--text-dark-hint">Searching '${term}' ...</div>`;
-        elements.items.innerHTML = ``;
-    },
     setValues: (elements, values) => {
         elements.title.innerHTML = `Results for '${values.term}'`;
         if (values.items && values.items.length) {
@@ -23,10 +19,6 @@ exports.searchResultPanel = {
         else {
             elements.items.innerHTML = `<div class="mui--text-dark-hint">No results</div>`;
         }
-    },
-    setImages: (elements, values) => {
-        elements.title.innerHTML = `Not done yet !`;
-        elements.items.innerHTML = ``;
     },
 };
 //# sourceMappingURL=search-result-panel.js.map

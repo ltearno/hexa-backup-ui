@@ -1,6 +1,5 @@
 import * as UiTool from './ui-tool'
 import * as SearchPanel from './search-panel'
-import * as SearchResultPanel from './search-result-panel'
 import * as AudioPanel from './audio-panel'
 import * as DirectoryPanel from './directory-panel'
 import * as Rest from './rest'
@@ -85,7 +84,6 @@ enum Mode {
 }
 
 const searchPanel = SearchPanel.searchPanel.create()
-const searchResultPanel = SearchResultPanel.searchResultPanel.create()
 const audioPanel = AudioPanel.audioPanel.create()
 const audioJukebox = new AudioPanel.AudioJukebox(audioPanel)
 const directoryPanel = DirectoryPanel.directoryPanel.create()
@@ -198,18 +196,18 @@ async function searchItems(term: string) {
 
     waiting.done()
 
-    setContent(searchResultPanel.root)
+    setContent(directoryPanel.root)
 
     switch (currentMode) {
         case Mode.Audio:
-            SearchResultPanel.searchResultPanel.setValues(searchResultPanel, {
-                term: term,
+            DirectoryPanel.directoryPanel.setValues(directoryPanel, {
+                name: `Results for '${term}'`,
                 items: res.items
             })
             break
 
         case Mode.Image:
-            SearchResultPanel.searchResultPanel.setImages(searchResultPanel, {
+            DirectoryPanel.directoryPanel.setImages(directoryPanel, {
                 term: term,
                 items: res.items
             })
@@ -415,14 +413,6 @@ function itemDefaultAction(childIndex: number) {
         }
     }
 }
-
-searchResultPanel.root.addEventListener('click', async event => {
-    // todo : knownledge to do that is in searchResultPanel
-    let { element, childIndex } = Templates.templateGetEventLocation(searchResultPanel, event)
-    if (lastDisplayedFiles && element == searchResultPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
-        itemDefaultAction(childIndex)
-    }
-})
 
 directoryPanel.root.addEventListener('click', async event => {
     // todo : knownledge to do that is in directoryPanel

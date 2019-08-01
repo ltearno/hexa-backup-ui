@@ -23,6 +23,11 @@ export const directoryPanel = {
         elements.items.innerHTML = ``
     },
 
+    displaySearching: (elements: DirectoryPanelElements, term: string) => {
+        elements.title.innerHTML = `<div class="mui--text-dark-hint">Searching '${term}' ...</div>`
+        elements.items.innerHTML = ``
+    },
+
     setValues: (elements: DirectoryPanelElements, values: { name: string, items: Rest.FileDescriptor[] }) => {
         elements.title.innerHTML = `${values.name}`
 
@@ -32,5 +37,10 @@ export const directoryPanel = {
         else {
             elements.items.innerHTML = `<div class="mui--text-dark-hint">No results</div>`
         }
+    },
+
+    setImages: (elements: DirectoryPanelElements, values: { term: string, items: Rest.FileDescriptor[] }) => {
+        elements.title.innerHTML = `Not done yet !`
+        elements.items.innerHTML = ``
     },
 }
