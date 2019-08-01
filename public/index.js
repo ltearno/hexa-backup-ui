@@ -159,8 +159,8 @@ async function searchItems(term) {
     }
     // first files then directories
     res.items = res.items
-        .filter(i => !i.mimeType.startsWith('application/directory'))
-        .concat(res.items.filter(i => i.mimeType.startsWith('application/directory')));
+        .filter(i => i.mimeType != 'application/directory')
+        .concat(res.items.filter(i => i.mimeType == 'application/directory'));
     res.items = beautifyNames(res.items);
     lastDisplayedFiles = res.items;
     lastSearchTerm = term;
