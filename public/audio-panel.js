@@ -96,7 +96,7 @@ class AudioJukebox {
             }
             let extension = MimeTypes.extensionFromMimeType(item.mimeType);
             await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`);
-            Messages.displayMessage(`👍 added to playlist '${playlist}'`);
+            Messages.displayMessage(`👍 ${item.name} added to playlist '${playlist}'`);
         });
         this.refreshPlaylist();
     }
