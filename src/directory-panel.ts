@@ -55,7 +55,7 @@ export const directoryPanel = {
             else {
                 return `<div>${Snippets.itemToHtml(item)}</div>`
             }
-        }).concat([`<a href="/slideshow">Slideshow</a>`]).join('')
+        }).join('')
 
         let nbFirst = 25
         let timeAfter = 2000
