@@ -6,6 +6,8 @@ function createElementAndLocateChildren(obj, html) {
     let root = UiTools.elFromHtml(html);
     obj['root'] = root;
     UiTools.els(root, `[x-id]`).forEach(e => obj[e.getAttribute('x-id')] = e);
+    if (root.hasAttribute('x-id'))
+        obj[root.getAttribute('x-id')] = root;
     elementsData.set(root, obj);
     return root;
 }

@@ -12,6 +12,8 @@ export function createElementAndLocateChildren<O, T extends HTMLElement>(obj: O,
     obj['root'] = root
 
     UiTools.els(root, `[x-id]`).forEach(e => obj[e.getAttribute('x-id')] = e)
+    if (root.hasAttribute('x-id'))
+        obj[root.getAttribute('x-id')] = root
 
     elementsData.set(root, obj as any)
 
