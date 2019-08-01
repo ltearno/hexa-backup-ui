@@ -131,13 +131,33 @@ function goSearchItems(term) {
     const url = `#/search/${term}`;
     window.location.href = url;
 }
+function goLoadDirectory(sha, name) {
+    const url = `#/directories/${sha}?name=${encodeURIComponent(lastSearchTerm ? (lastSearchTerm + '/' + name) : name)}`;
+    window.location.href = url;
+}
+function goReference(name) {
+    const url = `#/refs/${name}`;
+    window.location.href = url;
+}
+function goPlaylist(name) {
+    window.location.href = `#/playlists/${name}`;
+}
 async function searchItems(term) {
     SearchPanel.searchPanel.displayTitle(searchPanel, false);
     const waiting = beginWait(() => {
         setContent(searchResultPanel.root);
         SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term);
     });
-    let res = await Rest.search(term, 'audio/%');
+    let mimeType = '%';
+    switch (currentMode) {
+        case Mode.Audio:
+            mimeType = 'audio/%';
+            break;
+        case Mode.Image:
+            mimeType = 'image/%';
+            break;
+    }
+    let res = await Rest.search(term, mimeType);
     // first files then directories
     res.items = res.items.filter(i => !i.mimeType.startsWith('application/directory')).concat(res.items.filter(i => i.mimeType.startsWith('application/directory')));
     res.items = beautifyNames(res.items);
@@ -175,17 +195,6 @@ function directoryDescriptorToFileDescriptor(d) {
         lastWrite: d.lastWrite,
         size: d.size
     };
-}
-function goLoadDirectory(sha, name) {
-    const url = `#/directories/${sha}?name=${encodeURIComponent(lastSearchTerm ? (lastSearchTerm + '/' + name) : name)}`;
-    window.location.href = url;
-}
-function goReference(name) {
-    const url = `#/refs/${name}`;
-    window.location.href = url;
-}
-function goPlaylist(name) {
-    window.location.href = `#/playlists/${name}`;
 }
 async function loadDirectory(item) {
     const waiting = beginWait(() => {

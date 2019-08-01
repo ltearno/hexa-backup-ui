@@ -151,6 +151,20 @@ function goSearchItems(term: string) {
     window.location.href = url
 }
 
+function goLoadDirectory(sha: string, name: string) {
+    const url = `#/directories/${sha}?name=${encodeURIComponent(lastSearchTerm ? (lastSearchTerm + '/' + name) : name)}`
+    window.location.href = url
+}
+
+function goReference(name: string) {
+    const url = `#/refs/${name}`
+    window.location.href = url
+}
+
+function goPlaylist(name: string) {
+    window.location.href = `#/playlists/${name}`
+}
+
 async function searchItems(term: string) {
     SearchPanel.searchPanel.displayTitle(searchPanel, false)
 
@@ -159,7 +173,17 @@ async function searchItems(term: string) {
         SearchResultPanel.searchResultPanel.displaySearching(searchResultPanel, term)
     })
 
-    let res = await Rest.search(term, 'audio/%')
+    let mimeType = '%'
+    switch (currentMode) {
+        case Mode.Audio:
+            mimeType = 'audio/%'
+            break
+        case Mode.Image:
+            mimeType = 'image/%'
+            break
+    }
+
+    let res = await Rest.search(term, mimeType)
 
     // first files then directories
     res.items = res.items.filter(i => !i.mimeType.startsWith('application/directory')).concat(res.items.filter(i => i.mimeType.startsWith('application/directory')))
@@ -209,20 +233,6 @@ function directoryDescriptorToFileDescriptor(d: Rest.DirectoryDescriptorFile): R
         lastWrite: d.lastWrite,
         size: d.size
     }
-}
-
-function goLoadDirectory(sha: string, name: string) {
-    const url = `#/directories/${sha}?name=${encodeURIComponent(lastSearchTerm ? (lastSearchTerm + '/' + name) : name)}`
-    window.location.href = url
-}
-
-function goReference(name: string) {
-    const url = `#/refs/${name}`
-    window.location.href = url
-}
-
-function goPlaylist(name: string) {
-    window.location.href = `#/playlists/${name}`
 }
 
 async function loadDirectory(item: Rest.FileDescriptor) {
