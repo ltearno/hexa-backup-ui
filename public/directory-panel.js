@@ -3,10 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const templates_1 = require("./templates");
 const Snippets = require("./html-snippets");
 const templateHtml = `
-<div class='mui-container-fluid'>
+<div class='mui-container'>
     <div class="mui--text-center">
         <h2 x-id="title"></h2>
-        <div x-id="items"></div>
+        <div x-id="items" class="pui-panel"></div>
     </div>
 </div>`;
 exports.directoryPanel = {

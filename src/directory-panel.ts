@@ -8,10 +8,10 @@ export interface DirectoryPanelElements extends TemplateElements {
 }
 
 const templateHtml = `
-<div class='mui-container-fluid'>
+<div class='mui-container'>
     <div class="mui--text-center">
         <h2 x-id="title"></h2>
-        <div x-id="items"></div>
+        <div x-id="items" class="pui-panel"></div>
     </div>
 </div>`
 
