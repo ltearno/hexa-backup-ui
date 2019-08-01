@@ -348,6 +348,18 @@ searchPanel.audioMode.addEventListener('click', event => {
     // redraw searchPanel, directoryPanel
     // if imagePanel is displayed, remove it and display ...
 });
+searchPanel.imageMode.addEventListener('click', event => {
+    UiTool.stopEvent(event);
+    if (currentMode == Mode.Image) {
+        Messages.displayMessage(`Image mode already activated`, 0);
+        return;
+    }
+    Messages.displayMessage(`Image mode activated`, 0);
+    currentMode = Mode.Image;
+    // todo should redraw the content panel
+    // redraw searchPanel, directoryPanel
+    // if imagePanel is displayed, remove it and display ...
+});
 readHashAndAct();
 window.onpopstate = function (event) {
     readHashAndAct();
