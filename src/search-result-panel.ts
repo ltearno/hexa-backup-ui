@@ -36,5 +36,6 @@ export const searchResultPanel = {
 
     setImages: (elements: SearchResultPanelElements, values: { term: string, items: Rest.FileDescriptor[] }) => {
         elements.title.innerHTML = `Not done yet !`
+        elements.items.innerHTML = ``
     },
 }

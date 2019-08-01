@@ -26,6 +26,7 @@ exports.searchResultPanel = {
     },
     setImages: (elements, values) => {
         elements.title.innerHTML = `Not done yet !`;
+        elements.items.innerHTML = ``;
     },
 };
 //# sourceMappingURL=search-result-panel.js.map
