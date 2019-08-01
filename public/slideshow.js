@@ -30,6 +30,8 @@ function create() {
             let searchDate = els.date.value;
             let interval = (parseInt(els.interval.value || '0')) * 1000 * 60 * 60 * 24;
             if (lastSearchDate != searchDate || lastSearchInterval != interval) {
+                lastSearchDate = searchDate;
+                lastSearchInterval = interval;
                 searchSpec.dateMin = new Date(searchDate).getTime() - interval;
                 searchSpec.dateMax = new Date(searchDate).getTime() + interval;
                 const results = await Rest.searchEx(searchSpec);
