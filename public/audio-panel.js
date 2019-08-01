@@ -11,7 +11,7 @@ const templateHtml = `
     <div x-id="expander" class="onclick mui--text-center">☰</div>
     <div class="x-horizontal-flex" style="width:100%;">
         <audio x-id="player" class="audio-player" controls preload="metadata"></audio>
-        <a x-id="addPlaylistButton" href="#toto" style="text-align: center;">add to playlist</a></div>
+        <a x-id="addPlaylistButton" href="#toto" class="mui-btn mui-btn--fab" style="background-color: #ff408173;">+ PL.</a></div>
     </div>
 </div>`;
 exports.audioPanel = {
