@@ -47,6 +47,7 @@ exports.directoryPanel = {
             }
         }).join('');
         let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
+            console.log(`here obs`);
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     let lazyImage = entry.target;
