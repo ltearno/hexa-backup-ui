@@ -125,7 +125,7 @@ export class AudioJukebox {
                 return
 
             const playlist = 'favorites' // todo should be a parameter...
-            let res = await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, item.name)
+            let res = await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${item.mimeType.substr(item.mimeType.lastIndexOf('/') + 1)}`)
             console.log(`item added to playlist ${playlist}`, res)
         })
 
