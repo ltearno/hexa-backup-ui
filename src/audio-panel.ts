@@ -122,16 +122,17 @@ export class AudioJukebox {
         this.audioPanel.addPlaylistButton.addEventListener('click', async event => {
             UiTools.stopEvent(event)
 
+            const playlist = 'favorites' // todo should be a parameter...
+
             let item = this.currentItem()
-            if (!item){
+            if (!item) {
                 Messages.displayMessage(`cannot add to playlist, nothing playing`)
                 return
             }
 
             let extension = MimeTypes.extensionFromMimeType(item.mimeType)
 
-            const playlist = 'favorites' // todo should be a parameter...
-            let res = await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`)
+            await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`)
             Messages.displayMessage(`👍 added to playlist '${playlist}'`)
         })
 
