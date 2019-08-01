@@ -43,8 +43,8 @@ exports.directoryPanel = {
                 return `<div>${Snippets.itemToHtml(item)}</div>`;
             }
         }).join('');
-        let nbFirst = 10;
-        let timeAfter = 3000;
+        let nbFirst = 17;
+        let timeAfter = 2000;
         let toObserve = values.items
             .map((item, index) => ({ item, index }))
             .filter(e => e.item.mimeType.startsWith('image/'));
