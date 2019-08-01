@@ -264,10 +264,21 @@ async function loadDirectory(item: Rest.FileDescriptor) {
     waiting.done()
 
     setContent(directoryPanel.root)
-    DirectoryPanel.directoryPanel.setValues(directoryPanel, {
-        name: item.name,
-        items
-    })
+    switch (currentMode) {
+        case Mode.Audio:
+            DirectoryPanel.directoryPanel.setValues(directoryPanel, {
+                name: item.name,
+                items: items
+            })
+            break
+
+        case Mode.Image:
+            DirectoryPanel.directoryPanel.setImages(directoryPanel, {
+                term: item.name,
+                items: items
+            })
+            break
+    }
 }
 
 async function loadReferences() {
