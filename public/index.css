@@ -310,7 +310,7 @@ html, body, input, textarea, button {
 }
 
 .x-image-panel>div>img {
-    height: 120px;
+    height: 100px;
     max-width: 190px;
     padding: 1px;
 }
