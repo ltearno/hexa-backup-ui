@@ -321,3 +321,9 @@ html, body, input, textarea, button {
     justify-content: center;
     align-content: center;
 }
+
+.x-slideshow>img {
+    height: 100px;
+    max-width: 100%;
+    padding: 1px;
+}
