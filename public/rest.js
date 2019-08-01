@@ -45,4 +45,19 @@ function getShaContentUrl(sha, mimeType, name, isDownload) {
     return base;
 }
 exports.getShaContentUrl = getShaContentUrl;
+async function putItemToPlaylist(playlistName, sha, mimeType, name) {
+    let payload = {
+        items: [
+            {
+                name,
+                date: Date.now(),
+                isDirectory: mimeType == 'application/directory',
+                mimeType,
+                sha
+            }
+        ]
+    };
+    return await Network.putData(`${exports.HEXA_BACKUP_BASE_URL}/plugins/playlists/${playlistName}`, payload);
+}
+exports.putItemToPlaylist = putItemToPlaylist;
 //# sourceMappingURL=rest.js.map

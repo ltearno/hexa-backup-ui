@@ -73,9 +73,25 @@ export async function getCommit(sha: string): Promise<{ directoryDescriptorSha: 
 export function getShaContentUrl(sha: string, mimeType: string, name: string, isDownload: boolean) {
     if (!sha)
         return '#'
-        
+
     let base = `${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${encodeURIComponent(mimeType)}`
     if (isDownload)
         base += `&fileName=${encodeURIComponent(name || sha)}`
     return base
+}
+
+export async function putItemToPlaylist(playlistName: string, sha: string, mimeType: string, name: string): Promise<any> {
+    let payload = {
+        items: [
+            {
+                name,
+                date: Date.now(),
+                isDirectory: mimeType == 'application/directory',
+                mimeType,
+                sha
+            }
+        ]
+    }
+
+    return await Network.putData(`${HEXA_BACKUP_BASE_URL}/plugins/playlists/${playlistName}`, payload)
 }

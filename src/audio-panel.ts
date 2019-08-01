@@ -2,18 +2,14 @@ import { TemplateElements, createTemplateInstance, templateGetEventLocation } fr
 import * as Rest from './rest'
 import * as UiTools from './ui-tool'
 
-const PLAYER = 'player'
-const PLAYLIST = 'playlist'
-const EXPANDER = 'expander'
-
 const templateHtml = `
 <div class="audio-footer mui-panel">
     <h3 class="x-when-large-display">Playlist</h3>
-    <div x-id="${PLAYLIST}"></div>
-    <div x-id="${EXPANDER}" class="onclick mui--text-center">☰</div>
+    <div x-id="playlist"></div>
+    <div x-id="expander" class="onclick mui--text-center">☰</div>
     <div class="x-horizontal-flex">
-        <audio x-id="${PLAYER}" class="audio-player" controls preload="metadata"></audio>
-        <div>add to playlist</div>
+        <audio x-id="player" class="audio-player" controls preload="metadata"></audio>
+        <a x-id="addPlaylistButton" href="#" style="text-align: center;">add to playlist</div>
     </div>
 </div>`
 
@@ -21,6 +17,7 @@ export interface AudioPanelElements extends TemplateElements {
     player: HTMLAudioElement
     playlist: HTMLDivElement
     expander: HTMLElement
+    addPlaylistButton: HTMLElement
 }
 
 export const audioPanel = {
@@ -64,8 +61,10 @@ export class AudioJukebox {
                 this.queue = queue
         }
         catch (err) {
-            console.error(`error`, err)
+            console.error(`error loading queue from local storage`, err)
         }
+
+        this.expandedElements = UiTools.els(this.audioPanel.root, '.x-when-large-display')
 
         this.audioPanel.player.addEventListener('ended', () => {
             this.playNext()
@@ -114,7 +113,17 @@ export class AudioJukebox {
             }
         })
 
-        this.expandedElements = UiTools.els(this.audioPanel.root, '.x-when-large-display')
+        this.audioPanel.addPlaylistButton.addEventListener('click', async event => {
+            UiTools.stopEvent(event)
+
+            let item = this.currentItem()
+            if (!item)
+                return
+
+            const playlist = 'favorites' // todo should be a parameter...
+            let res = await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, item.name)
+            console.log(`item added to playlist ${playlist}`, res)
+        })
 
         this.refreshPlaylist()
     }
