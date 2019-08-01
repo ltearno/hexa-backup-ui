@@ -32,7 +32,8 @@ function create() {
             if (lastSearchDate != searchDate || lastSearchInterval != interval) {
                 searchSpec.dateMin = new Date(searchDate).getTime() - interval;
                 searchSpec.dateMax = new Date(searchDate).getTime() + interval;
-                possibleImages = (await Rest.searchEx(searchSpec)).items;
+                const results = await Rest.searchEx(searchSpec);
+                possibleImages = results && results.items;
             }
             if (possibleImages) {
                 els.remark.innerHTML = `${possibleImages.length} possible images`;
