@@ -9,7 +9,6 @@ const Auth = require("./auth");
 const Templates = require("./templates");
 const MimeTypes = require("./mime-types-module");
 const Messages = require("./messages");
-const Slideshow = require("./slideshow");
 /*
 hash urls :
 
@@ -358,9 +357,9 @@ function itemDefaultAction(childIndex) {
     }
 }
 function showSlideshow() {
-    if (!slideshow)
-        slideshow = Slideshow.create();
-    setContent(slideshow.root);
+    //if (!slideshow)
+    //    slideshow = Slideshow.create()
+    //setContent(slideshow.root)
 }
 directoryPanel.root.addEventListener('click', async (event) => {
     // todo : knownledge to do that is in directoryPanel
