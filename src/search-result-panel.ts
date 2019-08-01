@@ -1,4 +1,6 @@
 import { TemplateElements, createTemplateInstance } from './templates'
+import * as Snippets from './html-snippets'
+import * as Rest from './rest'
 
 export interface SearchResultPanelElements extends TemplateElements {
     title: HTMLElement
@@ -21,20 +23,11 @@ export const searchResultPanel = {
         elements.items.innerHTML = ``
     },
 
-    setValues: (elements: SearchResultPanelElements, values: { term: string, items: any[] }) => {
+    setValues: (elements: SearchResultPanelElements, values: { term: string, items: Rest.FileDescriptor[] }) => {
         elements.title.innerHTML = `Results for '${values.term}'`
 
         if (values.items && values.items.length) {
-            elements.items.innerHTML = values.items.map(f => {
-                if (f.mimeType == 'application/directory')
-                    return `<div class="onclick"><i>${f.name} ...</i></div>`
-                else if (f.mimeType == 'application/reference')
-                    return `<div class="onclick"><i>${f.name} ...</i></div>`
-                else if (f.mimeType.startsWith('audio/'))
-                    return `<div x-for-sha="${f.sha.substr(0, 5)}" class="onclick">${f.name}</div>`
-                else
-                    return `<div x-for-sha="${f.sha.substr(0, 5)}" class="onclick"><a href="${Rest.getShaContentUrl(f.sha, f.mimeType, f.name, false)}" target="_blank">${f.name}</a></div>`
-            }).join('')
+            elements.items.innerHTML = values.items.map(Snippets.itemToHtml).join('')
         }
         else {
             elements.items.innerHTML = `<div class="mui--text-dark-hint">No results</div>`
