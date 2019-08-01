@@ -38,7 +38,9 @@ exports.directoryPanel = {
         let placeholder = null;
         elements.items.innerHTML = values.items.map(item => {
             if (item.mimeType.startsWith('image/')) {
-                return `<div><img loading="lazy" src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/></div>`;
+                if (!placeholder)
+                    placeholder = Rest.getShaImageThumbnailUrl(item.sha, item.mimeType);
+                return `<div><img loading="lazy" src="${placeholder}" data-src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/></div>`;
             }
             else {
                 return `<div>${Snippets.itemToHtml(item)}</div>`;
