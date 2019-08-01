@@ -232,7 +232,6 @@ async function loadDirectory(item: Rest.FileDescriptor) {
 }
 
 async function loadReferences() {
-    console.log('loading refs')
     let waiting = beginWait(() => {
         setContent(directoryPanel.root)
         DirectoryPanel.directoryPanel.setLoading(directoryPanel, "References")

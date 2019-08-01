@@ -133,8 +133,6 @@ export class AudioJukebox {
         if (currentItem && currentItem.sha == item.sha)
             return
 
-        console.log(`item: `, item)
-
         this.pushQueueAndPlay(item)
     }
 
