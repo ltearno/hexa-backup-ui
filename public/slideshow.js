@@ -11,7 +11,7 @@ const templateHtml = `
         speed: <input x-id="speed" type="range" min="100" max="3000" value="200"/>
         nb images: <input x-id="nbImages" type="range" min="1" max="50" value="12"/>
         interval: <input x-id="interval" type="range" min="0" max="100" value="50"/>
-        date: <input x-id="date" type="range" min="-${1000 * 60 * 60 * 24 * 365 * 20}" max="0" value="0"/>
+        date: <input x-id="date" type="range" min="-${1000 * 60 * 60 * 24 * 365 * 20} max="0" value="0"/>
         <div x-id="remark"></div>
     </div>
 </div>`;
@@ -28,13 +28,14 @@ function create() {
                 noDirectory: true,
                 limit: 100
             };
-            let searchDate = parseInt(els.date.value);
+            let searchDate = (parseInt(els.interval.value || '0'));
             let interval = (parseInt(els.interval.value || '0')) * 1000 * 60 * 60 * 24;
             if (lastSearchDate != searchDate || lastSearchInterval != interval) {
                 lastSearchDate = searchDate;
                 lastSearchInterval = interval;
-                searchSpec.dateMin = searchDate - interval;
-                searchSpec.dateMax = searchDate + interval;
+                let center = new Date().getTime() + searchDate;
+                searchSpec.dateMin = center - interval;
+                searchSpec.dateMax = center + interval;
                 const results = await Rest.searchEx(searchSpec);
                 possibleImages = results && results.items;
             }
