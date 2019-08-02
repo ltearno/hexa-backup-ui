@@ -134,7 +134,7 @@ export function create() {
                 }
 
                 if (possibleImages && possibleImages.length) {
-                    els.remark.innerHTML = `${nbWantedImages} images on ${nbDesiredRows} rows +/- ${intervalInDays} days around date ${new Date(center).toDateString()} (@${currentOffset}), ${possibleImages.length} possible images`
+                    els.remark.innerHTML = `${nbWantedImages} images on ${nbDesiredRows} rows +/- ${intervalInDays} days around date ${new Date(center).toDateString()} (@${currentOffset})`
 
                     if (imagesCount() > nbWantedImages) {
                         removeRandomImage()
