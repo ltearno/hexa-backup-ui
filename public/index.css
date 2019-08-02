@@ -360,7 +360,7 @@ img {
     image-orientation: from-image;
 }
 
-.x-image-detail>.toolbar {
+.x-image-detail>[x-id='toolbar'] {
     position: absolute;
     bottom: 0;
     left: 0;
