@@ -183,13 +183,11 @@ export function create() {
                     els.remark.innerHTML = `${new Date(center).toDateString()}, no more image, change the cursors`
 
                     if (toRemove.size) {
-                        let imageElement: HTMLImageElement = null
-                        for (let imgElt of toRemove) {
-                            imageElement = imgElt
-                            break
-                        }
+                        let imageElements: HTMLImageElement[] = []
+                        toRemove.forEach(imageElement => imageElements.push(imageElement))
 
-                        if (imageElement) {
+                        if (imageElements.length) {
+                            let imageElement = imageElements[rand(imageElements.length)]
                             imageElement.parentElement.removeChild(imageElement)
                             toRemove.delete(imageElement)
                         }

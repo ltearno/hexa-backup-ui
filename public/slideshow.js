@@ -144,12 +144,10 @@ function create() {
                 else {
                     els.remark.innerHTML = `${new Date(center).toDateString()}, no more image, change the cursors`;
                     if (toRemove.size) {
-                        let imageElement = null;
-                        for (let imgElt of toRemove) {
-                            imageElement = imgElt;
-                            break;
-                        }
-                        if (imageElement) {
+                        let imageElements = [];
+                        toRemove.forEach(imageElement => imageElements.push(imageElement));
+                        if (imageElements.length) {
+                            let imageElement = imageElements[rand(imageElements.length)];
                             imageElement.parentElement.removeChild(imageElement);
                             toRemove.delete(imageElement);
                         }
