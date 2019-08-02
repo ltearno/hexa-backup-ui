@@ -86,11 +86,9 @@ export function create() {
                 const rand = max => Math.floor(max * Math.random())
 
                 const removeRandomImage = () => {
-                    if (!els.items.children.length)
-                        return
-
-                    let imageElement = els.items.children.item(rand(els.items.children.length)) as HTMLImageElement
-                    imageElement.parentElement.removeChild(imageElement)
+                    let imageElement = pickRandomImage()
+                    if (imageElement)
+                        imageElement.parentElement.removeChild(imageElement)
 
                     return imageElement
                 }
@@ -102,14 +100,25 @@ export function create() {
                 }
 
                 const pickRandomImage = () => {
-                    if (!els.items.children.length)
+                    let possibleElements = []
+                    for (let row of els.items.children) {
+                        for (let img of row.children)
+                            possibleElements.push(img)
+                    }
+
+                    if (!possibleElements.length)
                         return null
 
-                    return els.items.children.item(rand(els.items.children.length)) as HTMLImageElement
+                    return possibleElements[rand(possibleElements.length)]
                 }
 
                 const imagesCount = () => {
-                    return els.items.children.length
+                    let count = 0
+                    for (let rowIdx = 0; rowIdx < els.items.children.length; rowIdx++) {
+                        const row = els.items.children.item(rowIdx)
+                        count += row.children.length
+                    }
+                    return count
                 }
 
                 if (possibleImages && possibleImages.length) {
