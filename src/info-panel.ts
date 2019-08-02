@@ -25,7 +25,7 @@ const template = `
         <div>sources: <span x-id='sources'></span></div>
         <div>exif: <pre x-id="exif"></pre></div>
         <div class="mui-divider"></div>
-        <div x-id="close" class="mui-btn mui-btn--flat">Close</div>
+        <div x-id="close" class="mui-btn mui-btn--flat mui-btn--primary">Close</div>
     </div>
 </div>`
 
