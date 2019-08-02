@@ -160,7 +160,7 @@ export function create() {
                     }
                 }
                 else {
-                    els.remark.innerHTML = `no more image, change the cursors`
+                    els.remark.innerHTML = `${new Date(center).toDateString()}, no more image, change the cursors`
 
                     if (imagesCount() > 0) {
                         removeRandomImage()
