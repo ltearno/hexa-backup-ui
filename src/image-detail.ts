@@ -16,7 +16,8 @@ const template = `
         <div x-id="toolbar">
         <button x-id="previous" class="mui-btn mui-btn--flat">Previous</button>
         <button x-id="close" class="mui-btn">Close</button>
-        <button x-id="next" class="mui-btn mui-btn--flat mui-btn--raised">Next</button>
+        <button x-id="next" class="mui-btn mui-btn--flat">Next</button>
+        <button x-id="diaporama" class="mui-btn mui-btn--flat">Diaporama</button>
         </div>
     </div>`
 
@@ -27,6 +28,7 @@ const element: {
     close: HTMLElement
     previous: HTMLElement
     next: HTMLElement
+    diaporama: HTMLElement
 } = createTemplateInstance(template)
 
 element.previous.addEventListener('click', event => {
@@ -42,6 +44,29 @@ element.previous.addEventListener('click', event => {
 element.next.addEventListener('click', event => {
     UiTool.stopEvent(event)
 
+    showNext()
+})
+
+function showNext() {
+    if (currentUnroller) {
+        let nextItem = currentUnroller.next()
+        if (nextItem)
+            showInternal(nextItem)
+    }
+}
+
+let diaporamaTimer = null
+
+element.diaporama.addEventListener('click', event => {
+    UiTool.stopEvent(event)
+
+    if (diaporamaTimer) {
+        stopDiaporama()
+        return
+    }
+
+    diaporamaTimer = setInterval(() => showNext(), 2000)
+
     if (currentUnroller) {
         let nextItem = currentUnroller.next()
         if (nextItem)
@@ -49,9 +74,17 @@ element.next.addEventListener('click', event => {
     }
 })
 
+function stopDiaporama() {
+    if (diaporamaTimer) {
+        clearInterval(diaporamaTimer)
+        diaporamaTimer = null
+    }
+}
+
 element.close.addEventListener('click', event => {
     UiTool.stopEvent(event)
 
+    stopDiaporama()
     currentUnroller = null
 
     document.body.querySelector('header').style.display = undefined
