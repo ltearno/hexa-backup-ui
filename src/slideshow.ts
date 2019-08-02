@@ -109,7 +109,7 @@ export function create() {
                 const intervalInMs = intervalInDays * 1000 * 60 * 60 * 24
                 const nbWantedImages = parseInt(els.nbImages.value) || 1
                 const nbDesiredRows = parseInt(els.nbRows.value) || 1
-                let waitDurationInMs = parseInt(els.speed.value) || 2000
+                const waitDurationInMs = parseInt(els.speed.value) || 2000
 
                 let center = new Date().getTime() + timeFromNowInMs
 
