@@ -10,7 +10,7 @@ const templateHtml = `
         <h2>Slideshow</h2>
         <div x-id="items" class="mui-panel x-slideshow"></div>
         speed: <input x-id="speed" type="range" min="100" max="3000" value="2000"/>
-        nb rows: <input x-id="nbRows" type="number" min="1" max="50" value="1"/>
+        nb rows: <input x-id="nbRows" type="number" min="1" max="150" value="1"/>
         nb images: <input x-id="nbImages" type="range" min="1" max="100" value="3"/>
         interval: <input x-id="interval" type="range" min="1" max="365" value="15" value="50"/>
         <input x-id="date" type="range" min="-${365 * 20}" max="0" value="0" style="width:100%;"/>
