@@ -8,7 +8,7 @@ let currentUnroller = null;
 let shownItem = null;
 const template = `
     <div class="x-image-detail">
-        <a href="#"><img x-id="image"/></a>
+        <a x-id="downloadLink"><img x-id="image"/></a>
         <div x-id="toolbar">
         <button x-id="info" class="mui-btn mui-btn--flat">Info</button>
         <button x-id="previous" class="mui-btn mui-btn--flat">Previous</button>
@@ -87,5 +87,6 @@ function showInternal(item) {
         document.body.appendChild(element.root);
     element.image.src = Rest.getShaImageMediumThumbnailUrl(item.sha, item.mimeType);
     element.image.alt = item.name;
+    element.downloadLink.href = Rest.getShaContentUrl(item.sha, item.mimeType, item.name, true, true);
 }
 //# sourceMappingURL=image-detail.js.map
