@@ -42,8 +42,8 @@ export function create() {
                 const timeFromNowInMs = (parseInt(els.date.value || '0')) * 1000 * 60 * 60 * 24
                 const intervalInDays = parseInt(els.interval.value) || 1
                 const intervalInMs = intervalInDays * 1000 * 60 * 60 * 24
-                const waitDurationInMs = parseInt(els.speed.value) || 2000
                 const nbDesiredImages = parseInt(els.nbImages.value)
+                let waitDurationInMs = parseInt(els.speed.value) || 2000
 
                 let center = new Date().getTime() + timeFromNowInMs
 
@@ -82,7 +82,7 @@ export function create() {
                 }
 
                 if (possibleImages && possibleImages.length) {
-                    els.remark.innerHTML = `${nbDesiredImages} images +/- ${intervalInDays} days around date ${new Date(center)} (@${currentOffset}), ${possibleImages.length} possible images`
+                    els.remark.innerHTML = `${nbDesiredImages} images +/- ${intervalInDays} days around date ${new Date(center).toDateString()} (@${currentOffset}), ${possibleImages.length} possible images`
 
                     let imageElement: HTMLImageElement = null
                     if (els.items.children.length < nbDesiredImages) {
