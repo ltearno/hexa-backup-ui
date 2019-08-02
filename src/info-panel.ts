@@ -16,7 +16,7 @@ const template = `
         <div>size: <span x-id='size'></span></div>
         <div>mime type: <span x-id='mimeType'></span></div>
         <div class="mui-divider"></div>
-        <div><a x-id="download" href="#" target="_blank">download link</a></div>
+        <div><a x-id="download" href="#">download link</a></div>
     </div>
 </div>`
 
