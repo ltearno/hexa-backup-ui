@@ -43,12 +43,11 @@ export function create() {
 
                 let center = new Date().getTime() + searchDate
 
-                if (lastSearchDate != searchDate || lastSearchInterval != interval)
-                    currentOffset = 0
-
                 let doSearch = false
-                if (lastSearchDate != searchDate || lastSearchInterval != interval)
+                if (lastSearchDate != searchDate || lastSearchInterval != interval) {
+                    currentOffset = 0
                     doSearch = true
+                }
                 else if (!possibleImages || !possibleImages.length) {
                     doSearch = !finished
                 }

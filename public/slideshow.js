@@ -28,11 +28,11 @@ function create() {
                 let searchDate = (parseInt(els.date.value || '0')) * 1000 * 60 * 60 * 24;
                 let interval = (parseInt(els.interval.value || '0')) * 1000 * 60 * 60 * 24;
                 let center = new Date().getTime() + searchDate;
-                if (lastSearchDate != searchDate || lastSearchInterval != interval)
-                    currentOffset = 0;
                 let doSearch = false;
-                if (lastSearchDate != searchDate || lastSearchInterval != interval)
+                if (lastSearchDate != searchDate || lastSearchInterval != interval) {
+                    currentOffset = 0;
                     doSearch = true;
+                }
                 else if (!possibleImages || !possibleImages.length) {
                     doSearch = !finished;
                 }
