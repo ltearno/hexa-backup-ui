@@ -469,7 +469,7 @@ function showInfo(item: Rest.FileDescriptor) {
     //mui.overlay('on', options)
 
     // initialize with child element
-    var childEl = UiTool.elFromHtml(`<div class="mui-container"><div class='mui-panel'><h3>'${item.name}' details</h3><div>sha: ${item.sha}</div><div>mime type: ${item.mimeType}</div><div>size: ${item.size}</div></div></div>`)
+    var childEl = UiTool.elFromHtml(`<div class="mui-container"><div class='mui-panel'><div class="mui--text-title">'${item.name}' details</div><div class="mui-divider"></div><div>sha: ${item.sha}</div><div>mime type: ${item.mimeType}</div><div>size: ${item.size}</div></div></div>`)
     //mui.overlay('on', childEl)
 
     // options and child element
