@@ -22,6 +22,7 @@ function create() {
         let lastSearchDate = null;
         let lastSearchInterval = null;
         let currentOffset = 0;
+        let finished = false;
         while (true) {
             try {
                 let searchDate = (parseInt(els.date.value || '0')) * 1000 * 60 * 60 * 24;
@@ -29,7 +30,13 @@ function create() {
                 let center = new Date().getTime() + searchDate;
                 if (lastSearchDate != searchDate || lastSearchInterval != interval)
                     currentOffset = 0;
-                if (lastSearchDate != searchDate || lastSearchInterval != interval || !possibleImages || !possibleImages.length) {
+                let doSearch = false;
+                if (lastSearchDate != searchDate || lastSearchInterval != interval)
+                    doSearch = true;
+                else if (!possibleImages || !possibleImages.length) {
+                    doSearch = !finished;
+                }
+                if (doSearch) {
                     lastSearchDate = searchDate;
                     lastSearchInterval = interval;
                     console.log(`do a search on ${center} +/- ${parseInt(els.interval.value)} @ ${currentOffset}`);
@@ -47,6 +54,7 @@ function create() {
                         currentOffset += possibleImages.length;
                     else
                         currentOffset = 0;
+                    finished = possibleImages.length == 0;
                 }
                 if (possibleImages) {
                     els.remark.innerHTML = `${parseInt(els.nbImages.value)} images +/- ${parseInt(els.interval.value)} days around date ${new Date(center)} (@${currentOffset}), ${possibleImages.length} possible images`;

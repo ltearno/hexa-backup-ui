@@ -34,6 +34,7 @@ export function create() {
         let lastSearchDate = null
         let lastSearchInterval = null
         let currentOffset = 0
+        let finished = false
 
         while (true) {
             try {
@@ -45,7 +46,14 @@ export function create() {
                 if (lastSearchDate != searchDate || lastSearchInterval != interval)
                     currentOffset = 0
 
-                if (lastSearchDate != searchDate || lastSearchInterval != interval || !possibleImages || !possibleImages.length) {
+                let doSearch = false
+                if (lastSearchDate != searchDate || lastSearchInterval != interval)
+                    doSearch = true
+                else if (!possibleImages || !possibleImages.length) {
+                    doSearch = !finished
+                }
+
+                if (doSearch) {
                     lastSearchDate = searchDate
                     lastSearchInterval = interval
 
@@ -66,6 +74,8 @@ export function create() {
                         currentOffset += possibleImages.length
                     else
                         currentOffset = 0
+
+                    finished = possibleImages.length == 0
                 }
 
                 if (possibleImages) {
