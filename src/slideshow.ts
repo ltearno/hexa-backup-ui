@@ -11,7 +11,7 @@ const templateHtml = `
         <h2>Slideshow</h2>
         <div x-id="items" class="mui-panel x-slideshow"></div>
         speed: <input x-id="speed" type="range" min="100" max="3000" value="2000"/>
-        nb images: <input x-id="nbImages" type="range" min="1" max="5" value="2"/>
+        nb images: <input x-id="nbImages" type="range" min="2" max="5" value="2"/>
         interval: <input x-id="interval" type="range" min="1" max="365" value="15" value="50"/>
         <input x-id="date" type="range" min="-${365 * 20}" max="0" value="0" style="width:100%;"/>
         <div x-id="remark"></div>
@@ -42,10 +42,12 @@ export function create() {
                 const timeFromNowInMs = (parseInt(els.date.value || '0')) * 1000 * 60 * 60 * 24
                 const intervalInDays = parseInt(els.interval.value) || 1
                 const intervalInMs = intervalInDays * 1000 * 60 * 60 * 24
-                const nbDesiredSideLength = parseInt(els.nbImages.value) || 1
+                const nbImagesIndicator = parseInt(els.nbImages.value) || 1
+                const nbDesiredRows = nbImagesIndicator - 1
+                const nbDesiredColumns = nbImagesIndicator + 1
                 let waitDurationInMs = parseInt(els.speed.value) || 2000
 
-                const nbWantedImages = nbDesiredSideLength * nbDesiredSideLength
+                const nbWantedImages = nbDesiredColumns * nbDesiredRows
 
                 let center = new Date().getTime() + timeFromNowInMs
 
@@ -97,7 +99,7 @@ export function create() {
                     let imageElement = document.createElement('img')
 
                     let row = null
-                    if (els.items.children.length < nbDesiredSideLength) {
+                    if (els.items.children.length < nbDesiredRows) {
                         row = document.createElement('div')
                         els.items.appendChild(row)
                     }
