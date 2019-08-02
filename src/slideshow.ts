@@ -68,7 +68,7 @@ export function create() {
             }
 
             if (possibleImages) {
-                els.remark.innerHTML = `+/- ${parseInt(els.date.value) || 0} days around date ${new Date(center)} (@${currentOffset}), ${possibleImages.length} possible images`
+                els.remark.innerHTML = `+/- ${parseInt(els.interval.value)} days around date ${new Date(center)} (@${currentOffset}), ${possibleImages.length} possible images`
 
                 let imageElement: HTMLImageElement = null
                 if (els.items.children.length < parseInt(els.nbImages.value)) {
