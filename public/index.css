@@ -373,5 +373,5 @@ img {
 }
 
 .x-image-detail button {
-    color: white;
+    color: white !important;
 }
