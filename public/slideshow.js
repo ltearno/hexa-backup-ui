@@ -4,6 +4,7 @@ const Rest = require("./rest");
 const templates_1 = require("./templates");
 const Messages = require("./messages");
 const wait = (duration) => new Promise(resolve => setTimeout(resolve, duration));
+const rand = max => Math.floor(max * Math.random());
 const templateHtml = `
 <div class='mui-container'>
     <div class="mui--text-center">
@@ -19,12 +20,62 @@ const templateHtml = `
 </div>`;
 function create() {
     let els = templates_1.createTemplateInstance(templateHtml);
+    const removeRandomImage = () => {
+        let imageElement = pickRandomImage();
+        if (imageElement) {
+            let parent = imageElement.parentElement;
+            parent.removeChild(imageElement);
+            if (!parent.children.length)
+                parent.parentElement.removeChild(parent);
+        }
+        return imageElement;
+    };
+    const addRandomImage = (nbDesiredRows) => {
+        let imageElement = document.createElement('img');
+        let row = null;
+        if (els.items.children.length < nbDesiredRows) {
+            row = document.createElement('div');
+            els.items.appendChild(row);
+        }
+        else {
+            row = els.items.children.item(rand(els.items.children.length));
+        }
+        row.appendChild(imageElement);
+        return imageElement;
+    };
+    const pickRandomImage = () => {
+        let possibleElements = [];
+        for (let row of els.items.children) {
+            for (let img of row.children)
+                possibleElements.push(img);
+        }
+        if (!possibleElements.length)
+            return null;
+        return possibleElements[rand(possibleElements.length)];
+    };
+    const enumImages = (s) => {
+        for (let rowIdx = 0; rowIdx < els.items.children.length; rowIdx++) {
+            const row = els.items.children.item(rowIdx);
+            for (let i = 0; i < row.children.length; i++) {
+                s.add(row.children.item(i));
+            }
+        }
+    };
+    const imagesCount = () => {
+        let count = 0;
+        for (let rowIdx = 0; rowIdx < els.items.children.length; rowIdx++) {
+            const row = els.items.children.item(rowIdx);
+            count += row.children.length;
+        }
+        return count;
+    };
     (async () => {
         let possibleImages = [];
         let lastSearchDate = null;
         let lastSearchInterval = null;
         let currentOffset = 0;
         let finished = false;
+        let toRemove = new Set();
         while (true) {
             try {
                 const timeFromNowInMs = (parseInt(els.date.value || '0')) * 1000 * 60 * 60 * 24;
@@ -38,6 +89,9 @@ function create() {
                 if (lastSearchDate != timeFromNowInMs || lastSearchInterval != intervalInMs) {
                     currentOffset = 0;
                     doSearch = true;
+                    // all current images are no more part of the last search
+                    toRemove = new Set();
+                    enumImages(toRemove);
                 }
                 else if (!possibleImages || !possibleImages.length) {
                     doSearch = !finished;
@@ -62,62 +116,25 @@ function create() {
                         currentOffset = 0;
                     finished = possibleImages.length == 0;
                 }
-                const rand = max => Math.floor(max * Math.random());
-                const removeRandomImage = () => {
-                    let imageElement = pickRandomImage();
-                    if (imageElement) {
-                        let parent = imageElement.parentElement;
-                        parent.removeChild(imageElement);
-                        if (!parent.children.length)
-                            parent.parentElement.removeChild(parent);
-                    }
-                    return imageElement;
-                };
-                const addRandomImage = () => {
-                    let imageElement = document.createElement('img');
-                    let row = null;
-                    if (els.items.children.length < nbDesiredRows) {
-                        row = document.createElement('div');
-                        els.items.appendChild(row);
-                    }
-                    else {
-                        row = els.items.children.item(rand(els.items.children.length));
-                    }
-                    row.appendChild(imageElement);
-                    return imageElement;
-                };
-                const pickRandomImage = () => {
-                    let possibleElements = [];
-                    for (let row of els.items.children) {
-                        for (let img of row.children)
-                            possibleElements.push(img);
-                    }
-                    if (!possibleElements.length)
-                        return null;
-                    return possibleElements[rand(possibleElements.length)];
-                };
-                const imagesCount = () => {
-                    let count = 0;
-                    for (let rowIdx = 0; rowIdx < els.items.children.length; rowIdx++) {
-                        const row = els.items.children.item(rowIdx);
-                        count += row.children.length;
-                    }
-                    return count;
-                };
                 if (possibleImages && possibleImages.length) {
                     els.remark.innerHTML = `${new Date(center).toDateString()} : ${nbWantedImages} images on ${nbDesiredRows} rows +/- ${intervalInDays} days (@${currentOffset})`;
                     if (imagesCount() > nbWantedImages) {
-                        removeRandomImage();
+                        let imageElement = removeRandomImage();
+                        if (imageElement) {
+                            if (toRemove.has(imageElement))
+                                toRemove.delete(imageElement);
+                        }
                     }
                     else {
                         let imageElement = null;
                         if (imagesCount() < nbWantedImages) {
-                            imageElement = addRandomImage();
-                            //waitDurationInMs = 200
+                            imageElement = addRandomImage(nbDesiredRows);
                         }
                         else {
                             imageElement = pickRandomImage();
                         }
+                        if (toRemove.has(imageElement))
+                            toRemove.delete(imageElement);
                         let imageIndex = rand(possibleImages.length);
                         let [usedImage] = possibleImages.splice(imageIndex, 1);
                         if (usedImage)
@@ -126,8 +143,16 @@ function create() {
                 }
                 else {
                     els.remark.innerHTML = `${new Date(center).toDateString()}, no more image, change the cursors`;
-                    if (imagesCount() > 0) {
-                        //removeRandomImage()
+                    if (toRemove.size) {
+                        let imageElement = null;
+                        for (let imgElt of toRemove) {
+                            imageElement = imgElt;
+                            break;
+                        }
+                        if (imageElement) {
+                            imageElement.parentElement.removeChild(imageElement);
+                            toRemove.delete(imageElement);
+                        }
                     }
                 }
                 await wait(waitDurationInMs);
