@@ -30,17 +30,17 @@ function create() {
             };
             let searchDate = (parseInt(els.date.value || '0')) * 1000 * 60 * 60 * 24;
             let interval = (parseInt(els.interval.value || '0')) * 1000 * 60 * 60 * 24;
-            if (lastSearchDate != searchDate || lastSearchInterval != interval) {
-                lastSearchDate = searchDate;
+            let center = new Date().getTime() + searchDate;
+            if (lastSearchDate != center || lastSearchInterval != interval) {
+                lastSearchDate = center;
                 lastSearchInterval = interval;
-                let center = new Date().getTime() + searchDate;
                 searchSpec.dateMin = center - interval;
                 searchSpec.dateMax = center + interval;
                 const results = await Rest.searchEx(searchSpec);
                 possibleImages = results && results.items;
             }
             if (possibleImages) {
-                els.remark.innerHTML = `${possibleImages.length} possible images`;
+                els.remark.innerHTML = `${possibleImages.length} possible images, date ${new Date(center)}`;
                 let imageElement = null;
                 if (els.items.children.length < parseInt(els.nbImages.value)) {
                     imageElement = document.createElement('img');
