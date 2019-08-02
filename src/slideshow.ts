@@ -72,6 +72,7 @@ export function create() {
                 }
 
                 let item = possibleImages[Math.floor(Math.random() * possibleImages.length)]
+                if(item)
                 imageElement.src = Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)
             }
             else {

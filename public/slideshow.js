@@ -53,7 +53,8 @@ function create() {
                     imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length));
                 }
                 let item = possibleImages[Math.floor(Math.random() * possibleImages.length)];
-                imageElement.src = Rest.getShaImageThumbnailUrl(item.sha, item.mimeType);
+                if (item)
+                    imageElement.src = Rest.getShaImageThumbnailUrl(item.sha, item.mimeType);
             }
             else {
                 els.remark.innerHTML = `no possible image !`;
