@@ -40,13 +40,14 @@ const template = `
         <div class="mui-divider"></div>
         <div><a x-id="download" href="#">download link</a></div>
         <div class="mui-divider"></div>
+        <div x-id="extras"></div>
+        
         <div>names: <span x-id='names'></span></div>
         <div>write dates: <span x-id='writeDates'></span></div>
         <div>parents: <div x-id='parents'></div></div>
         <div>sources: <div x-id='sources'></div></div>
         <div>exif: <div x-id="exif"></div></div>
         <div class="mui-divider"></div>
-        <div x-id="extras"></div>
         <div x-id="close" class="mui-btn mui-btn--flat mui-btn--primary">Close</div>
     </div>
 </div>`
