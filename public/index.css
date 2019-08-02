@@ -336,3 +336,12 @@ html, body, input, textarea, button {
     max-width: 100%;
     padding: 1px;
 }
+
+.x-image-detail {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: black;
+}
