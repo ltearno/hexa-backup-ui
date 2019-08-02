@@ -104,7 +104,7 @@ export function show(item: Rest.FileDescriptor) {
 
         content.mimeType.innerText = info.mimeTypes.join(', ')
         content.names.innerText = info.names.join(', ')
-        content.writeDates.innerText = info.writeDates.map(d => new Date(d * 100).toDateString()).join(', ')
+        content.writeDates.innerText = info.writeDates.map(d => new Date(d * 1000).toDateString()).join(', ')
         content.size.innerText = info.sizes.map(friendlySize).join(', ')
         content.parents.innerHTML = info.parents.map(p => `<div><a href="#/directories/${p}?name=${encodeURIComponent(`${item.name}'s parents`)}">${p}</a></div>`).join('')
         content.sources.innerHTML = info.sources.map(s => `<div><a href="#/refs/${s}">${s}</a></div>`).join('')
