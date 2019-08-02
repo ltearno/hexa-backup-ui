@@ -83,11 +83,13 @@ export function create() {
                     finished = possibleImages.length == 0
                 }
 
+                const rand = max => Math.floor(max * Math.random())
+
                 const removeRandomImage = () => {
                     if (!els.items.children.length)
                         return
 
-                    let imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length)) as HTMLImageElement
+                    let imageElement = els.items.children.item(rand(els.items.children.length)) as HTMLImageElement
                     imageElement.parentElement.removeChild(imageElement)
 
                     return imageElement
@@ -103,7 +105,7 @@ export function create() {
                     if (!els.items.children.length)
                         return null
 
-                    return els.items.children.item(Math.floor(Math.random() * els.items.children.length)) as HTMLImageElement
+                    return els.items.children.item(rand(els.items.children.length)) as HTMLImageElement
                 }
 
                 const imagesCount = () => {
@@ -113,22 +115,24 @@ export function create() {
                 if (possibleImages && possibleImages.length) {
                     els.remark.innerHTML = `${nbWantedImages} images +/- ${intervalInDays} days around date ${new Date(center).toDateString()} (@${currentOffset}), ${possibleImages.length} possible images`
 
-                    let imageElement: HTMLImageElement = null
-                    if (imagesCount() < nbWantedImages) {
-                        imageElement = addRandomImage()
-                        waitDurationInMs = 200
-                    }
-                    else if (imagesCount() > nbWantedImages) {
-                        imageElement = removeRandomImage()
+                    if (imagesCount() > nbWantedImages) {
+                        removeRandomImage()
                     }
                     else {
-                        imageElement = pickRandomImage()
-                    }
+                        let imageElement: HTMLImageElement = null
+                        if (imagesCount() < nbWantedImages) {
+                            imageElement = addRandomImage()
+                            waitDurationInMs = 200
+                        }
+                        else {
+                            imageElement = pickRandomImage()
+                        }
 
-                    let imageIndex = Math.floor(Math.random() * possibleImages.length)
-                    let [usedImage] = possibleImages.splice(imageIndex, 1)
-                    if (usedImage)
-                        imageElement.src = Rest.getShaImageThumbnailUrl(usedImage.sha, usedImage.mimeType)
+                        let imageIndex = rand(possibleImages.length)
+                        let [usedImage] = possibleImages.splice(imageIndex, 1)
+                        if (usedImage)
+                            imageElement.src = Rest.getShaImageThumbnailUrl(usedImage.sha, usedImage.mimeType)
+                    }
                 }
                 else {
                     doSearch && Messages.displayMessage(`no more image, change the cursors`, 0)
