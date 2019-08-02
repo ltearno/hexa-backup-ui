@@ -316,7 +316,6 @@ html, body, input, textarea, button {
 }
 
 .x-slideshow {
-    max-height: 60vh;
     overflow: hidden;
     display: flex;
     flex-flow: column nowrap;
