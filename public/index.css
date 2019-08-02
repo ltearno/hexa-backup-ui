@@ -371,3 +371,7 @@ img {
     align-items: center;
     align-content: center;
 }
+
+.x-image-detail button {
+    color: white;
+}
