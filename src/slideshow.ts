@@ -102,7 +102,7 @@ export function create() {
                         imageElement.src = Rest.getShaImageThumbnailUrl(usedImage.sha, usedImage.mimeType)
                 }
                 else {
-                    els.remark.innerHTML = `no possible image !`
+                    els.remark.innerHTML = `no more image, change the cursors`
                 }
 
                 await wait(waitDuration)
