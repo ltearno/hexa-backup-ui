@@ -41,7 +41,7 @@ const template = `
         <div><a x-id="download" href="#">download link</a></div>
         <div class="mui-divider"></div>
         <div x-id="extras"></div>
-        
+
         <div>names: <span x-id='names'></span></div>
         <div>write dates: <span x-id='writeDates'></span></div>
         <div>parents: <div x-id='parents'></div></div>
@@ -95,7 +95,7 @@ export function show(item: Rest.FileDescriptor) {
     content.download.href = Rest.getShaContentUrl(item.sha, item.mimeType, item.name, true, true)
 
     if (item.mimeType.startsWith('image/')) {
-        content.extras.innerHTML = `<img src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/><div class="mui-divider"></div>`
+        content.extras.innerHTML = `<a target="_blank" href="${Rest.getShaContentUrl(item.sha, item.mimeType, item.name, true, false)}"><img src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/></a><div class="mui-divider"></div>`
     }
     else {
         content.extras.innerHTML = ''
