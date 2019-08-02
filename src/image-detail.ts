@@ -10,11 +10,13 @@ export interface Unroller {
 }
 
 let currentUnroller: Unroller = null
+let shownItem: Rest.FileDescriptor = null
 
 const template = `
     <div class="x-image-detail">
         <img x-id="image"/>
         <div x-id="toolbar">
+        <button x-id="info" class="mui-btn mui-btn--flat">Info</button>
         <button x-id="previous" class="mui-btn mui-btn--flat">Previous</button>
         <button x-id="close" class="mui-btn mui-btn--flat">Close</button>
         <button x-id="next" class="mui-btn mui-btn--flat">Next</button>
@@ -26,11 +28,19 @@ const element: {
     root: HTMLElement
     image: HTMLImageElement
     toolbar: HTMLElement
+    info: HTMLElement
     close: HTMLElement
     previous: HTMLElement
     next: HTMLElement
     diaporama: HTMLElement
 } = createTemplateInstance(template)
+
+element.info.addEventListener('click', event => {
+    UiTool.stopEvent(event)
+
+    if (shownItem)
+        window.location.href = `#/info/${encodeURIComponent(JSON.stringify(shownItem))}`
+})
 
 element.previous.addEventListener('click', event => {
     UiTool.stopEvent(event)
@@ -106,6 +116,7 @@ export function show(item: Rest.FileDescriptor, unroller: Unroller) {
 }
 
 function showInternal(item: Rest.FileDescriptor) {
+    shownItem = item
     document.body.querySelector('header').style.display = 'none'
 
     if (!element.root.isConnected)

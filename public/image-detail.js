@@ -5,10 +5,12 @@ const templates_1 = require("./templates");
 const UiTool = require("./ui-tool");
 const Messages = require("./messages");
 let currentUnroller = null;
+let shownItem = null;
 const template = `
     <div class="x-image-detail">
         <img x-id="image"/>
         <div x-id="toolbar">
+        <button x-id="info" class="mui-btn mui-btn--flat">Info</button>
         <button x-id="previous" class="mui-btn mui-btn--flat">Previous</button>
         <button x-id="close" class="mui-btn mui-btn--flat">Close</button>
         <button x-id="next" class="mui-btn mui-btn--flat">Next</button>
@@ -16,6 +18,11 @@ const template = `
         </div>
     </div>`;
 const element = templates_1.createTemplateInstance(template);
+element.info.addEventListener('click', event => {
+    UiTool.stopEvent(event);
+    if (shownItem)
+        window.location.href = `#/info/${encodeURIComponent(JSON.stringify(shownItem))}`;
+});
 element.previous.addEventListener('click', event => {
     UiTool.stopEvent(event);
     if (currentUnroller) {
@@ -72,6 +79,7 @@ function show(item, unroller) {
 }
 exports.show = show;
 function showInternal(item) {
+    shownItem = item;
     document.body.querySelector('header').style.display = 'none';
     if (!element.root.isConnected)
         document.body.appendChild(element.root);
