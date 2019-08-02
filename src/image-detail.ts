@@ -14,7 +14,7 @@ let shownItem: Rest.FileDescriptor = null
 
 const template = `
     <div class="x-image-detail">
-        <img x-id="image"/>
+        <a href="#"><img x-id="image"/></a>
         <div x-id="toolbar">
         <button x-id="info" class="mui-btn mui-btn--flat">Info</button>
         <button x-id="previous" class="mui-btn mui-btn--flat">Previous</button>
