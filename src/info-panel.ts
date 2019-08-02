@@ -24,6 +24,8 @@ const template = `
         <div>parents: <div x-id='parents'></div></div>
         <div>sources: <span x-id='sources'></span></div>
         <div>exif: <pre x-id="exif"></pre></div>
+        <div class="mui-divider"></div>
+        <div x-id="close" class="mui-btn mui-btn--flat"></div>
     </div>
 </div>`
 
@@ -39,6 +41,7 @@ const content: {
     writeDates: HTMLElement
     parents: HTMLElement
     sources: HTMLElement
+    close: HTMLButtonElement
 } = createTemplateInstance(template)
 
 const options = {
@@ -46,6 +49,11 @@ const options = {
     'static': true,
     'onclose': function () { }
 }
+
+content.close.addEventListener('click', event => {
+    UiTool.stopEvent(event)
+    history.back()
+})
 
 export function hide() {
     if (!isShown)

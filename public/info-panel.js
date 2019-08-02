@@ -1,5 +1,6 @@
 ﻿"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const UiTool = require("./ui-tool");
 const Rest = require("./rest");
 const templates_1 = require("./templates");
 const Messages = require("./messages");
@@ -20,6 +21,8 @@ const template = `
         <div>parents: <div x-id='parents'></div></div>
         <div>sources: <span x-id='sources'></span></div>
         <div>exif: <pre x-id="exif"></pre></div>
+        <div class="mui-divider"></div>
+        <div x-id="close" class="mui-btn mui-btn--flat"></div>
     </div>
 </div>`;
 const content = templates_1.createTemplateInstance(template);
@@ -28,6 +31,10 @@ const options = {
     'static': true,
     'onclose': function () { }
 };
+content.close.addEventListener('click', event => {
+    UiTool.stopEvent(event);
+    history.back();
+});
 function hide() {
     if (!isShown)
         return;
