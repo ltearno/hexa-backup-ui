@@ -380,7 +380,21 @@ function showSlideshow() {
     setContent(slideshow.root);
 }
 function showInfo(item) {
-    alert(JSON.stringify(item));
+    var overlayEl = mui.overlay('on');
+    var options = {
+        'keyboard': true,
+        'static': false,
+        'onclose': function () { } // execute function when overlay is closed
+    };
+    //mui.overlay('on', options)
+    // initialize with child element
+    var childEl = UiTool.elFromHtml(`<div class='mui-panel'><h3>'${item.name}' details</h3><div>sha: ${item.sha}</div><div>mime type: ${item.mimeType}</div><div>size: ${item.size}</div></div>`);
+    //mui.overlay('on', childEl)
+    // options and child element
+    mui.overlay('on', options, childEl);
+    // teardown (automatically detaches children)
+    //mui.overlay('off');
+    //alert(JSON.stringify(item))
 }
 directoryPanel.root.addEventListener('click', async (event) => {
     // todo : knownledge to do that is in directoryPanel

@@ -457,8 +457,28 @@ function showSlideshow() {
     setContent(slideshow.root)
 }
 
+declare var mui: any
+
 function showInfo(item: Rest.FileDescriptor) {
-    alert(JSON.stringify(item))
+    var overlayEl = mui.overlay('on')
+    var options = {
+        'keyboard': true, // teardown when <esc> key is pressed (default: true)
+        'static': false, // maintain overlay when clicked (default: false)
+        'onclose': function () { } // execute function when overlay is closed
+    };
+    //mui.overlay('on', options)
+
+    // initialize with child element
+    var childEl = UiTool.elFromHtml(`<div class='mui-panel'><h3>'${item.name}' details</h3><div>sha: ${item.sha}</div><div>mime type: ${item.mimeType}</div><div>size: ${item.size}</div></div>`)
+    //mui.overlay('on', childEl)
+
+    // options and child element
+    mui.overlay('on', options, childEl);
+
+    // teardown (automatically detaches children)
+    //mui.overlay('off');
+
+    //alert(JSON.stringify(item))
 }
 
 
