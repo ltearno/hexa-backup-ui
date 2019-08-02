@@ -49,7 +49,7 @@ function create() {
                     let searchSpec = {
                         mimeType: 'image/%',
                         noDirectory: true,
-                        limit: nbWantedImages,
+                        limit: 13,
                         offset: currentOffset,
                         dateMin: center - intervalInMs,
                         dateMax: center + intervalInMs

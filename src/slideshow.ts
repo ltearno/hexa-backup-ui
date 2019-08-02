@@ -68,7 +68,7 @@ export function create() {
                     let searchSpec: any = {
                         mimeType: 'image/%',
                         noDirectory: true,
-                        limit: nbWantedImages,
+                        limit: 13,
                         offset: currentOffset,
                         dateMin: center - intervalInMs,
                         dateMax: center + intervalInMs
