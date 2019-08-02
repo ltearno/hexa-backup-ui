@@ -11,7 +11,7 @@ const templateHtml = `
         speed: <input x-id="speed" type="range" min="100" max="3000" value="200"/>
         nb images: <input x-id="nbImages" type="range" min="1" max="100" value="12"/>
         interval: <input x-id="interval" type="range" min="0" max="100" value="50"/>
-        <input x-id="date" type="range" min="-${365 * 20}" max="0" value="0" style="width:100%;"/>
+        <input x-id="date" type="range" min="1" max="${365 * 20}" value="1" style="width:100%;"/>
         <div x-id="remark"></div>
     </div>
 </div>`;
@@ -31,7 +31,7 @@ function create() {
             if (lastSearchDate != searchDate || lastSearchInterval != interval || !possibleImages || !possibleImages.length) {
                 lastSearchDate = searchDate;
                 lastSearchInterval = interval;
-                console.log(`do a search on ${center} +/- ${interval} @ ${currentOffset}`);
+                console.log(`do a search on ${center} +/- ${parseInt(els.interval.value)} @ ${currentOffset}`);
                 let searchSpec = {
                     mimeType: 'image/%',
                     noDirectory: true,
