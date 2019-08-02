@@ -15,6 +15,8 @@ const template = `
         <div>sha: <span x-id='sha'></span></div>
         <div>size: <span x-id='size'></span></div>
         <div>mime type: <span x-id='mimeType'></span></div>
+        <div class="mui-divider"></div>
+        <div><a x-id="download" href="#" target="_blank">download link</a></div>
     </div>
 </div>`
 
@@ -24,6 +26,7 @@ const content: {
     sha: HTMLElement
     mimeType: HTMLElement
     size: HTMLElement
+    download: HTMLAnchorElement
 } = createTemplateInstance(template)
 
 const options = {
@@ -45,6 +48,7 @@ export function show(item: Rest.FileDescriptor) {
     content.sha.innerText = item.sha
     content.mimeType.innerText = item.mimeType
     content.size.innerText = `${item.size} bytes`
+    content.download.href = Rest.getShaContentUrl(item.sha, item.mimeType, item.name, true, true)
 
     if (!isShown)
         mui.overlay('on', options, content.root)
