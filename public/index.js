@@ -74,6 +74,10 @@ function readHashAndAct() {
         hideAudioJukebox = true;
         showSlideshow();
     }
+    else if (parsed.pathname.startsWith('#/info/')) {
+        const item = JSON.parse(parsed.pathname.substring('#/info/'.length));
+        showInfo(item);
+    }
     else {
         console.log(`unkown path ${parsed.pathname}`);
     }
@@ -135,6 +139,9 @@ function beautifyNames(items) {
         }
         return file;
     });
+}
+function goShaInfo(item) {
+    window.location.href = `#/info/${encodeURIComponent(JSON.stringify(item))}`;
 }
 function goSearchItems(term) {
     const url = `#/search/${term}`;
@@ -328,8 +335,12 @@ async function loadReference(name) {
         size: 0
     });
 }
-function itemDefaultAction(childIndex) {
+function itemDefaultAction(childIndex, event) {
     let item = lastDisplayedFiles[childIndex];
+    if (event.target.classList.contains('x-info-display-action')) {
+        goShaInfo(item);
+        return;
+    }
     if (item.mimeType == 'application/directory') {
         goLoadDirectory(item.sha, item.name);
     }
@@ -368,11 +379,14 @@ function showSlideshow() {
         slideshow = Slideshow.create();
     setContent(slideshow.root);
 }
+function showInfo(item) {
+    alert(JSON.stringify(item));
+}
 directoryPanel.root.addEventListener('click', async (event) => {
     // todo : knownledge to do that is in directoryPanel
     let { element, childIndex } = Templates.templateGetEventLocation(directoryPanel, event);
     if (lastDisplayedFiles && element == directoryPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
-        itemDefaultAction(childIndex);
+        itemDefaultAction(childIndex, event);
     }
 });
 searchPanel.audioMode.addEventListener('click', event => {

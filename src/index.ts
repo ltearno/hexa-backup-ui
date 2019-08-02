@@ -80,6 +80,10 @@ function readHashAndAct() {
         hideAudioJukebox = true
         showSlideshow()
     }
+    else if (parsed.pathname.startsWith('#/info/')) {
+        const item: Rest.FileDescriptor = JSON.parse(parsed.pathname.substring('#/info/'.length))
+        showInfo(item)
+    }
     else {
         console.log(`unkown path ${parsed.pathname}`)
     }
@@ -155,6 +159,10 @@ function beautifyNames(items: Rest.FileDescriptor[]) {
 
         return file
     })
+}
+
+function goShaInfo(item: Rest.FileDescriptor) {
+    window.location.href = `#/info/${encodeURIComponent(JSON.stringify(item))}`
 }
 
 function goSearchItems(term: string) {
@@ -399,8 +407,13 @@ async function loadReference(name: string) {
     })
 }
 
-function itemDefaultAction(childIndex: number) {
+function itemDefaultAction(childIndex: number, event: Event) {
     let item = lastDisplayedFiles[childIndex]
+
+    if ((event.target as HTMLElement).classList.contains('x-info-display-action')) {
+        goShaInfo(item)
+        return
+    }
 
     if (item.mimeType == 'application/directory') {
         goLoadDirectory(item.sha, item.name)
@@ -444,6 +457,10 @@ function showSlideshow() {
     setContent(slideshow.root)
 }
 
+function showInfo(item: Rest.FileDescriptor) {
+    alert(JSON.stringify(item))
+}
+
 
 
 
@@ -451,7 +468,7 @@ directoryPanel.root.addEventListener('click', async event => {
     // todo : knownledge to do that is in directoryPanel
     let { element, childIndex } = Templates.templateGetEventLocation(directoryPanel, event)
     if (lastDisplayedFiles && element == directoryPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
-        itemDefaultAction(childIndex)
+        itemDefaultAction(childIndex, event)
     }
 })
 
