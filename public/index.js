@@ -10,6 +10,7 @@ const Templates = require("./templates");
 const MimeTypes = require("./mime-types-module");
 const Messages = require("./messages");
 const Slideshow = require("./slideshow");
+const InfoPanel = require("./info-panel");
 /*
 hash urls :
 
@@ -38,6 +39,7 @@ function parseURL(url) {
 }
 function readHashAndAct() {
     let hideAudioJukebox = false;
+    let hideInfoPanel = true;
     let hash = '';
     if (window.location.hash && window.location.hash.startsWith('#'))
         hash = window.location.hash.substr(1);
@@ -75,12 +77,15 @@ function readHashAndAct() {
         showSlideshow();
     }
     else if (parsed.pathname.startsWith('/info/')) {
+        hideInfoPanel = false;
         const item = JSON.parse(parsed.pathname.substring('/info/'.length));
         showInfo(item);
     }
     else {
         console.log(`unkown path ${parsed.pathname}`);
     }
+    if (hideInfoPanel)
+        InfoPanel.hide();
     if (hideAudioJukebox)
         audioPanel.root.classList.add('is-hidden');
     else
@@ -380,21 +385,7 @@ function showSlideshow() {
     setContent(slideshow.root);
 }
 function showInfo(item) {
-    //var overlayEl = mui.overlay('on')
-    var options = {
-        'keyboard': true,
-        'static': false,
-        'onclose': function () { history.back(); } // execute function when overlay is closed
-    };
-    //mui.overlay('on', options)
-    // initialize with child element
-    var childEl = UiTool.elFromHtml(`<div class="mui-container"><div class='mui-panel'><div class="mui--text-title">'${item.name}' details</div><div class="mui-divider"></div><div>sha: ${item.sha}</div><div>mime type: ${item.mimeType}</div><div>size: ${item.size}</div></div></div>`);
-    //mui.overlay('on', childEl)
-    // options and child element
-    mui.overlay('on', options, childEl);
-    // teardown (automatically detaches children)
-    //mui.overlay('off');
-    //alert(JSON.stringify(item))
+    InfoPanel.show(item);
 }
 directoryPanel.root.addEventListener('click', async (event) => {
     UiTool.stopEvent(event);

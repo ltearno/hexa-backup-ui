@@ -8,6 +8,7 @@ import * as Templates from './templates'
 import * as MimeTypes from './mime-types-module'
 import * as Messages from './messages'
 import * as Slideshow from './slideshow'
+import * as InfoPanel from './info-panel'
 
 /*
 hash urls :
@@ -41,6 +42,7 @@ function parseURL(url: string) {
 
 function readHashAndAct() {
     let hideAudioJukebox = false
+    let hideInfoPanel = true
 
     let hash = ''
     if (window.location.hash && window.location.hash.startsWith('#'))
@@ -81,12 +83,16 @@ function readHashAndAct() {
         showSlideshow()
     }
     else if (parsed.pathname.startsWith('/info/')) {
+        hideInfoPanel = false
         const item: Rest.FileDescriptor = JSON.parse(parsed.pathname.substring('/info/'.length))
         showInfo(item)
     }
     else {
         console.log(`unkown path ${parsed.pathname}`)
     }
+
+    if (hideInfoPanel)
+        InfoPanel.hide()
 
     if (hideAudioJukebox)
         audioPanel.root.classList.add('is-hidden')
@@ -457,28 +463,8 @@ function showSlideshow() {
     setContent(slideshow.root)
 }
 
-declare var mui: any
-
 function showInfo(item: Rest.FileDescriptor) {
-    //var overlayEl = mui.overlay('on')
-    var options = {
-        'keyboard': true, // teardown when <esc> key is pressed (default: true)
-        'static': false, // maintain overlay when clicked (default: false)
-        'onclose': function () { history.back() } // execute function when overlay is closed
-    };
-    //mui.overlay('on', options)
-
-    // initialize with child element
-    var childEl = UiTool.elFromHtml(`<div class="mui-container"><div class='mui-panel'><div class="mui--text-title">'${item.name}' details</div><div class="mui-divider"></div><div>sha: ${item.sha}</div><div>mime type: ${item.mimeType}</div><div>size: ${item.size}</div></div></div>`)
-    //mui.overlay('on', childEl)
-
-    // options and child element
-    mui.overlay('on', options, childEl);
-
-    // teardown (automatically detaches children)
-    //mui.overlay('off');
-
-    //alert(JSON.stringify(item))
+    InfoPanel.show(item)
 }
 
 
