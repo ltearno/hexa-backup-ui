@@ -345,3 +345,14 @@ html, body, input, textarea, button {
     right: 0;
     background-color: black;
 }
+
+.x-image-detail img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+img {
+    image-orientation: from-image;
+}
