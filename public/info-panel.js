@@ -71,6 +71,9 @@ function show(item) {
     if (item.mimeType.startsWith('image/')) {
         content.extras.innerHTML = `<img src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/><div class="mui-divider"></div>`;
     }
+    else {
+        content.extras.innerHTML = '';
+    }
     if (!isShown)
         mui.overlay('on', options, content.root);
     isShown = true;
