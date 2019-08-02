@@ -101,7 +101,7 @@ function create() {
                     return count;
                 };
                 if (possibleImages && possibleImages.length) {
-                    els.remark.innerHTML = `${nbWantedImages} images +/- ${intervalInDays} days around date ${new Date(center).toDateString()} (@${currentOffset}), ${possibleImages.length} possible images`;
+                    els.remark.innerHTML = `${nbWantedImages} images on ${nbDesiredRows} rows +/- ${intervalInDays} days around date ${new Date(center).toDateString()} (@${currentOffset}), ${possibleImages.length} possible images`;
                     if (imagesCount() > nbWantedImages) {
                         removeRandomImage();
                     }
