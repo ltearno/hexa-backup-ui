@@ -14,7 +14,7 @@ const template = `
         <button x-id="previous" class="mui-btn mui-btn--flat">Previous</button>
         <button x-id="close" class="mui-btn mui-btn--flat">Close</button>
         <button x-id="next" class="mui-btn mui-btn--flat">Next</button>
-        <button x-id="diaporama" class="mui-btn mui-btn--flat">Diaporama</button>
+        <button x-id="diaporama" class="mui-btn mui-btn--flat">Diapo</button>
         </div>
     </div>`;
 const element = templates_1.createTemplateInstance(template);
