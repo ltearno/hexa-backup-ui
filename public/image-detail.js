@@ -9,7 +9,7 @@ const template = `
         <img x-id="image"/>
         <div x-id="toolbar">
         <button x-id="previous" class="mui-btn mui-btn--flat">Previous</button>
-        <button x-id="close" class="mui-btn">Close</button>
+        <button x-id="close" class="mui-btn mui-btn--flat">Close</button>
         <button x-id="next" class="mui-btn mui-btn--flat">Next</button>
         <button x-id="diaporama" class="mui-btn mui-btn--flat">Diaporama</button>
         </div>
