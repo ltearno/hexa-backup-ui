@@ -26,7 +26,7 @@ export const audioPanel = {
     create: () => createTemplateInstance(templateHtml) as AudioPanelElements,
 
     play: (elements: AudioPanelElements, name: string, sha: string, mimeType: string) => {
-        elements.player.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`)
+        elements.player.setAttribute('src', Rest.getShaContentUrl(sha, mimeType, name, false, false))
         elements.player.setAttribute('type', mimeType)
         elements.player.play()
 

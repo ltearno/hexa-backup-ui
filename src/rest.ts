@@ -85,11 +85,14 @@ export async function getCommit(sha: string): Promise<{ directoryDescriptorSha: 
     return await Network.getData(`${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`)
 }
 
-export function getShaContentUrl(sha: string, mimeType: string, name: string, isDownload: boolean) {
+export function getShaContentUrl(sha: string, mimeType: string, name: string, withPhantom: boolean, isDownload: boolean) {
     if (!sha)
         return '#'
 
-    let base = `${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${encodeURIComponent(mimeType)}`
+    let base = withPhantom ?
+        `${HEXA_BACKUP_BASE_URL}/sha/${sha}/content/${encodeURIComponent(name)}?type=${encodeURIComponent(mimeType)}` :
+        `${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${encodeURIComponent(mimeType)}`
+
     if (isDownload)
         base += `&fileName=${encodeURIComponent(name || sha)}`
     return base

@@ -18,7 +18,7 @@ const templateHtml = `
 exports.audioPanel = {
     create: () => templates_1.createTemplateInstance(templateHtml),
     play: (elements, name, sha, mimeType) => {
-        elements.player.setAttribute('src', `${Rest.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=${mimeType}`);
+        elements.player.setAttribute('src', Rest.getShaContentUrl(sha, mimeType, name, false, false));
         elements.player.setAttribute('type', mimeType);
         elements.player.play();
         elements.root.classList.remove("is-hidden");
