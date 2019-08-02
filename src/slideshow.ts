@@ -36,63 +36,69 @@ export function create() {
         let currentOffset = 0
 
         while (true) {
-            let searchDate = (parseInt(els.date.value || '0')) * 1000 * 60 * 60 * 24
-            let interval = (parseInt(els.interval.value || '0')) * 1000 * 60 * 60 * 24
+            try {
+                let searchDate = (parseInt(els.date.value || '0')) * 1000 * 60 * 60 * 24
+                let interval = (parseInt(els.interval.value || '0')) * 1000 * 60 * 60 * 24
 
-            let center = new Date().getTime() + searchDate
+                let center = new Date().getTime() + searchDate
 
-            if (lastSearchDate != searchDate || lastSearchInterval != interval)
-                currentOffset = 0
-
-            if (lastSearchDate != searchDate || lastSearchInterval != interval || !possibleImages || !possibleImages.length) {
-                lastSearchDate = searchDate
-                lastSearchInterval = interval
-
-                console.log(`do a search on ${center} +/- ${parseInt(els.interval.value)} @ ${currentOffset}`)
-
-                let searchSpec: any = {
-                    mimeType: 'image/%',
-                    noDirectory: true,
-                    limit: parseInt(els.nbImages.value),
-                    offset: currentOffset,
-                    dateMin: center - interval,
-                    dateMax: center + interval
-                }
-
-                const results = await Rest.searchEx(searchSpec)
-                possibleImages = results && results.items
-                if (possibleImages.length)
-                    currentOffset += possibleImages.length
-                else
+                if (lastSearchDate != searchDate || lastSearchInterval != interval)
                     currentOffset = 0
-            }
 
-            if (possibleImages) {
-                els.remark.innerHTML = `+/- ${parseInt(els.interval.value)} days around date ${new Date(center)} (@${currentOffset}), ${possibleImages.length} possible images`
+                if (lastSearchDate != searchDate || lastSearchInterval != interval || !possibleImages || !possibleImages.length) {
+                    lastSearchDate = searchDate
+                    lastSearchInterval = interval
 
-                let imageElement: HTMLImageElement = null
-                if (els.items.children.length < parseInt(els.nbImages.value)) {
-                    imageElement = document.createElement('img')
-                    els.items.appendChild(imageElement)
+                    console.log(`do a search on ${center} +/- ${parseInt(els.interval.value)} @ ${currentOffset}`)
+
+                    let searchSpec: any = {
+                        mimeType: 'image/%',
+                        noDirectory: true,
+                        limit: parseInt(els.nbImages.value),
+                        offset: currentOffset,
+                        dateMin: center - interval,
+                        dateMax: center + interval
+                    }
+
+                    const results = await Rest.searchEx(searchSpec)
+                    possibleImages = results && results.items
+                    if (possibleImages.length)
+                        currentOffset += possibleImages.length
+                    else
+                        currentOffset = 0
                 }
-                else if (els.items.children.length > parseInt(els.nbImages.value)) {
-                    imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length)) as HTMLImageElement
-                    imageElement.parentElement.removeChild(imageElement)
+
+                if (possibleImages) {
+                    els.remark.innerHTML = `+/- ${parseInt(els.interval.value)} days around date ${new Date(center)} (@${currentOffset}), ${possibleImages.length} possible images`
+
+                    let imageElement: HTMLImageElement = null
+                    if (els.items.children.length < parseInt(els.nbImages.value)) {
+                        imageElement = document.createElement('img')
+                        els.items.appendChild(imageElement)
+                    }
+                    else if (els.items.children.length > parseInt(els.nbImages.value)) {
+                        imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length)) as HTMLImageElement
+                        imageElement.parentElement.removeChild(imageElement)
+                    }
+                    else {
+                        imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length)) as HTMLImageElement
+                    }
+
+                    let imageIndex = Math.floor(Math.random() * possibleImages.length)
+                    let [usedImage] = possibleImages.splice(imageIndex, 1)
+                    if (usedImage)
+                        imageElement.src = Rest.getShaImageThumbnailUrl(usedImage.sha, usedImage.mimeType)
                 }
                 else {
-                    imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length)) as HTMLImageElement
+                    els.remark.innerHTML = `no possible image !`
                 }
 
-                let imageIndex = Math.floor(Math.random() * possibleImages.length)
-                let [usedImage] = possibleImages.splice(imageIndex, 1)
-                if (usedImage)
-                    imageElement.src = Rest.getShaImageThumbnailUrl(usedImage.sha, usedImage.mimeType)
+                await wait(els.speed.value)
             }
-            else {
-                els.remark.innerHTML = `no possible image !`
+            catch (err) {
+                console.error(`error in slideshow, waiting 5s`, err)
+                await wait(5000)
             }
-
-            await wait(els.speed.value)
         }
     })()
 
