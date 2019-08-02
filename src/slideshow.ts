@@ -35,12 +35,6 @@ export function create() {
         let lastSearchInterval = null
 
         while (true) {
-            let searchSpec: any = {
-                mimeType: 'image/%',
-                noDirectory: true,
-                limit: 100
-            }
-
             let searchDate = (parseInt(els.date.value || '0')) * 1000 * 60 * 60 * 24
             let interval = (parseInt(els.interval.value || '0')) * 1000 * 60 * 60 * 24
             let center = new Date().getTime() + searchDate
@@ -49,11 +43,20 @@ export function create() {
                 lastSearchDate = center
                 lastSearchInterval = interval
 
+                let searchSpec: any = {
+                    mimeType: 'image/%',
+                    noDirectory: true,
+                    limit: 100
+                }
                 searchSpec.dateMin = center - interval
                 searchSpec.dateMax = center + interval
 
+                console.log(`do a search on ${center} +/- ${interval}`)
+
                 const results = await Rest.searchEx(searchSpec)
                 possibleImages = results && results.items
+
+                console.log(`has`, results)
             }
 
             if (possibleImages) {
