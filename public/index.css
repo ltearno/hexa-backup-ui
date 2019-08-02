@@ -316,6 +316,8 @@ html, body, input, textarea, button {
 }
 
 .x-slideshow {
+    height: 300px;
+    overflow: hidden;
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
