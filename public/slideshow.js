@@ -56,12 +56,14 @@ function create() {
                         currentOffset = 0;
                     finished = possibleImages.length == 0;
                 }
+                let waitDuration = parseInt(els.speed.value) || 2000;
                 if (possibleImages) {
                     els.remark.innerHTML = `${parseInt(els.nbImages.value)} images +/- ${parseInt(els.interval.value)} days around date ${new Date(center)} (@${currentOffset}), ${possibleImages.length} possible images`;
                     let imageElement = null;
                     if (els.items.children.length < parseInt(els.nbImages.value)) {
                         imageElement = document.createElement('img');
                         els.items.appendChild(imageElement);
+                        waitDuration = 200;
                     }
                     else if (els.items.children.length > parseInt(els.nbImages.value)) {
                         imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length));
@@ -78,7 +80,7 @@ function create() {
                 else {
                     els.remark.innerHTML = `no possible image !`;
                 }
-                await wait(els.speed.value);
+                await wait(waitDuration);
             }
             catch (err) {
                 console.error(`error in slideshow, waiting 5s`, err);
