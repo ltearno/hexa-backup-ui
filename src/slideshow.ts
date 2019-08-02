@@ -33,34 +33,42 @@ export function create() {
 
         let lastSearchDate = null
         let lastSearchInterval = null
+        let currentOffset = 0
 
         while (true) {
             let searchDate = (parseInt(els.date.value || '0')) * 1000 * 60 * 60 * 24
             let interval = (parseInt(els.interval.value || '0')) * 1000 * 60 * 60 * 24
+
             let center = new Date().getTime() + searchDate
 
-            if (lastSearchDate != searchDate || lastSearchInterval != interval) {
+            if (lastSearchDate != searchDate || lastSearchInterval != interval)
+                currentOffset = 0
+
+            if (lastSearchDate != searchDate || lastSearchInterval != interval || !possibleImages || !possibleImages.length) {
                 lastSearchDate = searchDate
                 lastSearchInterval = interval
+
+                console.log(`do a search on ${center} +/- ${interval} @ ${currentOffset}`)
 
                 let searchSpec: any = {
                     mimeType: 'image/%',
                     noDirectory: true,
-                    limit: 10
+                    limit: 10,
+                    offset: currentOffset,
+                    dateMin: center - interval,
+                    dateMax: center + interval
                 }
-                searchSpec.dateMin = center - interval
-                searchSpec.dateMax = center + interval
-
-                console.log(`do a search on ${center} +/- ${interval}`)
 
                 const results = await Rest.searchEx(searchSpec)
                 possibleImages = results && results.items
-
-                console.log(`has`, results)
+                if (possibleImages.length)
+                    currentOffset += possibleImages.length
+                else
+                    currentOffset = 0
             }
 
             if (possibleImages) {
-                els.remark.innerHTML = `${possibleImages.length} possible images, date ${new Date(center)}`
+                els.remark.innerHTML = `+/- ${parseInt(els.date.value) || 0} days around date ${new Date(center)} (@${currentOffset}), ${possibleImages.length} possible images`
 
                 let imageElement: HTMLImageElement = null
                 if (els.items.children.length < parseInt(els.nbImages.value)) {
@@ -75,9 +83,10 @@ export function create() {
                     imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length)) as HTMLImageElement
                 }
 
-                let item = possibleImages[Math.floor(Math.random() * possibleImages.length)]
-                if (item)
-                    imageElement.src = Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)
+                let imageIndex = Math.floor(Math.random() * possibleImages.length)
+                let [usedImage] = possibleImages.splice(imageIndex, 1)
+                if (usedImage)
+                    imageElement.src = Rest.getShaImageThumbnailUrl(usedImage.sha, usedImage.mimeType)
             }
             else {
                 els.remark.innerHTML = `no possible image !`
