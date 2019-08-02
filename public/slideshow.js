@@ -113,7 +113,7 @@ function create() {
                         let imageElement = null;
                         if (imagesCount() < nbWantedImages) {
                             imageElement = addRandomImage();
-                            waitDurationInMs = 200;
+                            //waitDurationInMs = 200
                         }
                         else {
                             imageElement = pickRandomImage();

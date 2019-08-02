@@ -147,7 +147,7 @@ export function create() {
                         let imageElement: HTMLImageElement = null
                         if (imagesCount() < nbWantedImages) {
                             imageElement = addRandomImage()
-                            waitDurationInMs = 200
+                            //waitDurationInMs = 200
                         }
                         else {
                             imageElement = pickRandomImage()
