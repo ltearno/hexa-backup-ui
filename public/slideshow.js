@@ -26,11 +26,14 @@ function create() {
         let finished = false;
         while (true) {
             try {
-                let searchDate = (parseInt(els.date.value || '0')) * 1000 * 60 * 60 * 24;
-                let interval = (parseInt(els.interval.value || '0')) * 1000 * 60 * 60 * 24;
-                let center = new Date().getTime() + searchDate;
+                const timeFromNowInMs = (parseInt(els.date.value || '0')) * 1000 * 60 * 60 * 24;
+                const intervalInDays = parseInt(els.interval.value) || 1;
+                const intervalInMs = intervalInDays * 1000 * 60 * 60 * 24;
+                const waitDurationInMs = parseInt(els.speed.value) || 2000;
+                const nbDesiredImages = parseInt(els.nbImages.value);
+                let center = new Date().getTime() + timeFromNowInMs;
                 let doSearch = false;
-                if (lastSearchDate != searchDate || lastSearchInterval != interval) {
+                if (lastSearchDate != timeFromNowInMs || lastSearchInterval != intervalInMs) {
                     currentOffset = 0;
                     doSearch = true;
                 }
@@ -38,16 +41,16 @@ function create() {
                     doSearch = !finished;
                 }
                 if (doSearch) {
-                    lastSearchDate = searchDate;
-                    lastSearchInterval = interval;
-                    console.log(`do a search on ${center} +/- ${parseInt(els.interval.value)} @ ${currentOffset}`);
+                    lastSearchDate = timeFromNowInMs;
+                    lastSearchInterval = intervalInMs;
+                    console.log(`do a search on ${center} +/- ${intervalInDays} @ ${currentOffset}`);
                     let searchSpec = {
                         mimeType: 'image/%',
                         noDirectory: true,
-                        limit: parseInt(els.nbImages.value),
+                        limit: nbDesiredImages,
                         offset: currentOffset,
-                        dateMin: center - interval,
-                        dateMax: center + interval
+                        dateMin: center - intervalInMs,
+                        dateMax: center + intervalInMs
                     };
                     const results = await Rest.searchEx(searchSpec);
                     possibleImages = results && results.items;
@@ -57,16 +60,15 @@ function create() {
                         currentOffset = 0;
                     finished = possibleImages.length == 0;
                 }
-                let waitDuration = parseInt(els.speed.value) || 2000;
                 if (possibleImages && possibleImages.length) {
-                    els.remark.innerHTML = `${parseInt(els.nbImages.value)} images +/- ${parseInt(els.interval.value)} days around date ${new Date(center)} (@${currentOffset}), ${possibleImages.length} possible images`;
+                    els.remark.innerHTML = `${nbDesiredImages} images +/- ${intervalInDays} days around date ${new Date(center)} (@${currentOffset}), ${possibleImages.length} possible images`;
                     let imageElement = null;
-                    if (els.items.children.length < parseInt(els.nbImages.value)) {
+                    if (els.items.children.length < nbDesiredImages) {
                         imageElement = document.createElement('img');
                         els.items.appendChild(imageElement);
-                        waitDuration = 200;
+                        waitDurationInMs = 200;
                     }
-                    else if (els.items.children.length > parseInt(els.nbImages.value)) {
+                    else if (els.items.children.length > nbDesiredImages) {
                         imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length));
                         imageElement.parentElement.removeChild(imageElement);
                     }
@@ -86,7 +88,7 @@ function create() {
                         imageElement.parentElement.removeChild(imageElement);
                     }
                 }
-                await wait(waitDuration);
+                await wait(waitDurationInMs);
             }
             catch (err) {
                 Messages.displayMessage(`error in slideshow, waiting 5s`, -1);
