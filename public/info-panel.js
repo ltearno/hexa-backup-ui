@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Rest = require("./rest");
 const templates_1 = require("./templates");
+const Messages = require("./messages");
 let isShown = false;
 const template = `
 <div class="mui-container">
@@ -14,7 +15,11 @@ const template = `
         <div class="mui-divider"></div>
         <div><a x-id="download" href="#">download link</a></div>
         <div class="mui-divider"></div>
-        <pre x-id="details"></pre>
+        <div>names: <span x-id='names'></span></div>
+        <div>write dates: <span x-id='writeDates'></span></div>
+        <div>parents: <div x-id='parents'></div></div>
+        <div>sources: <span x-id='sources'></span></div>
+        <div>exif: <pre x-id="exif"></pre></div>
     </div>
 </div>`;
 const content = templates_1.createTemplateInstance(template);
@@ -42,10 +47,16 @@ function show(item) {
     const loadInfo = async () => {
         const info = await Rest.getShaInfo(item.sha);
         if (!info) {
-            content.details.innerHTML = `Cannot load any information...`;
+            Messages.displayMessage(`Cannot load detailed information...`, -1);
             return;
         }
-        content.details.innerHTML = JSON.stringify(info, null, 2);
+        content.mimeType.innerText = info.mimeTypes.join(', ');
+        content.names.innerText = info.names.join(', ');
+        content.writeDates.innerText = info.writeDates.map(d => new Date(d * 1000).toDateString()).join(', ');
+        content.size.innerText = info.sizes.join(', ');
+        content.parents.innerHTML = info.parents.map(p => `<div><a href="#/directories/${p}?name=${encodeURIComponent(`${item.name}'s parents`)}">${p}</a></div>`).join('');
+        content.sources.innerText = info.sources.join(', ');
+        content.exif.innerHTML = JSON.stringify(info.exifs, null, 2);
     };
     loadInfo();
 }
