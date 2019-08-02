@@ -80,8 +80,8 @@ function readHashAndAct() {
         hideAudioJukebox = true
         showSlideshow()
     }
-    else if (parsed.pathname.startsWith('#/info/')) {
-        const item: Rest.FileDescriptor = JSON.parse(parsed.pathname.substring('#/info/'.length))
+    else if (parsed.pathname.startsWith('/info/')) {
+        const item: Rest.FileDescriptor = JSON.parse(parsed.pathname.substring('/info/'.length))
         showInfo(item)
     }
     else {
