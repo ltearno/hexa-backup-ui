@@ -348,8 +348,23 @@ function itemDefaultAction(childIndex, event) {
         return;
     }
     if (event.target.classList.contains('x-image-zoom-action')) {
-        ImageDetails.show(item, null);
-        return;
+        let unrolledItems = lastDisplayedFiles;
+        let currentPosition = childIndex;
+        const nextPosition = (direction) => {
+            let nextPosition = currentPosition + direction;
+            while (nextPosition >= 0 && nextPosition < unrolledItems.length && !unrolledItems[nextPosition].mimeType.startsWith('image/')) {
+                nextPosition += direction;
+            }
+            if (nextPosition >= 0 && nextPosition < unrolledItems.length) {
+                currentPosition = nextPosition;
+                return unrolledItems[nextPosition];
+            }
+            return null;
+        };
+        ImageDetails.show(item, {
+            next: () => nextPosition(1),
+            previous: () => nextPosition(-1)
+        });
     }
     if (item.mimeType == 'application/directory') {
         goLoadDirectory(item.sha, item.name);
