@@ -384,7 +384,7 @@ function showInfo(item) {
     var options = {
         'keyboard': true,
         'static': false,
-        'onclose': function () { } // execute function when overlay is closed
+        'onclose': function () { history.back(); } // execute function when overlay is closed
     };
     //mui.overlay('on', options)
     // initialize with child element

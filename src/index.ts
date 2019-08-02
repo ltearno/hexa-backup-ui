@@ -464,7 +464,7 @@ function showInfo(item: Rest.FileDescriptor) {
     var options = {
         'keyboard': true, // teardown when <esc> key is pressed (default: true)
         'static': false, // maintain overlay when clicked (default: false)
-        'onclose': function () { } // execute function when overlay is closed
+        'onclose': function () { history.back() } // execute function when overlay is closed
     };
     //mui.overlay('on', options)
 
