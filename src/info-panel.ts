@@ -4,6 +4,27 @@ import { TemplateElements, createTemplateInstance } from './templates'
 import * as Snippets from './html-snippets'
 import * as Messages from './messages'
 
+const KB = 1024
+const MB = 1024 * KB
+const GB = 1024 * MB
+const TB = 1024 * GB
+
+function friendlySize(size: number) {
+    if (size > 2 * TB)
+        return `${(size / TB).toFixed(1)} TBb`
+    if (size > 2 * GB)
+        return `${(size / GB).toFixed(1)} Gb`
+    if (size > 2 * MB)
+        return `${(size / MB).toFixed(1)} Mb`
+    if (size > 2 * KB)
+        return `${(size / KB).toFixed(1)} kb`
+    if (size > 1)
+        return `${size} bytes`
+    if (size == 1)
+        return `1 byte`
+    return `empty`
+}
+
 declare var mui: any
 
 let isShown = false
@@ -67,7 +88,7 @@ export function show(item: Rest.FileDescriptor) {
     content.title.innerText = `${item.name} details`
     content.sha.innerText = item.sha
     content.mimeType.innerText = item.mimeType
-    content.size.innerText = `${item.size} bytes`
+    content.size.innerText = friendlySize(item.size)
     content.download.href = Rest.getShaContentUrl(item.sha, item.mimeType, item.name, true, true)
 
     if (!isShown)
@@ -84,7 +105,7 @@ export function show(item: Rest.FileDescriptor) {
         content.mimeType.innerText = info.mimeTypes.join(', ')
         content.names.innerText = info.names.join(', ')
         content.writeDates.innerText = info.writeDates.map(d => new Date(d * 1000).toDateString()).join(', ')
-        content.size.innerText = info.sizes.join(', ')
+        content.size.innerText = info.sizes.map(friendlySize).join(', ')
         content.parents.innerHTML = info.parents.map(p => `<div><a href="#/directories/${p}?name=${encodeURIComponent(`${item.name}'s parents`)}">${p}</a></div>`).join('')
         content.sources.innerText = info.sources.join(', ')
         if (info.exifs && info.exifs.length) {
