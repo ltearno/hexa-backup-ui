@@ -103,6 +103,7 @@ export function create() {
                         imageElement.src = Rest.getShaImageThumbnailUrl(usedImage.sha, usedImage.mimeType)
                 }
                 else {
+                    Messages.displayMessage(`no more image, change the cursors`,0)
                     els.remark.innerHTML = `no more image, change the cursors`
 
                     if (els.items.children.length > 0) {
