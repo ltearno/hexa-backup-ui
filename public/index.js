@@ -37,6 +37,7 @@ function parseURL(url) {
     };
 }
 function readHashAndAct() {
+    let hideAudioJukebox = false;
     let hash = '';
     if (window.location.hash && window.location.hash.startsWith('#'))
         hash = window.location.hash.substr(1);
@@ -70,11 +71,16 @@ function readHashAndAct() {
         loadPlaylist(name);
     }
     else if (parsed.pathname == '/slideshow') {
+        hideAudioJukebox = true;
         showSlideshow();
     }
     else {
         console.log(`unkown path ${parsed.pathname}`);
     }
+    if (hideAudioJukebox)
+        audioPanel.root.classList.add('is-hidden');
+    else
+        audioPanel.root.classList.remove('is-hidden');
 }
 var Mode;
 (function (Mode) {
