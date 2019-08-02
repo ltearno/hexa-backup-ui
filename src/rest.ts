@@ -85,6 +85,19 @@ export async function getCommit(sha: string): Promise<{ directoryDescriptorSha: 
     return await Network.getData(`${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`)
 }
 
+export async function getShaInfo(sha: string): Promise<{
+    sha: string
+    names: string[]
+    mimeTypes: string[]
+    writeDates: number[]
+    sizes: number[]
+    parents: string[]
+    sources: string[]
+    exifs: any[]
+}> {
+    return await Network.getData(`${HEXA_BACKUP_BASE_URL}/sha/${sha}/info`)
+}
+
 export function getShaContentUrl(sha: string, mimeType: string, name: string, withPhantom: boolean, isDownload: boolean) {
     if (!sha)
         return '#'

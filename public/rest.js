@@ -50,6 +50,10 @@ async function getCommit(sha) {
     return await Network.getData(`${exports.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`);
 }
 exports.getCommit = getCommit;
+async function getShaInfo(sha) {
+    return await Network.getData(`${exports.HEXA_BACKUP_BASE_URL}/sha/${sha}/info`);
+}
+exports.getShaInfo = getShaInfo;
 function getShaContentUrl(sha, mimeType, name, withPhantom, isDownload) {
     if (!sha)
         return '#';

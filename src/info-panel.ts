@@ -17,6 +17,8 @@ const template = `
         <div>mime type: <span x-id='mimeType'></span></div>
         <div class="mui-divider"></div>
         <div><a x-id="download" href="#">download link</a></div>
+        <div class="mui-divider"></div>
+        <pre x-id="details"></pre>
     </div>
 </div>`
 
@@ -27,6 +29,7 @@ const content: {
     mimeType: HTMLElement
     size: HTMLElement
     download: HTMLAnchorElement
+    details: HTMLPreElement
 } = createTemplateInstance(template)
 
 const options = {
@@ -53,4 +56,16 @@ export function show(item: Rest.FileDescriptor) {
     if (!isShown)
         mui.overlay('on', options, content.root)
     isShown = true
+
+    const loadInfo = async () => {
+        const info = await Rest.getShaInfo(item.sha)
+        if (!info) {
+            content.details.innerHTML = `Cannot load any information...`
+            return
+        }
+
+        content.details.innerHTML = JSON.stringify(info, null, 2)
+    }
+
+    loadInfo()
 }
