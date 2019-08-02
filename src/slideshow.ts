@@ -53,7 +53,7 @@ export function create() {
                 let searchSpec: any = {
                     mimeType: 'image/%',
                     noDirectory: true,
-                    limit: 10,
+                    limit: parseInt(els.nbImages.value),
                     offset: currentOffset,
                     dateMin: center - interval,
                     dateMax: center + interval
