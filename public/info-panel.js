@@ -38,7 +38,7 @@ const template = `
         <div>names: <span x-id='names'></span></div>
         <div>write dates: <span x-id='writeDates'></span></div>
         <div>parents: <div x-id='parents'></div></div>
-        <div>sources: <span x-id='sources'></span></div>
+        <div>sources: <div x-id='sources'></div></div>
         <div>exif: <div x-id="exif"></div></div>
         <div class="mui-divider"></div>
         <div x-id="close" class="mui-btn mui-btn--flat mui-btn--primary">Close</div>
@@ -81,7 +81,7 @@ function show(item) {
         content.writeDates.innerText = info.writeDates.map(d => new Date(d * 1000).toDateString()).join(', ');
         content.size.innerText = info.sizes.map(friendlySize).join(', ');
         content.parents.innerHTML = info.parents.map(p => `<div><a href="#/directories/${p}?name=${encodeURIComponent(`${item.name}'s parents`)}">${p}</a></div>`).join('');
-        content.sources.innerHTML = info.sources.map(s => `<div><a href="#/refs/${s}">${s}</a></div>`).join(', ');
+        content.sources.innerHTML = info.sources.map(s => `<div><a href="#/refs/${s}">${s}</a></div>`).join('');
         if (info.exifs && info.exifs.length) {
             content.exif.innerHTML = `
                 <table class="mui-table">
