@@ -11,13 +11,13 @@ const TB = 1024 * GB
 
 function friendlySize(size: number) {
     if (size > 2 * TB)
-        return `${(size / TB).toFixed(1)} TBb`
+        return `${(size / TB).toFixed(1)} TBb (${size} bytes)`
     if (size > 2 * GB)
-        return `${(size / GB).toFixed(1)} Gb`
+        return `${(size / GB).toFixed(1)} Gb (${size} bytes)`
     if (size > 2 * MB)
-        return `${(size / MB).toFixed(1)} Mb`
+        return `${(size / MB).toFixed(1)} Mb (${size} bytes)`
     if (size > 2 * KB)
-        return `${(size / KB).toFixed(1)} kb`
+        return `${(size / KB).toFixed(1)} kb (${size} bytes)`
     if (size > 1)
         return `${size} bytes`
     if (size == 1)
