@@ -42,8 +42,10 @@ export function create() {
                 const timeFromNowInMs = (parseInt(els.date.value || '0')) * 1000 * 60 * 60 * 24
                 const intervalInDays = parseInt(els.interval.value) || 1
                 const intervalInMs = intervalInDays * 1000 * 60 * 60 * 24
-                const nbDesiredImages = parseInt(els.nbImages.value)
+                const nbDesiredSideLength = parseInt(els.nbImages.value) || 1
                 let waitDurationInMs = parseInt(els.speed.value) || 2000
+
+                const nbWantedImages = nbDesiredSideLength * nbDesiredSideLength
 
                 let center = new Date().getTime() + timeFromNowInMs
 
@@ -65,7 +67,7 @@ export function create() {
                     let searchSpec: any = {
                         mimeType: 'image/%',
                         noDirectory: true,
-                        limit: nbDesiredImages,
+                        limit: nbWantedImages,
                         offset: currentOffset,
                         dateMin: center - intervalInMs,
                         dateMax: center + intervalInMs
@@ -81,21 +83,46 @@ export function create() {
                     finished = possibleImages.length == 0
                 }
 
+                const removeRandomImage = () => {
+                    if (!els.items.children.length)
+                        return
+
+                    let imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length)) as HTMLImageElement
+                    imageElement.parentElement.removeChild(imageElement)
+
+                    return imageElement
+                }
+
+                const addRandomImage = () => {
+                    let imageElement = document.createElement('img')
+                    els.items.appendChild(imageElement)
+                    return imageElement
+                }
+
+                const pickRandomImage = () => {
+                    if (!els.items.children.length)
+                        return null
+
+                    return els.items.children.item(Math.floor(Math.random() * els.items.children.length)) as HTMLImageElement
+                }
+
+                const imagesCount = () => {
+                    return els.items.children.length
+                }
+
                 if (possibleImages && possibleImages.length) {
-                    els.remark.innerHTML = `${nbDesiredImages} images +/- ${intervalInDays} days around date ${new Date(center).toDateString()} (@${currentOffset}), ${possibleImages.length} possible images`
+                    els.remark.innerHTML = `${nbWantedImages} images +/- ${intervalInDays} days around date ${new Date(center).toDateString()} (@${currentOffset}), ${possibleImages.length} possible images`
 
                     let imageElement: HTMLImageElement = null
-                    if (els.items.children.length < nbDesiredImages) {
-                        imageElement = document.createElement('img')
-                        els.items.appendChild(imageElement)
+                    if (imagesCount() < nbWantedImages) {
+                        imageElement = addRandomImage()
                         waitDurationInMs = 200
                     }
-                    else if (els.items.children.length > nbDesiredImages) {
-                        imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length)) as HTMLImageElement
-                        imageElement.parentElement.removeChild(imageElement)
+                    else if (imagesCount() > nbWantedImages) {
+                        imageElement = removeRandomImage()
                     }
                     else {
-                        imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length)) as HTMLImageElement
+                        imageElement = pickRandomImage()
                     }
 
                     let imageIndex = Math.floor(Math.random() * possibleImages.length)
@@ -107,9 +134,8 @@ export function create() {
                     doSearch && Messages.displayMessage(`no more image, change the cursors`, 0)
                     els.remark.innerHTML = `no more image, change the cursors`
 
-                    if (els.items.children.length > 0) {
-                        let imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length)) as HTMLImageElement
-                        imageElement.parentElement.removeChild(imageElement)
+                    if (imagesCount() > 0) {
+                        removeRandomImage()
                     }
                 }
 
