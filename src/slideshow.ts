@@ -163,7 +163,7 @@ export function create() {
                     els.remark.innerHTML = `${new Date(center).toDateString()}, no more image, change the cursors`
 
                     if (imagesCount() > 0) {
-                        removeRandomImage()
+                        //removeRandomImage()
                     }
                 }
 
