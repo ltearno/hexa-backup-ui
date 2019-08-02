@@ -95,7 +95,18 @@ export function create() {
 
                 const addRandomImage = () => {
                     let imageElement = document.createElement('img')
-                    els.items.appendChild(imageElement)
+
+                    let row = null
+                    if (els.items.children.length < nbDesiredSideLength) {
+                        row = document.createElement('div')
+                        els.items.appendChild(row)
+                    }
+                    else {
+                        row = els.items.children.item(rand(els.items.children.length))
+                    }
+
+                    row.appendChild(imageElement)
+
                     return imageElement
                 }
 

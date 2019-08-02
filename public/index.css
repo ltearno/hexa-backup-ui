@@ -319,12 +319,20 @@ html, body, input, textarea, button {
     height: 60vh;
     overflow: hidden;
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column nowrap;
     justify-content: center;
     align-content: center;
 }
 
-.x-slideshow>img {
+.x-slideshow>div {
+    display: flex;
+    flex-flow: row nowrap;
+    overflow: hidden;
+    justify-content: center;
+    align-content: center;
+}
+
+.x-slideshow>div>img {
     height: 80px;
     max-width: 100%;
     padding: 1px;
