@@ -104,6 +104,11 @@ export function create() {
                 }
                 else {
                     els.remark.innerHTML = `no more image, change the cursors`
+
+                    if (els.items.children.length > 0) {
+                        let imageElement = els.items.children.item(Math.floor(Math.random() * els.items.children.length)) as HTMLImageElement
+                        imageElement.parentElement.removeChild(imageElement)
+                    }
                 }
 
                 await wait(waitDuration)
