@@ -20,7 +20,7 @@ const template = `
         <div>write dates: <span x-id='writeDates'></span></div>
         <div>parents: <div x-id='parents'></div></div>
         <div>sources: <span x-id='sources'></span></div>
-        <div>exif: <pre x-id="exif"></pre></div>
+        <div>exif: <div x-id="exif"></div></div>
         <div class="mui-divider"></div>
         <div x-id="close" class="mui-btn mui-btn--flat mui-btn--primary">Close</div>
     </div>
@@ -63,7 +63,23 @@ function show(item) {
         content.size.innerText = info.sizes.join(', ');
         content.parents.innerHTML = info.parents.map(p => `<div><a href="#/directories/${p}?name=${encodeURIComponent(`${item.name}'s parents`)}">${p}</a></div>`).join('');
         content.sources.innerText = info.sources.join(', ');
-        content.exif.innerHTML = JSON.stringify(info.exifs, null, 2);
+        if (info.exifs && info.exifs.length) {
+            content.exif.innerHTML = `
+                <table class="mui-table">
+                    <thead>
+                        <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${info.exifs.map(exif => Object.entries(exif).map(([key, value]) => `<tr><td>${key}</td><td>${value}</td></tr>`).join('')).join('')}
+                    </tbody>
+                </table>`;
+        }
+        else {
+            content.exif.innerHTML = `no exif data`;
+        }
     };
     loadInfo();
 }
