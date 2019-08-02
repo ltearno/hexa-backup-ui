@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Rest = require("./rest");
 const templates_1 = require("./templates");
 const UiTool = require("./ui-tool");
+const Messages = require("./messages");
 let currentUnroller = null;
 const template = `
     <div class="x-image-detail">
@@ -41,6 +42,7 @@ element.diaporama.addEventListener('click', event => {
         stopDiaporama();
         return;
     }
+    Messages.displayMessage(`Start diaporama`, 0);
     diaporamaTimer = setInterval(() => showNext(), 2000);
     if (currentUnroller) {
         let nextItem = currentUnroller.next();
@@ -50,6 +52,7 @@ element.diaporama.addEventListener('click', event => {
 });
 function stopDiaporama() {
     if (diaporamaTimer) {
+        Messages.displayMessage(`Diaporama stopped`, 0);
         clearInterval(diaporamaTimer);
         diaporamaTimer = null;
     }

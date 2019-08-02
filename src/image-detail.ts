@@ -2,6 +2,7 @@ import * as Rest from './rest'
 import { TemplateElements, createTemplateInstance } from './templates'
 import * as Snippets from './html-snippets'
 import * as UiTool from './ui-tool'
+import * as Messages from './messages'
 
 export interface Unroller {
     previous(): Rest.FileDescriptor
@@ -65,6 +66,8 @@ element.diaporama.addEventListener('click', event => {
         return
     }
 
+    Messages.displayMessage(`Start diaporama`, 0)
+
     diaporamaTimer = setInterval(() => showNext(), 2000)
 
     if (currentUnroller) {
@@ -76,6 +79,7 @@ element.diaporama.addEventListener('click', event => {
 
 function stopDiaporama() {
     if (diaporamaTimer) {
+        Messages.displayMessage(`Diaporama stopped`, 0)
         clearInterval(diaporamaTimer)
         diaporamaTimer = null
     }
