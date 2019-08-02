@@ -11,6 +11,7 @@ const MimeTypes = require("./mime-types-module");
 const Messages = require("./messages");
 const Slideshow = require("./slideshow");
 const InfoPanel = require("./info-panel");
+const ImageDetails = require("./image-detail");
 /*
 hash urls :
 
@@ -344,6 +345,10 @@ function itemDefaultAction(childIndex, event) {
     let item = lastDisplayedFiles[childIndex];
     if (event.target.classList.contains('x-info-display-action')) {
         goShaInfo(item);
+        return;
+    }
+    if (event.target.classList.contains('x-image-zoom-action')) {
+        ImageDetails.show(item, null);
         return;
     }
     if (item.mimeType == 'application/directory') {

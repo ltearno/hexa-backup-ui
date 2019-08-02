@@ -9,6 +9,7 @@ import * as MimeTypes from './mime-types-module'
 import * as Messages from './messages'
 import * as Slideshow from './slideshow'
 import * as InfoPanel from './info-panel'
+import * as ImageDetails from './image-detail'
 
 /*
 hash urls :
@@ -418,6 +419,11 @@ function itemDefaultAction(childIndex: number, event: Event) {
 
     if ((event.target as HTMLElement).classList.contains('x-info-display-action')) {
         goShaInfo(item)
+        return
+    }
+
+    if ((event.target as HTMLElement).classList.contains('x-image-zoom-action')) {
+        ImageDetails.show(item, null)
         return
     }
 

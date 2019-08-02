@@ -50,7 +50,7 @@ export const directoryPanel = {
 
         elements.items.innerHTML = values.items.map(item => {
             if (item.mimeType.startsWith('image/')) {
-                return `<div><img loading="lazy" src="blank.jpeg" data-src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/></div>`
+                return `<div><img class="x-image-zoom-action onclick" loading="lazy" src="blank.jpeg" data-src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/></div>`
             }
             else {
                 return `<div>${Snippets.itemToHtml(item)}</div>`
