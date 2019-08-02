@@ -135,7 +135,6 @@ export function create() {
                     }
                 }
                 else {
-                    doSearch && Messages.displayMessage(`no more image, change the cursors`, 0)
                     els.remark.innerHTML = `no more image, change the cursors`
 
                     if (imagesCount() > 0) {
