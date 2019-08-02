@@ -65,8 +65,12 @@ function create() {
                 const rand = max => Math.floor(max * Math.random());
                 const removeRandomImage = () => {
                     let imageElement = pickRandomImage();
-                    if (imageElement)
-                        imageElement.parentElement.removeChild(imageElement);
+                    if (imageElement) {
+                        let parent = imageElement.parentElement;
+                        parent.removeChild(imageElement);
+                        if (!parent.children.length)
+                            parent.parentElement.removeChild(parent);
+                    }
                     return imageElement;
                 };
                 const addRandomImage = () => {

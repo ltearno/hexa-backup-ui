@@ -88,8 +88,12 @@ export function create() {
 
                 const removeRandomImage = () => {
                     let imageElement = pickRandomImage()
-                    if (imageElement)
-                        imageElement.parentElement.removeChild(imageElement)
+                    if (imageElement) {
+                        let parent = imageElement.parentElement
+                        parent.removeChild(imageElement)
+                        if (!parent.children.length)
+                            parent.parentElement.removeChild(parent)
+                    }
 
                     return imageElement
                 }
