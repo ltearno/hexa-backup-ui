@@ -41,6 +41,7 @@ const template = `
         <div>sources: <div x-id='sources'></div></div>
         <div>exif: <div x-id="exif"></div></div>
         <div class="mui-divider"></div>
+        <div x-id="extras"></div>
         <div x-id="close" class="mui-btn mui-btn--flat mui-btn--primary">Close</div>
     </div>
 </div>`;
@@ -67,6 +68,9 @@ function show(item) {
     content.mimeType.innerText = item.mimeType;
     content.size.innerText = friendlySize(item.size);
     content.download.href = Rest.getShaContentUrl(item.sha, item.mimeType, item.name, true, true);
+    if (item.mimeType.startsWith('image/')) {
+        content.extras.innerHTML = `<img src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/><div class="mui-divider"></div>`;
+    }
     if (!isShown)
         mui.overlay('on', options, content.root);
     isShown = true;
@@ -78,7 +82,7 @@ function show(item) {
         }
         content.mimeType.innerText = info.mimeTypes.join(', ');
         content.names.innerText = info.names.join(', ');
-        content.writeDates.innerText = info.writeDates.map(d => `${d} ` + new Date(d / 1000).toDateString()).join(', ');
+        content.writeDates.innerText = info.writeDates.map(d => new Date(d / 1000).toDateString()).join(', ');
         content.size.innerText = info.sizes.map(friendlySize).join(', ');
         content.parents.innerHTML = info.parents.map(p => `<div><a href="#/directories/${p}?name=${encodeURIComponent(`${item.name}'s parents`)}">${p}</a></div>`).join('');
         content.sources.innerHTML = info.sources.map(s => `<div><a href="#/refs/${s}">${s}</a></div>`).join('');
