@@ -20,8 +20,10 @@ const template = `
 const element = templates_1.createTemplateInstance(template);
 element.info.addEventListener('click', event => {
     UiTool.stopEvent(event);
-    if (shownItem)
+    if (shownItem) {
+        stopDiaporama();
         window.location.href = `#/info/${encodeURIComponent(JSON.stringify(shownItem))}`;
+    }
 });
 element.previous.addEventListener('click', event => {
     UiTool.stopEvent(event);
