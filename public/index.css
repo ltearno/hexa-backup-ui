@@ -344,6 +344,9 @@ html, body, input, textarea, button {
     left: 0;
     right: 0;
     background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .x-image-detail img {
