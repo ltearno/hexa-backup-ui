@@ -36,7 +36,6 @@ export function create() {
 
         while (true) {
             let searchSpec: any = {
-                name: "%",
                 mimeType: 'image/%',
                 noDirectory: true,
                 limit: 100

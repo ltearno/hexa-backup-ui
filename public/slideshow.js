@@ -23,7 +23,6 @@ function create() {
         let lastSearchInterval = null;
         while (true) {
             let searchSpec = {
-                name: "%",
                 mimeType: 'image/%',
                 noDirectory: true,
                 limit: 100
