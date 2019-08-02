@@ -39,8 +39,8 @@ export function create() {
             let interval = (parseInt(els.interval.value || '0')) * 1000 * 60 * 60 * 24
             let center = new Date().getTime() + searchDate
 
-            if (lastSearchDate != center || lastSearchInterval != interval) {
-                lastSearchDate = center
+            if (lastSearchDate != searchDate || lastSearchInterval != interval) {
+                lastSearchDate = searchDate
                 lastSearchInterval = interval
 
                 let searchSpec: any = {
