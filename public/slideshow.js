@@ -28,7 +28,7 @@ function create() {
                 noDirectory: true,
                 limit: 100
             };
-            let searchDate = (parseInt(els.interval.value || '0')) * 1000 * 60 * 60 * 24;
+            let searchDate = (parseInt(els.date.value || '0')) * 1000 * 60 * 60 * 24;
             let interval = (parseInt(els.interval.value || '0')) * 1000 * 60 * 60 * 24;
             if (lastSearchDate != searchDate || lastSearchInterval != interval) {
                 lastSearchDate = searchDate;
