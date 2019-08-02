@@ -485,6 +485,7 @@ function showInfo(item: Rest.FileDescriptor) {
 
 
 directoryPanel.root.addEventListener('click', async event => {
+    UiTool.stopEvent(event)
     // todo : knownledge to do that is in directoryPanel
     let { element, childIndex } = Templates.templateGetEventLocation(directoryPanel, event)
     if (lastDisplayedFiles && element == directoryPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
