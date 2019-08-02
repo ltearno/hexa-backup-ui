@@ -79,7 +79,7 @@ export function create() {
 
                 let waitDuration = parseInt(els.speed.value) || 2000
 
-                if (possibleImages) {
+                if (possibleImages && possibleImages.length) {
                     els.remark.innerHTML = `${parseInt(els.nbImages.value)} images +/- ${parseInt(els.interval.value)} days around date ${new Date(center)} (@${currentOffset}), ${possibleImages.length} possible images`
 
                     let imageElement: HTMLImageElement = null

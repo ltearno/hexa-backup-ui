@@ -57,7 +57,7 @@ function create() {
                     finished = possibleImages.length == 0;
                 }
                 let waitDuration = parseInt(els.speed.value) || 2000;
-                if (possibleImages) {
+                if (possibleImages && possibleImages.length) {
                     els.remark.innerHTML = `${parseInt(els.nbImages.value)} images +/- ${parseInt(els.interval.value)} days around date ${new Date(center)} (@${currentOffset}), ${possibleImages.length} possible images`;
                     let imageElement = null;
                     if (els.items.children.length < parseInt(els.nbImages.value)) {
