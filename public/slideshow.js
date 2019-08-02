@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Rest = require("./rest");
 const templates_1 = require("./templates");
+const Messages = require("./messages");
 const wait = (duration) => new Promise(resolve => setTimeout(resolve, duration));
 const templateHtml = `
 <div class='mui-container'>
@@ -83,7 +84,7 @@ function create() {
                 await wait(waitDuration);
             }
             catch (err) {
-                console.error(`error in slideshow, waiting 5s`, err);
+                Messages.displayMessage(`error in slideshow, waiting 5s`, -1);
                 await wait(5000);
             }
         }

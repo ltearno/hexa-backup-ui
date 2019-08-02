@@ -1,6 +1,7 @@
 import * as Rest from './rest'
 import { TemplateElements, createTemplateInstance } from './templates'
 import * as Snippets from './html-snippets'
+import * as Messages from './messages'
 
 const wait = (duration) => new Promise(resolve => setTimeout(resolve, duration))
 
@@ -108,7 +109,7 @@ export function create() {
                 await wait(waitDuration)
             }
             catch (err) {
-                console.error(`error in slideshow, waiting 5s`, err)
+                Messages.displayMessage(`error in slideshow, waiting 5s`, -1)
                 await wait(5000)
             }
         }
