@@ -5,12 +5,14 @@ const Rest = require("./rest");
 const UiTools = require("./ui-tool");
 const MimeTypes = require("./mime-types-module");
 const Messages = require("./messages");
+const Locations = require("./locations");
 const templateHtml = `
 <div class="audio-footer mui-panel">
     <h3 class="x-when-large-display">Playlist</h3>
     <div x-id="playlist"></div>
     <div x-id="expander" class="onclick mui--text-center">☰</div>
     <div class="x-horizontal-flex" style="width:100%;">
+        <a x-id="infoButton" href="#" class="mui-btn mui-btn--fab" style="background-color: #ff408173; color: white;">Info</a></div>
         <audio x-id="player" class="audio-player" controls preload="metadata"></audio>
         <a x-id="addPlaylistButton" href="#toto" class="mui-btn mui-btn--fab" style="background-color: #ff408173; color: white;">+ PL.</a></div>
     </div>
@@ -97,6 +99,21 @@ class AudioJukebox {
             let extension = MimeTypes.extensionFromMimeType(item.mimeType);
             await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`);
             Messages.displayMessage(`👍 ${item.name} added to playlist '${playlist}'`, 1);
+        });
+        this.audioPanel.infoButton.addEventListener('click', async (event) => {
+            UiTools.stopEvent(event);
+            let item = this.currentItem();
+            if (!item) {
+                Messages.displayMessage(`Nothing playing`, -1);
+                return;
+            }
+            Locations.goShaInfo({
+                sha: item.sha,
+                name: item.name,
+                mimeType: item.mimeType,
+                lastWrite: 0,
+                size: 0
+            });
         });
         this.refreshPlaylist();
     }

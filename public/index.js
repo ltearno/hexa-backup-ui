@@ -12,6 +12,7 @@ const Messages = require("./messages");
 const Slideshow = require("./slideshow");
 const InfoPanel = require("./info-panel");
 const ImageDetails = require("./image-detail");
+const Locations = require("./locations");
 /*
 hash urls :
 
@@ -147,7 +148,7 @@ function beautifyNames(items) {
     });
 }
 function goShaInfo(item) {
-    window.location.href = `#/info/${encodeURIComponent(JSON.stringify(item))}`;
+    Locations.goShaInfo(item);
 }
 function goSearchItems(term) {
     const url = `#/search/${term}`;

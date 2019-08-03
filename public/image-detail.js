@@ -4,6 +4,7 @@ const Rest = require("./rest");
 const templates_1 = require("./templates");
 const UiTool = require("./ui-tool");
 const Messages = require("./messages");
+const Locations = require("./locations");
 let currentUnroller = null;
 let shownItem = null;
 const template = `
@@ -22,7 +23,7 @@ element.info.addEventListener('click', event => {
     UiTool.stopEvent(event);
     if (shownItem) {
         stopDiaporama();
-        window.location.href = `#/info/${encodeURIComponent(JSON.stringify(shownItem))}`;
+        Locations.goShaInfo(shownItem);
     }
 });
 element.previous.addEventListener('click', event => {

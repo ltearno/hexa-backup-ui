@@ -10,6 +10,7 @@ import * as Messages from './messages'
 import * as Slideshow from './slideshow'
 import * as InfoPanel from './info-panel'
 import * as ImageDetails from './image-detail'
+import * as Locations from './locations'
 
 /*
 hash urls :
@@ -169,7 +170,7 @@ function beautifyNames(items: Rest.FileDescriptor[]) {
 }
 
 function goShaInfo(item: Rest.FileDescriptor) {
-    window.location.href = `#/info/${encodeURIComponent(JSON.stringify(item))}`
+    Locations.goShaInfo(item)
 }
 
 function goSearchItems(term: string) {

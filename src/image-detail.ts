@@ -3,6 +3,7 @@ import { TemplateElements, createTemplateInstance } from './templates'
 import * as Snippets from './html-snippets'
 import * as UiTool from './ui-tool'
 import * as Messages from './messages'
+import * as Locations from './locations'
 
 export interface Unroller {
     previous(): Rest.FileDescriptor
@@ -41,7 +42,7 @@ element.info.addEventListener('click', event => {
 
     if (shownItem) {
         stopDiaporama()
-        window.location.href = `#/info/${encodeURIComponent(JSON.stringify(shownItem))}`
+        Locations.goShaInfo(shownItem)
     }
 })
 
