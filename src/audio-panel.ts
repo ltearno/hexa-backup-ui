@@ -11,7 +11,7 @@ const templateHtml = `
     <div x-id="playlist"></div>
     <div x-id="expander" class="onclick mui--text-center">☰</div>
     <div class="x-horizontal-flex" style="width:100%;">
-        <a x-id="infoButton" href="#" class="mui-btn mui-btn--fab" style="background-color: #ff408173; color: white;">Info</a></div>
+        <a x-id="infoButton" href="#" class="mui-btn mui-btn--fab" style="background-color: #ff408173; color: white;">Info</a>
         <audio x-id="player" class="audio-player" controls preload="metadata"></audio>
         <a x-id="addPlaylistButton" href="#toto" class="mui-btn mui-btn--fab" style="background-color: #ff408173; color: white;">+ PL.</a></div>
     </div>
@@ -149,11 +149,11 @@ export class AudioJukebox {
             }
 
             Locations.goShaInfo({
-                sha:item.sha,
-                name:item.name,
-                mimeType:item.mimeType,
-                lastWrite:0,
-                size:0
+                sha: item.sha,
+                name: item.name,
+                mimeType: item.mimeType,
+                lastWrite: 0,
+                size: 0
             })
         })
 
