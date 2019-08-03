@@ -11,7 +11,7 @@ const templateHtml = `
     <div x-id="playlist"></div>
     <div x-id="expander" class="onclick mui--text-center">☰</div>
     <div class="x-horizontal-flex" style="width:100%;">
-        <a x-id="infoButton" href="#" class="mui-btn mui-btn--fab" style="background-color: #ff408173; color: white;">Info</a>
+        <a x-id="infoButton" href="#" class="mui-btn mui-btn--fab">Info</a>
         <audio x-id="player" class="audio-player" controls preload="metadata"></audio>
         <a x-id="addPlaylistButton" href="#toto" class="mui-btn mui-btn--fab" style="background-color: #ff408173; color: white;">+ PL.</a></div>
     </div>
