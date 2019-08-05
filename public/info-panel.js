@@ -84,6 +84,12 @@ function show(item) {
     if (!isShown)
         mui.overlay('on', options, content.root);
     isShown = true;
+    content.names.innerText = `...`;
+    content.writeDates.innerText = `...`;
+    content.parents.innerHTML = `...`;
+    content.sources.innerHTML = `...`;
+    content.exif.innerHTML = `...`;
+    content.audioMetadata.innerHTML = `...`;
     const loadInfo = async () => {
         const info = await Rest.getShaInfo(item.sha);
         if (!info) {
