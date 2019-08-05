@@ -69,6 +69,10 @@ export async function searchEx(searchSpec: any): Promise<SearchResult> {
     }
 }
 
+export async function getJobs(): Promise<DirectoryDescriptor> {
+    return await Network.getData(`${HEXA_BACKUP_BASE_URL}/jobs`)
+}
+
 export async function getDirectoryDescriptor(sha: string): Promise<DirectoryDescriptor> {
     return await Network.getData(`${HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`)
 }

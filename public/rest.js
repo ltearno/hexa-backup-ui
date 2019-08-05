@@ -34,6 +34,10 @@ async function searchEx(searchSpec) {
     }
 }
 exports.searchEx = searchEx;
+async function getJobs() {
+    return await Network.getData(`${exports.HEXA_BACKUP_BASE_URL}/jobs`);
+}
+exports.getJobs = getJobs;
 async function getDirectoryDescriptor(sha) {
     return await Network.getData(`${exports.HEXA_BACKUP_BASE_URL}/sha/${sha}/content?type=application/json`);
 }
