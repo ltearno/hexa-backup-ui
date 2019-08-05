@@ -1,4 +1,8 @@
 export function extensionFromMimeType(mimeType: string) {
+    // special common types :
+    if (mimeType == "audio/mpeg")
+        return "mp3"
+
     for (let [extension, value] of Object.entries(MimeTypes)) {
         if (mimeType == value)
             return extension

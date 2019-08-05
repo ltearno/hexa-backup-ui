@@ -1,6 +1,9 @@
 ﻿"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function extensionFromMimeType(mimeType) {
+    // special common types :
+    if (mimeType == "audio/mpeg")
+        return "mp3";
     for (let [extension, value] of Object.entries(exports.MimeTypes)) {
         if (mimeType == value)
             return extension;
