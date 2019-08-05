@@ -176,6 +176,10 @@ class AudioJukebox {
             const item = this.queue[index];
             exports.audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType);
             document.querySelectorAll(`[x-for-sha='${item.sha.substr(0, 5)}']`).forEach(e => e.classList.add('is-weighted'));
+            document.title = `${item.name} playing by Raccoon`;
+        }
+        else {
+            document.title = `Raccoon`;
         }
     }
     refreshPlaylist() {
