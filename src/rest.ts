@@ -69,7 +69,18 @@ export async function searchEx(searchSpec: any): Promise<SearchResult> {
     }
 }
 
-export async function getJobs(): Promise<DirectoryDescriptor> {
+export interface JobDescriptor {
+    clientName: string
+    id: string
+    name: string
+}
+
+export interface JobsResponse {
+    running: JobDescriptor
+    waiting: JobDescriptor[]
+}
+
+export async function getJobs(): Promise<JobsResponse> {
     return await Network.getData(`${HEXA_BACKUP_BASE_URL}/jobs`)
 }
 
