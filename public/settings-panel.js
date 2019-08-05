@@ -54,6 +54,7 @@ function create() {
         UiTool.stopEvent(event);
         await Rest.enqueueYoutubeDownload(els.youtubedlUrl.value);
         els.youtubedlUrl.value = '';
+        els.youtubedlUrl.blur();
         Messages.displayMessage(`Downloading from youtube`, 1);
         refreshJobs(els);
     });
