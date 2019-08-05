@@ -3,6 +3,7 @@ import * as Rest from './rest'
 import { TemplateElements, createTemplateInstance } from './templates'
 import * as Snippets from './html-snippets'
 import * as Messages from './messages'
+import * as MimeTypes from './mime-types-module'
 
 const KB = 1024
 const MB = 1024 * KB
@@ -92,7 +93,11 @@ export function show(item: Rest.FileDescriptor) {
     content.sha.innerText = item.sha
     content.mimeType.innerText = item.mimeType
     content.size.innerText = friendlySize(item.size)
-    content.download.href = Rest.getShaContentUrl(item.sha, item.mimeType, item.name, true, true)
+    let fullName = item.name
+    let extension = '.' + MimeTypes.extensionFromMimeType(item.mimeType)
+    if (!fullName.endsWith(extension))
+        fullName += extension
+    content.download.href = Rest.getShaContentUrl(item.sha, item.mimeType, fullName, true, true)
 
     if (item.mimeType.startsWith('image/')) {
         content.extras.innerHTML = `<a target="_blank" href="${Rest.getShaContentUrl(item.sha, item.mimeType, item.name, true, false)}"><img src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/></a><div class="mui-divider"></div>`
