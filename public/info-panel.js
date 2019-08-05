@@ -43,6 +43,7 @@ const template = `
         <div>parents: <div x-id='parents'></div></div>
         <div>sources: <div x-id='sources'></div></div>
         <div>exif: <div x-id="exif"></div></div>
+        <div>audio metadata: <div x-id="audioMetadata"></div></div>
         <div class="mui-divider"></div>
         <div x-id="close" class="mui-btn mui-btn--flat mui-btn--primary">Close</div>
     </div>
@@ -111,6 +112,12 @@ function show(item) {
         }
         else {
             content.exif.innerHTML = `no exif data`;
+        }
+        if (info.audioMetadata && info.audioMetadata.length) {
+            content.audioMetadata.innerHTML = `<pre>${JSON.stringify(info.audioMetadata, null, 2)}</pre>`;
+        }
+        else {
+            content.audioMetadata.innerHTML = `no audio metadata`;
         }
     };
     loadInfo();

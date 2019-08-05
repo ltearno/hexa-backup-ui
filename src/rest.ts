@@ -98,6 +98,7 @@ export async function getShaInfo(sha: string): Promise<{
     parents: string[]
     sources: string[]
     exifs: any[]
+    audioMetadata: any[]
 }> {
     return await Network.getData(`${HEXA_BACKUP_BASE_URL}/sha/${sha}/info`)
 }
