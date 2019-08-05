@@ -20,7 +20,7 @@ const template = `
             <a x-id="youtubeDlPlaylistLink" href='#'>Go to Youtube downloaded list</a>
         </div>
 
-        <h2>Running Jobs</h2>
+        <h2>Running jobs</h2>
         <div class="mui-panel">
             <pre x-id="runningJobs"></pre>
             <button x-id="refreshJobs" class="mui-btn mui-btn--flat">Refresh</button>
