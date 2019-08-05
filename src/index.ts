@@ -47,6 +47,7 @@ function readHashAndAct() {
     let hideAudioJukebox = false
     let hideInfoPanel = true
     let showSearch = true
+    let showSettings = false
 
     let hash = ''
     if (window.location.hash && window.location.hash.startsWith('#'))
@@ -58,8 +59,9 @@ function readHashAndAct() {
         searchItems(parsed.pathname.substr('/search/'.length))
     }
     else if (parsed.pathname == '/settings') {
-        loadSettings()
+        setContent(settingsPanel.root)
         showSearch = false
+        showSettings = true
     }
     else if (parsed.pathname.startsWith('/directories/')) {
         const sha = parsed.pathname.substring('/directories/'.length)
@@ -102,15 +104,16 @@ function readHashAndAct() {
     if (hideInfoPanel)
         InfoPanel.hide()
 
-    if (hideAudioJukebox)
-        audioPanel.root.classList.add('is-hidden')
-    else
-        audioPanel.root.classList.remove('is-hidden')
+    showIf(!hideAudioJukebox, audioPanel)
+    showIf(showSearch, searchPanel)
+    showIf(showSettings, settingsPanel)
+}
 
-    if (showSearch)
-        searchPanel.root.classList.remove('is-hidden')
+const showIf = (condition: boolean, panel: Templates.TemplateElements) => {
+    if (condition)
+        panel.root.classList.remove('is-hidden')
     else
-        searchPanel.root.classList.add('is-hidden')
+        panel.root.classList.add('is-hidden')
 }
 
 enum Mode {
@@ -320,10 +323,6 @@ async function loadDirectory(item: Rest.FileDescriptor) {
             })
             break
     }
-}
-
-async function loadSettings() {
-    setContent(settingsPanel.root)
 }
 
 async function loadReferences() {

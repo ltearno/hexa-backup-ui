@@ -44,6 +44,7 @@ function readHashAndAct() {
     let hideAudioJukebox = false;
     let hideInfoPanel = true;
     let showSearch = true;
+    let showSettings = false;
     let hash = '';
     if (window.location.hash && window.location.hash.startsWith('#'))
         hash = window.location.hash.substr(1);
@@ -52,8 +53,9 @@ function readHashAndAct() {
         searchItems(parsed.pathname.substr('/search/'.length));
     }
     else if (parsed.pathname == '/settings') {
-        loadSettings();
+        setContent(settingsPanel.root);
         showSearch = false;
+        showSettings = true;
     }
     else if (parsed.pathname.startsWith('/directories/')) {
         const sha = parsed.pathname.substring('/directories/'.length);
@@ -94,15 +96,16 @@ function readHashAndAct() {
     }
     if (hideInfoPanel)
         InfoPanel.hide();
-    if (hideAudioJukebox)
-        audioPanel.root.classList.add('is-hidden');
-    else
-        audioPanel.root.classList.remove('is-hidden');
-    if (showSearch)
-        searchPanel.root.classList.remove('is-hidden');
-    else
-        searchPanel.root.classList.add('is-hidden');
+    showIf(!hideAudioJukebox, audioPanel);
+    showIf(showSearch, searchPanel);
+    showIf(showSettings, settingsPanel);
 }
+const showIf = (condition, panel) => {
+    if (condition)
+        panel.root.classList.remove('is-hidden');
+    else
+        panel.root.classList.add('is-hidden');
+};
 var Mode;
 (function (Mode) {
     Mode[Mode["Audio"] = 0] = "Audio";
@@ -269,9 +272,6 @@ async function loadDirectory(item) {
             });
             break;
     }
-}
-async function loadSettings() {
-    setContent(settingsPanel.root);
 }
 async function loadReferences() {
     let waiting = beginWait(() => {
