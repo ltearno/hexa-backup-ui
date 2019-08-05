@@ -98,6 +98,10 @@ export async function getShaInfo(sha: string): Promise<{
     return await Network.getData(`${HEXA_BACKUP_BASE_URL}/sha/${sha}/info`)
 }
 
+export async function enqueueYoutubeDownload(youtubeUrl: string) {
+    Network.postData(`${HEXA_BACKUP_BASE_URL}/plugins/youtube/fetch`, { url: youtubeUrl })
+}
+
 export function getShaContentUrl(sha: string, mimeType: string, name: string, withPhantom: boolean, isDownload: boolean) {
     if (!sha)
         return '#'

@@ -11,6 +11,7 @@ import * as Slideshow from './slideshow'
 import * as InfoPanel from './info-panel'
 import * as ImageDetails from './image-detail'
 import * as Locations from './locations'
+import * as SettingsPanel from './settings-panel'
 
 /*
 hash urls :
@@ -54,6 +55,9 @@ function readHashAndAct() {
 
     if (parsed.pathname.startsWith('/search/')) {
         searchItems(parsed.pathname.substr('/search/'.length))
+    }
+    else if (parsed.pathname == '/settings') {
+        loadSettings()
     }
     else if (parsed.pathname.startsWith('/directories/')) {
         const sha = parsed.pathname.substring('/directories/'.length)
@@ -107,6 +111,7 @@ enum Mode {
     Image = 1
 }
 
+const settingsPanel = SettingsPanel.create()
 const searchPanel = SearchPanel.searchPanel.create()
 const audioPanel = AudioPanel.audioPanel.create()
 const audioJukebox = new AudioPanel.AudioJukebox(audioPanel)
@@ -308,6 +313,10 @@ async function loadDirectory(item: Rest.FileDescriptor) {
             })
             break
     }
+}
+
+async function loadSettings() {
+    setContent(settingsPanel.root)
 }
 
 async function loadReferences() {

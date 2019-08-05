@@ -13,6 +13,7 @@ const Slideshow = require("./slideshow");
 const InfoPanel = require("./info-panel");
 const ImageDetails = require("./image-detail");
 const Locations = require("./locations");
+const SettingsPanel = require("./settings-panel");
 /*
 hash urls :
 
@@ -48,6 +49,9 @@ function readHashAndAct() {
     let parsed = parseURL(hash);
     if (parsed.pathname.startsWith('/search/')) {
         searchItems(parsed.pathname.substr('/search/'.length));
+    }
+    else if (parsed.pathname == '/settings') {
+        loadSettings();
     }
     else if (parsed.pathname.startsWith('/directories/')) {
         const sha = parsed.pathname.substring('/directories/'.length);
@@ -98,6 +102,7 @@ var Mode;
     Mode[Mode["Audio"] = 0] = "Audio";
     Mode[Mode["Image"] = 1] = "Image";
 })(Mode || (Mode = {}));
+const settingsPanel = SettingsPanel.create();
 const searchPanel = SearchPanel.searchPanel.create();
 const audioPanel = AudioPanel.audioPanel.create();
 const audioJukebox = new AudioPanel.AudioJukebox(audioPanel);
@@ -258,6 +263,9 @@ async function loadDirectory(item) {
             });
             break;
     }
+}
+async function loadSettings() {
+    setContent(settingsPanel.root);
 }
 async function loadReferences() {
     let waiting = beginWait(() => {

@@ -54,6 +54,10 @@ async function getShaInfo(sha) {
     return await Network.getData(`${exports.HEXA_BACKUP_BASE_URL}/sha/${sha}/info`);
 }
 exports.getShaInfo = getShaInfo;
+async function enqueueYoutubeDownload(youtubeUrl) {
+    Network.postData(`${exports.HEXA_BACKUP_BASE_URL}/plugins/youtube/fetch`, { url: youtubeUrl });
+}
+exports.enqueueYoutubeDownload = enqueueYoutubeDownload;
 function getShaContentUrl(sha, mimeType, name, withPhantom, isDownload) {
     if (!sha)
         return '#';
