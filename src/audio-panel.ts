@@ -125,7 +125,7 @@ export class AudioJukebox {
                 else if (event.target == this.audioPanel.playlist.querySelector(`[x-id='play-immediately']`)) {
                     let checkbox = this.audioPanel.playlist.querySelector(`[x-id='play-immediately']`) as HTMLInputElement
 
-                    this.playImmediately = !!checkbox.value
+                    this.playImmediately = !!checkbox.checked
                     localStorage.setItem(`play-immediately`, this.playImmediately ? 'true' : 'false')
                 }
             }
@@ -281,7 +281,7 @@ export class AudioJukebox {
                 html += `<div style="flex-shrink: 0;" x-queue-index="${this.queue.length}" class="onclick mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`
 
             html += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`
-            html += `<div class="mui--text-dark-secondary"><label>Play immediately <input x-id='play-immediately' value='${this.playImmediately}' type="checkbox"/></label></div>`
+            html += `<div class="mui--text-dark-secondary"><label>Play immediately <input x-id='play-immediately' checked='${this.playImmediately}' type="checkbox"/></label></div>`
         }
         else {
             this.expandedElements.forEach(e => e.classList.add('is-hidden'))
