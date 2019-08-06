@@ -215,7 +215,9 @@ export class AudioJukebox {
 
         this.queue.push(item)
         localStorage.setItem('playlist-backup', JSON.stringify(this.queue))
-        this.play(this.queue.length - 1)
+        
+        if (!this.isPlaying())
+            this.play(this.queue.length - 1)
     }
 
     private play(index: number) {
@@ -296,5 +298,13 @@ export class AudioJukebox {
 
     private playlistItemHtml(index: number, name: string, oneLineText: boolean) {
         return `<div x-queue-index="${index}" class="onclick ${oneLineText ? 'is-onelinetext' : ''} ${index == this.currentIndex ? 'mui--text-headline' : ''}">${name}</div>`
+    }
+
+    private isPlaying() {
+        return this.audioPanel.player.currentSrc
+            && this.audioPanel.player.currentTime > 0
+            && !this.audioPanel.player.paused
+            && !this.audioPanel.player.ended
+            && this.audioPanel.player.readyState > 2
     }
 }
