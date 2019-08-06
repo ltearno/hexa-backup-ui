@@ -272,6 +272,7 @@ export class AudioJukebox {
                 html += `<div style="flex-shrink: 0;" x-queue-index="${this.queue.length}" class="onclick mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`
 
             html += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`
+            html += `<div class="mui--text-dark-secondary"><label>Play immediately <input type="checkbox"/></label></div>`
         }
         else {
             this.expandedElements.forEach(e => e.classList.add('is-hidden'))
