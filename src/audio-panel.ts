@@ -126,7 +126,7 @@ export class AudioJukebox {
                     let checkbox = this.audioPanel.playlist.querySelector(`[x-id='play-immediately']`) as HTMLInputElement
 
                     this.playImmediately = !!checkbox.value
-                    localStorage.setItem(`play-immediately`, this.playImmediately)
+                    localStorage.setItem(`play-immediately`, this.playImmediately ? 'true' : 'false')
                 }
             }
         })

@@ -90,7 +90,7 @@ class AudioJukebox {
                 else if (event.target == this.audioPanel.playlist.querySelector(`[x-id='play-immediately']`)) {
                     let checkbox = this.audioPanel.playlist.querySelector(`[x-id='play-immediately']`);
                     this.playImmediately = !!checkbox.value;
-                    localStorage.setItem(`play-immediately`, this.playImmediately);
+                    localStorage.setItem(`play-immediately`, this.playImmediately ? 'true' : 'false');
                 }
             }
         });
