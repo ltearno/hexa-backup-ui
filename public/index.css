@@ -241,6 +241,7 @@ html, body, input, textarea, button {
 
 .audio-footer>h3 {
     margin: 0;
+    box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.16), 0 -3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .audio-player {
