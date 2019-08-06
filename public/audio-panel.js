@@ -35,7 +35,7 @@ class AudioJukebox {
         this.currentIndex = -1;
         // if scroll to playing item is required after a playlist redraw
         this.scrollToPlayingItem = true;
-        this.playImmediately = !!localStorage.getItem(`play-immediately`);
+        this.playImmediately = localStorage.getItem(`play-immediately`) == 'true';
         try {
             let queue = JSON.parse(localStorage.getItem('playlist-backup'));
             if (queue && queue instanceof Array)

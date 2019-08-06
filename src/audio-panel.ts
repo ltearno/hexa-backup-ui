@@ -61,7 +61,7 @@ export class AudioJukebox {
     private scrollToPlayingItem = true
 
     constructor(private audioPanel: AudioPanelElements) {
-        this.playImmediately = !!localStorage.getItem(`play-immediately`)
+        this.playImmediately = localStorage.getItem(`play-immediately`) == 'true'
 
         try {
             let queue = JSON.parse(localStorage.getItem('playlist-backup'))
