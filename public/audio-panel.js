@@ -13,6 +13,7 @@ const templateHtml = `
     <div x-id="expander" class="onclick mui--text-center">☰</div>
     <div class="x-horizontal-flex" style="width:100%;">
         <a x-id="infoButton" href="#" class="mui-btn mui-btn--fab">Info</a>
+        <a x-id="nextButton" href="#" class="mui-btn mui-btn--fab">Next</a>
         <audio x-id="player" class="audio-player" controls preload="metadata"></audio>
         <a x-id="addPlaylistButton" href="#toto" class="mui-btn mui-btn--fab" style="background-color: #ff408173; color: white;">+ PL.</a></div>
     </div>
@@ -120,6 +121,10 @@ class AudioJukebox {
                 lastWrite: 0,
                 size: 0
             });
+        });
+        this.audioPanel.nextButton.addEventListener('click', async (event) => {
+            UiTools.stopEvent(event);
+            this.playNext();
         });
         this.refreshPlaylist();
     }
