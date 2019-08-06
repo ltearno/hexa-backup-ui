@@ -213,7 +213,7 @@ class AudioJukebox {
             if (this.itemUnroller && this.itemUnroller.hasNext())
                 html += `<div style="flex-shrink: 0;" x-queue-index="${this.queue.length}" class="onclick mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`;
             html += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`;
-            html += `<div class="mui--text-dark-secondary"><label>Play immediately <input x-id='play-immediately' ${this.playImmediately ? 'checked' : ''} type="checkbox"/></label></div>`;
+            html += `<div class="mui--text-dark-secondary"><label>Play immediately <input x-id='play-immediately' class="mui-checkbox--inline" ${this.playImmediately ? 'checked' : ''} type="checkbox"/></label></div>`;
         }
         else {
             this.expandedElements.forEach(e => e.classList.add('is-hidden'));
