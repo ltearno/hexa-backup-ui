@@ -47,12 +47,11 @@ class AudioJukebox {
             this.playNext();
         });
         this.audioPanel.player.addEventListener('error', () => {
-            console.log(`audio player error`);
+            Messages.displayMessage(`Audio player encounter an error, playing next song`, -1);
             this.playNext();
         });
         this.audioPanel.player.addEventListener('stalled', () => {
-            console.log('stalled, try next');
-            this.playNext();
+            Messages.displayMessage(`Audio player is stalled (low network?)`, -1);
         });
         this.audioPanel.expander.addEventListener('click', () => {
             this.largeDisplay = !this.largeDisplay;
@@ -162,7 +161,6 @@ class AudioJukebox {
     pushQueueAndPlay(item) {
         if (!item.mimeType.startsWith('audio/'))
             return;
-        this.scrollToPlayingItem = true;
         this.queue.push(item);
         localStorage.setItem('playlist-backup', JSON.stringify(this.queue));
         this.play(this.queue.length - 1);
