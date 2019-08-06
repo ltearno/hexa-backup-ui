@@ -215,9 +215,11 @@ export class AudioJukebox {
 
         this.queue.push(item)
         localStorage.setItem('playlist-backup', JSON.stringify(this.queue))
-        
+
         if (!this.isPlaying())
             this.play(this.queue.length - 1)
+        else
+            Messages.displayMessage(`${item.name} added to playlist`, 0)
     }
 
     private play(index: number) {
