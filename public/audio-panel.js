@@ -111,7 +111,7 @@ class AudioJukebox {
             const overlay = templates_1.createTemplateInstance(`
                 <div class="mui-container" style="text-align: center;">
                     <div class='mui-panel'>
-                        <h2>Choose a playlist</h2>
+                        <h2>Choose a playlist to add '${item.name}'</h2>
                         <div style="display:flex; flex-flow: column nowrap;">
                         ${playlists
                 .map(p => p.substr(0, 1).toUpperCase() + p.substr(1).toLowerCase())
