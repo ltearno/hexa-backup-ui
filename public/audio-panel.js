@@ -163,7 +163,8 @@ class AudioJukebox {
             return;
         this.queue.push(item);
         localStorage.setItem('playlist-backup', JSON.stringify(this.queue));
-        this.play(this.queue.length - 1);
+        if (!this.isPlaying())
+            this.play(this.queue.length - 1);
     }
     play(index) {
         if (index < 0)
@@ -225,6 +226,13 @@ class AudioJukebox {
     }
     playlistItemHtml(index, name, oneLineText) {
         return `<div x-queue-index="${index}" class="onclick ${oneLineText ? 'is-onelinetext' : ''} ${index == this.currentIndex ? 'mui--text-headline' : ''}">${name}</div>`;
+    }
+    isPlaying() {
+        return this.audioPanel.player.currentSrc
+            && this.audioPanel.player.currentTime > 0
+            && !this.audioPanel.player.paused
+            && !this.audioPanel.player.ended
+            && this.audioPanel.player.readyState > 2;
     }
 }
 exports.AudioJukebox = AudioJukebox;
