@@ -117,19 +117,35 @@ class AudioJukebox {
                 .map(p => p.substr(0, 1).toUpperCase() + p.substr(1).toLowerCase())
                 .map(p => `<div x-playlist="${p}" class="mui-btn mui-btn--flat">${p}</div>`)
                 .join('')}
+                        <form x-id="form" class="mui-form--inline">
+                            <div class="mui-textfield">
+                                <input x-id="playlistInput" type="text" style="text-align: center;" placeholder="New playlist">
+                            </div>
+                            <button role="submit" class="mui-btn mui-btn--flat">Create</button>
+                        </form>
                         </div>
                     </div>
                 </div>`);
             mui.overlay('on', options, overlay.root);
+            const addToPlaylist = async (playlist) => {
+                let extension = MimeTypes.extensionFromMimeType(item.mimeType);
+                await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`);
+                Messages.displayMessage(`👍 ${item.name} added to playlist '${playlist}'`, 1);
+            };
             overlay.root.addEventListener('click', async (event) => {
                 UiTools.stopEvent(event);
                 const target = event.target;
                 if (target.hasAttribute('x-playlist')) {
                     const playlist = target.getAttribute('x-playlist');
-                    let extension = MimeTypes.extensionFromMimeType(item.mimeType);
-                    await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`);
-                    Messages.displayMessage(`👍 ${item.name} added to playlist '${playlist}'`, 1);
+                    await addToPlaylist(playlist);
                 }
+            });
+            overlay.form.addEventListener('submit', async (event) => {
+                UiTools.stopEvent(event);
+                const playlist = overlay.playlistInput.value;
+                if (!playlist || playlist.trim() == '')
+                    return;
+                await addToPlaylist(playlist);
             });
         });
         this.audioPanel.infoButton.addEventListener('click', async (event) => {
