@@ -359,14 +359,9 @@ async function loadPlaylists() {
         DirectoryPanel.directoryPanel.setLoading(directoryPanel, "Playlists")
     })
 
-    let references = await Rest.getReferences()
-    let user = await Auth.me()
+    let playlists = await Rest.getPlaylists()
 
-    const prefix = `PLUGIN-PLAYLISTS-${user.uuid.toUpperCase()}-`
-
-    let items: Rest.FileDescriptor[] = references
-        .filter(reference => reference.toUpperCase().startsWith(prefix))
-        .map(reference => reference.substr(prefix.length))
+    let items: Rest.FileDescriptor[] = playlists
         .map(reference => reference.substr(0, 1).toUpperCase() + reference.substr(1).toLowerCase())
         .map(reference => ({
             name: reference,

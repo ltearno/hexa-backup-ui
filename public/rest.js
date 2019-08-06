@@ -81,6 +81,10 @@ function getShaImageMediumThumbnailUrl(sha, mimeType) {
     return `${exports.HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/medium?type=${mimeType}`;
 }
 exports.getShaImageMediumThumbnailUrl = getShaImageMediumThumbnailUrl;
+async function getPlaylists() {
+    return Network.getData(`${exports.HEXA_BACKUP_BASE_URL}/plugins/playlists`);
+}
+exports.getPlaylists = getPlaylists;
 async function putItemToPlaylist(playlistName, sha, mimeType, name) {
     let payload = {
         items: [

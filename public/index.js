@@ -300,12 +300,8 @@ async function loadPlaylists() {
         setContent(directoryPanel.root);
         DirectoryPanel.directoryPanel.setLoading(directoryPanel, "Playlists");
     });
-    let references = await Rest.getReferences();
-    let user = await Auth.me();
-    const prefix = `PLUGIN-PLAYLISTS-${user.uuid.toUpperCase()}-`;
-    let items = references
-        .filter(reference => reference.toUpperCase().startsWith(prefix))
-        .map(reference => reference.substr(prefix.length))
+    let playlists = await Rest.getPlaylists();
+    let items = playlists
         .map(reference => reference.substr(0, 1).toUpperCase() + reference.substr(1).toLowerCase())
         .map(reference => ({
         name: reference,

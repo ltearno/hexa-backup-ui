@@ -139,6 +139,10 @@ export function getShaImageMediumThumbnailUrl(sha: string, mimeType: string) {
     return `${HEXA_BACKUP_BASE_URL}/sha/${sha}/plugins/image/medium?type=${mimeType}`
 }
 
+export async function getPlaylists(): Promise<string[]> {
+    return Network.getData(`${HEXA_BACKUP_BASE_URL}/plugins/playlists`)
+}
+
 export async function putItemToPlaylist(playlistName: string, sha: string, mimeType: string, name: string): Promise<any> {
     let payload = {
         items: [

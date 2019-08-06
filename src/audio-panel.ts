@@ -5,6 +5,8 @@ import * as MimeTypes from './mime-types-module'
 import * as Messages from './messages'
 import * as Locations from './locations'
 
+declare var mui: any
+
 const templateHtml = `
 <div class="audio-footer mui-panel">
     <h3 class="x-when-large-display">Playlist</h3>
@@ -136,18 +138,41 @@ export class AudioJukebox {
         this.audioPanel.addPlaylistButton.addEventListener('click', async event => {
             UiTools.stopEvent(event)
 
-            const playlist = 'favorites' // todo should be a parameter...
-
             let item = this.currentItem()
             if (!item) {
                 Messages.displayMessage(`Cannot add to playlist, nothing playing`, -1)
                 return
             }
 
-            let extension = MimeTypes.extensionFromMimeType(item.mimeType)
+            const options = {
+                'keyboard': true,
+                'static': false,
+                'onclose': function () { }
+            }
 
-            await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`)
-            Messages.displayMessage(`👍 ${item.name} added to playlist '${playlist}'`, 1)
+            let playlists = await Rest.getPlaylists()
+
+            const overlay = createTemplateInstance(`
+                <div>
+                    <h2>Choose a playlist</h2>
+                    ${playlists
+                    .map(p => p.substr(0, 1).toUpperCase() + p.substr(1).toLowerCase())
+                    .map(p => `<div x-playlist="${p}" class="mui-btn mui-btn--flat">${p}</div>`)
+                    .join('')}
+                </div>`)
+            mui.overlay('on', options, overlay.root)
+
+            overlay.root.addEventListener('click', async event => {
+                UiTools.stopEvent(event)
+
+                const target = event.target as HTMLElement
+                if (target.hasAttribute('x-playlist')) {
+                    const playlist = target.getAttribute('x-playlist')
+                    let extension = MimeTypes.extensionFromMimeType(item.mimeType)
+                    await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`)
+                    Messages.displayMessage(`👍 ${item.name} added to playlist '${playlist}'`, 1)
+                }
+            })
         })
 
         this.audioPanel.infoButton.addEventListener('click', async event => {
@@ -168,7 +193,7 @@ export class AudioJukebox {
             })
         })
 
-        this.audioPanel.nextButton.addEventListener('click',async event=>{
+        this.audioPanel.nextButton.addEventListener('click', async event => {
             UiTools.stopEvent(event)
 
             this.playNext()
