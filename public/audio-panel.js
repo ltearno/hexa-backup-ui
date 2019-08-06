@@ -109,12 +109,14 @@ class AudioJukebox {
             };
             let playlists = await Rest.getPlaylists();
             const overlay = templates_1.createTemplateInstance(`
-                <div>
-                    <h2>Choose a playlist</h2>
-                    ${playlists
+                <div class="mui-container">
+                    <div class='mui-panel'>
+                        <h2>Choose a playlist</h2>
+                        ${playlists
                 .map(p => p.substr(0, 1).toUpperCase() + p.substr(1).toLowerCase())
                 .map(p => `<div x-playlist="${p}" class="mui-btn mui-btn--flat">${p}</div>`)
                 .join('')}
+                    </div>
                 </div>`);
             mui.overlay('on', options, overlay.root);
             overlay.root.addEventListener('click', async (event) => {
