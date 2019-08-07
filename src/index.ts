@@ -184,24 +184,6 @@ function beautifyNames(items: Rest.FileDescriptor[]) {
     })
 }
 
-function goShaInfo(item: Rest.FileDescriptor) {
-    Locations.goShaInfo(item)
-}
-
-function goSearchItems(term: string) {
-    const url = `#/search/${term}`
-    window.location.href = url
-}
-
-function goReference(name: string) {
-    const url = `#/refs/${name}`
-    window.location.href = url
-}
-
-function goPlaylist(name: string) {
-    window.location.href = `#/playlists/${name}`
-}
-
 async function searchItems(term: string) {
     SearchPanel.searchPanel.displayTitle(searchPanel, false)
 
@@ -259,7 +241,7 @@ searchPanel.form.addEventListener('submit', event => {
     let term = searchPanel.term.value
     searchPanel.term.blur()
 
-    goSearchItems(term)
+    Locations.goSearchItems(term)
 })
 
 function getMimeType(f: Rest.DirectoryDescriptorFile) {
@@ -425,7 +407,7 @@ function itemDefaultAction(childIndex: number, event: Event) {
 
     if ((event.target as HTMLElement).classList.contains('x-info-display-action')) {
         UiTool.stopEvent(event)
-        goShaInfo(item)
+        Locations.goShaInfo(item)
         return
     }
 
@@ -458,16 +440,16 @@ function itemDefaultAction(childIndex: number, event: Event) {
     if (item.mimeType == 'application/directory') {
         return
     }
+    else if (item.mimeType == 'application/reference') {
+        return
+    }
+    else if (item.mimeType == 'application/playlist') {
+        return
+    }
 
     UiTool.stopEvent(event)
 
-    if (item.mimeType == 'application/reference') {
-        goReference(item.sha)
-    }
-    else if (item.mimeType == 'application/playlist') {
-        goPlaylist(item.sha)
-    }
-    else if (item.mimeType.startsWith('audio/')) {
+    if (item.mimeType.startsWith('audio/')) {
         audioJukebox.addAndPlay(item)
 
         // set an unroller

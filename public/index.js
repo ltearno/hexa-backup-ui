@@ -161,20 +161,6 @@ function beautifyNames(items) {
         return file;
     });
 }
-function goShaInfo(item) {
-    Locations.goShaInfo(item);
-}
-function goSearchItems(term) {
-    const url = `#/search/${term}`;
-    window.location.href = url;
-}
-function goReference(name) {
-    const url = `#/refs/${name}`;
-    window.location.href = url;
-}
-function goPlaylist(name) {
-    window.location.href = `#/playlists/${name}`;
-}
 async function searchItems(term) {
     SearchPanel.searchPanel.displayTitle(searchPanel, false);
     const waiting = beginWait(() => Messages.displayMessage(`Still searching '${term}' ...`, 0));
@@ -220,7 +206,7 @@ searchPanel.form.addEventListener('submit', event => {
     UiTool.stopEvent(event);
     let term = searchPanel.term.value;
     searchPanel.term.blur();
-    goSearchItems(term);
+    Locations.goSearchItems(term);
 });
 function getMimeType(f) {
     if (f.isDirectory)
@@ -352,7 +338,7 @@ function itemDefaultAction(childIndex, event) {
     let item = lastDisplayedFiles[childIndex];
     if (event.target.classList.contains('x-info-display-action')) {
         UiTool.stopEvent(event);
-        goShaInfo(item);
+        Locations.goShaInfo(item);
         return;
     }
     if (event.target.classList.contains('x-image-zoom-action')) {
@@ -379,14 +365,14 @@ function itemDefaultAction(childIndex, event) {
     if (item.mimeType == 'application/directory') {
         return;
     }
-    UiTool.stopEvent(event);
-    if (item.mimeType == 'application/reference') {
-        goReference(item.sha);
+    else if (item.mimeType == 'application/reference') {
+        return;
     }
     else if (item.mimeType == 'application/playlist') {
-        goPlaylist(item.sha);
+        return;
     }
-    else if (item.mimeType.startsWith('audio/')) {
+    UiTool.stopEvent(event);
+    if (item.mimeType.startsWith('audio/')) {
         audioJukebox.addAndPlay(item);
         // set an unroller
         if (childIndex >= lastDisplayedFiles.length - 1) {
