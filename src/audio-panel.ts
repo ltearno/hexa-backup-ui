@@ -152,22 +152,22 @@ export class AudioJukebox {
 
             let playlists = await Rest.getPlaylists()
 
-            const overlay: { root: HTMLElement; form: HTMLFormElement; playlistInput: HTMLInputElement } = createTemplateInstance(`
+            const overlay: { root: HTMLElement; form: HTMLFormElement; playlistInput: HTMLInputElement; existingPlaylists: HTMLElement } = createTemplateInstance(`
                 <div class="mui-container" style="text-align: center;">
                     <div class='mui-panel'>
                         <h2>Choose a playlist to add '${item.name}'</h2>
-                        <div style="display:flex; flex-flow: column nowrap;">
+                        <div x-id='existingPlaylists' style="display:flex; flex-flow: column nowrap;">
                         ${playlists
                     .map(p => p.substr(0, 1).toUpperCase() + p.substr(1).toLowerCase())
                     .map(p => `<div x-playlist="${p}" class="mui-btn mui-btn--flat">${p}</div>`)
                     .join('')}
+                        </div>
                         <form x-id="form" class="mui-form--inline">
                             <div class="mui-textfield">
                                 <input x-id="playlistInput" type="text" style="text-align: center;" placeholder="New playlist">
                             </div>
                             <button role="submit" class="mui-btn mui-btn--flat">Create</button>
                         </form>
-                        </div>
                     </div>
                 </div>`)
             mui.overlay('on', options, overlay.root)
@@ -179,7 +179,7 @@ export class AudioJukebox {
                 Messages.displayMessage(`👍 ${item.name} added to playlist '${playlist}'`, 1)
             }
 
-            overlay.root.addEventListener('click', async event => {
+            overlay.existingPlaylists.addEventListener('click', async event => {
                 UiTools.stopEvent(event)
 
                 const target = event.target as HTMLElement
