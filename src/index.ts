@@ -404,14 +404,15 @@ async function loadReference(name: string) {
 
 function itemDefaultAction(childIndex: number, event: Event) {
     let item = lastDisplayedFiles[childIndex]
+    const target = event.target as HTMLElement
 
-    if ((event.target as HTMLElement).classList.contains('x-info-display-action')) {
+    if (target.classList.contains('x-info-display-action')) {
         UiTool.stopEvent(event)
         Locations.goShaInfo(item)
         return
     }
 
-    if ((event.target as HTMLElement).classList.contains('x-image-zoom-action')) {
+    if (target.classList.contains('x-image-zoom-action')) {
         UiTool.stopEvent(event)
         let unrolledItems = lastDisplayedFiles
         let currentPosition = childIndex

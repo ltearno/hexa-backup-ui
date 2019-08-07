@@ -336,12 +336,13 @@ async function loadReference(name) {
 }
 function itemDefaultAction(childIndex, event) {
     let item = lastDisplayedFiles[childIndex];
-    if (event.target.classList.contains('x-info-display-action')) {
+    const target = event.target;
+    if (target.classList.contains('x-info-display-action')) {
         UiTool.stopEvent(event);
         Locations.goShaInfo(item);
         return;
     }
-    if (event.target.classList.contains('x-image-zoom-action')) {
+    if (target.classList.contains('x-image-zoom-action')) {
         UiTool.stopEvent(event);
         let unrolledItems = lastDisplayedFiles;
         let currentPosition = childIndex;
