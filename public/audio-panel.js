@@ -34,6 +34,7 @@ class AudioJukebox {
         this.largeDisplay = false;
         this.queue = [];
         this.currentIndex = -1;
+        this.lastAddedPlaylist = null;
         // if scroll to playing item is required after a playlist redraw
         this.scrollToPlayingItem = true;
         this.playImmediately = localStorage.getItem(`play-immediately`) == 'true';
@@ -115,7 +116,7 @@ class AudioJukebox {
                         <div x-id='existingPlaylists' style="display:flex; flex-flow: column nowrap;">
                         ${playlists
                 .map(p => p.substr(0, 1).toUpperCase() + p.substr(1).toLowerCase())
-                .map(p => `<div x-playlist="${p}" class="mui-btn mui-btn--flat">${p}</div>`)
+                .map(p => `<div x-playlist="${p}" class="mui-btn mui-btn--flat ${p == this.lastAddedPlaylist ? 'mui-btn--primary' : ''}">${p}</div>`)
                 .join('')}
                         </div>
                         <form x-id="form" class="mui-form--inline">
@@ -129,6 +130,7 @@ class AudioJukebox {
                 </div>`);
             mui.overlay('on', options, overlay.root);
             const addToPlaylist = async (playlist) => {
+                this.lastAddedPlaylist = playlist;
                 mui.overlay('off');
                 let extension = MimeTypes.extensionFromMimeType(item.mimeType);
                 await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`);
