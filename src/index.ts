@@ -454,10 +454,13 @@ function itemDefaultAction(childIndex: number, event: Event) {
             next: () => nextPosition(1),
             previous: () => nextPosition(-1)
         })
+
+        return
     }
 
     if (item.mimeType == 'application/directory') {
-        goLoadDirectory(item.sha, item.name)
+        //goLoadDirectory(item.sha, item.name)
+        return
     }
     else if (item.mimeType == 'application/reference') {
         goReference(item.sha)
