@@ -160,7 +160,7 @@ export class AudioJukebox {
                         <div x-id='existingPlaylists' style="display:flex; flex-flow: column nowrap;">
                         ${playlists
                     .map(p => p.substr(0, 1).toUpperCase() + p.substr(1).toLowerCase())
-                    .map(p => `<div x-playlist="${p}" class="mui-btn mui-btn--flat ${p == this.lastAddedPlaylist ? 'mui-btn--primary' : ''}">${p}</div>`)
+                    .map(p => `<div x-playlist="${p}" class="mui-btn ${p == this.lastAddedPlaylist ? 'mui-btn--primary' : 'mui-btn--flat'}">${p}</div>`)
                     .join('')}
                         </div>
                         <form x-id="form" class="mui-form--inline">
