@@ -280,7 +280,7 @@ class AudioJukebox {
             this.expandedElements.forEach(e => e.classList.remove('is-hidden'));
             for (let i = 0; i < this.queue.length; i++) {
                 let item = this.queue[i];
-                html += this.playlistItemHtml(i, item.name, false);
+                html += this.playlistItemHtml(i, item.name, item.sha, false);
             }
             if (this.itemUnroller && this.itemUnroller.hasNext())
                 html += `<div style="flex-shrink: 0;" x-queue-index="${this.queue.length}" class="onclick mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`;
@@ -293,7 +293,7 @@ class AudioJukebox {
         else {
             this.expandedElements.forEach(e => e.classList.add('is-hidden'));
             if (this.currentIndex >= 0 && this.currentIndex < this.queue.length) {
-                html += this.playlistItemHtml(this.currentIndex, this.queue[this.currentIndex].name, true);
+                html += this.playlistItemHtml(this.currentIndex, this.queue[this.currentIndex].name, this.queue[this.currentIndex].sha, true);
                 if (this.currentIndex < this.queue.length - 1) {
                     html += `<div style="flex-shrink: 0;" x-queue-index="${this.currentIndex + 1}" class="onclick mui--text-dark-secondary is-onelinetext">followed by '${this.queue[this.currentIndex + 1].name.substr(0, 20)}' ...</div>`;
                 }
@@ -309,8 +309,8 @@ class AudioJukebox {
             this.audioPanel.playlist.scrollTop = this.audioPanel.playlist.scrollHeight;
         }
     }
-    playlistItemHtml(index, name, oneLineText) {
-        return `<div x-queue-index="${index}" class="onclick ${oneLineText ? 'is-onelinetext' : ''} ${index == this.currentIndex ? 'mui--text-headline' : ''}">${name}</div>`;
+    playlistItemHtml(index, name, sha, oneLineText) {
+        return `<div x-queue-index="${index}" class="onclick ${oneLineText ? 'is-onelinetext' : ''} ${index == this.currentIndex ? 'mui--text-headline' : ''}">${name}${PlayCache.hasBeenPlayed(sha) ? ' ✔️' : ''}</div>`;
     }
     isPlaying() {
         return this.audioPanel.player.currentSrc
