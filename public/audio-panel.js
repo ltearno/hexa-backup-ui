@@ -31,6 +31,7 @@ class AudioJukebox {
     constructor(audioPanel) {
         this.audioPanel = audioPanel;
         this.playImmediately = false;
+        this.insertAfterPlaying = false;
         this.largeDisplay = false;
         this.queue = [];
         this.currentIndex = -1;
@@ -38,6 +39,7 @@ class AudioJukebox {
         // if scroll to playing item is required after a playlist redraw
         this.scrollToPlayingItem = true;
         this.playImmediately = localStorage.getItem(`play-immediately`) == 'true';
+        this.insertAfterPlaying = localStorage.getItem('insert-after-playing') == 'true';
         try {
             let queue = JSON.parse(localStorage.getItem('playlist-backup'));
             if (queue && queue instanceof Array)
@@ -93,6 +95,11 @@ class AudioJukebox {
                     let checkbox = this.audioPanel.playlist.querySelector(`[x-id='play-immediately']`);
                     this.playImmediately = !!checkbox.checked;
                     localStorage.setItem(`play-immediately`, this.playImmediately ? 'true' : 'false');
+                }
+                else if (event.target == this.audioPanel.playlist.querySelector(`[x-id='insert-after-playing']`)) {
+                    let checkbox = this.audioPanel.playlist.querySelector(`[x-id='insert-after-playing']`);
+                    this.insertAfterPlaying = !!checkbox.checked;
+                    localStorage.setItem(`insert-after-playing`, this.insertAfterPlaying ? 'true' : 'false');
                 }
             }
         });
@@ -268,7 +275,10 @@ class AudioJukebox {
             if (this.itemUnroller && this.itemUnroller.hasNext())
                 html += `<div style="flex-shrink: 0;" x-queue-index="${this.queue.length}" class="onclick mui--text-dark-secondary is-onelinetext">${this.itemUnroller.name()}</div>`;
             html += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`;
-            html += `<div class="mui--text-dark-secondary"><label>Play immediately <input x-id='play-immediately' class="mui-checkbox--inline" ${this.playImmediately ? 'checked' : ''} type="checkbox"/></label></div>`;
+            html += `<div class="mui--text-dark-secondary">
+                    <label>Play immediately <input x-id='play-immediately' class="mui-checkbox--inline" ${this.playImmediately ? 'checked' : ''} type="checkbox"/></label>
+                    <label>Insert after playing item <input x-id='insert-after-playing' class="mui-checkbox--inline" ${this.insertAfterPlaying ? 'checked' : ''} type="checkbox"/></label>
+                </div>`;
         }
         else {
             this.expandedElements.forEach(e => e.classList.add('is-hidden'));
