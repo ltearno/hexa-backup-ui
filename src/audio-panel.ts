@@ -377,7 +377,7 @@ export class AudioJukebox {
             this.expandedElements.forEach(e => e.classList.add('is-hidden'))
 
             if (this.currentIndex >= 0 && this.currentIndex < this.queue.length) {
-                html += this.playlistItemHtml(this.currentIndex, this.queue[this.currentIndex].name, this.queue[this.currentIndex].sha, true)
+                html += this.playlistItemHtml(this.currentIndex, this.queue[this.currentIndex].name, null, true)
 
                 if (this.currentIndex < this.queue.length - 1) {
                     html += `<div style="flex-shrink: 0;" x-queue-index="${this.currentIndex + 1}" class="onclick mui--text-dark-secondary is-onelinetext">followed by '${this.queue[this.currentIndex + 1].name.substr(0, 20)}' ...</div>`
@@ -399,7 +399,7 @@ export class AudioJukebox {
     }
 
     private playlistItemHtml(index: number, name: string, sha: string, oneLineText: boolean) {
-        return `<div x-queue-index="${index}" class="onclick ${oneLineText ? 'is-onelinetext' : ''} ${index == this.currentIndex ? 'mui--text-headline' : ''}">${name}${PlayCache.hasBeenPlayed(sha) ? ' ✔️' : ''}</div>`
+        return `<div x-queue-index="${index}" class="onclick ${oneLineText ? 'is-onelinetext' : ''} ${index == this.currentIndex ? 'mui--text-headline' : ''}">${name}${sha && PlayCache.hasBeenPlayed(sha) ? ' ✔️' : ''}</div>`
     }
 
     private isPlaying() {
