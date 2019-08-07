@@ -60,7 +60,7 @@ export class AudioJukebox {
     private currentIndex: number = -1
     private itemUnroller: JukeboxItemUnroller
     private expandedElements: NodeListOf<HTMLElement>
-    private lastAddedPlaylist: string = null
+    private lastAddedPlaylist: string = localStorage.getItem('last-added-playlist') || null
 
     // if scroll to playing item is required after a playlist redraw
     private scrollToPlayingItem = true
@@ -169,13 +169,14 @@ export class AudioJukebox {
                             </div>
                             <button role="submit" class="mui-btn mui-btn--flat">Create</button>
                         </form>
-                        <button x-id='cancel' class="mui-btn mui-btn--flat">Cancel</button>
+                        <button x-id='cancel' class="mui-btn mui-btn--flat mui-btn--accent">Cancel</button>
                     </div>
                 </div>`)
             mui.overlay('on', options, overlay.root)
 
             const addToPlaylist = async (playlist: string) => {
                 this.lastAddedPlaylist = playlist
+                localStorage.setItem('last-added-playlist', this.lastAddedPlaylist)
                 mui.overlay('off')
                 let extension = MimeTypes.extensionFromMimeType(item.mimeType)
                 await Rest.putItemToPlaylist(playlist, item.sha, item.mimeType, `${item.name}.${extension}`)
