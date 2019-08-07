@@ -230,10 +230,18 @@ class AudioJukebox {
     pushQueueAndPlay(item) {
         if (!item.mimeType.startsWith('audio/'))
             return;
-        this.queue.push(item);
+        let insertedAt = -1;
+        if (this.insertAfterPlaying && this.currentIndex >= 0 && this.currentIndex < this.queue.length - 1) {
+            insertedAt = this.currentIndex + 1;
+            this.queue.splice(insertedAt, 0, item);
+        }
+        else {
+            insertedAt = this.queue.length;
+            this.queue.push(item);
+        }
         localStorage.setItem('playlist-backup', JSON.stringify(this.queue));
         if (this.playImmediately || !this.isPlaying())
-            this.play(this.queue.length - 1);
+            this.play(insertedAt);
         else
             Messages.displayMessage(`${item.name} added to playlist`, 0);
     }
