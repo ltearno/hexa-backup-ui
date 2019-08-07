@@ -4,6 +4,7 @@ import * as UiTools from './ui-tool'
 import * as MimeTypes from './mime-types-module'
 import * as Messages from './messages'
 import * as Locations from './locations'
+import * as PlayCache from './play-cache'
 
 declare var mui: any
 
@@ -330,6 +331,8 @@ export class AudioJukebox {
             document.querySelectorAll(`[x-for-sha='${item.sha.substr(0, 5)}']`).forEach(e => e.classList.add('is-weighted'))
 
             document.title = `${item.name} playing by Raccoon`
+
+            PlayCache.setPlayed(item.sha)
         } else {
             document.title = `Raccoon`
         }
