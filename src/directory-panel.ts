@@ -35,7 +35,7 @@ export const directoryPanel = {
         elements.items.classList.add('x-items-panel')
 
         if (values.items && values.items.length) {
-            elements.items.innerHTML = values.items.map(Snippets.itemToHtml).join('')
+            elements.items.innerHTML = values.items.map(i => Snippets.itemToHtml(i, values.name)).join('')
         }
         else {
             elements.items.innerHTML = `<div class="mui--text-dark-hint">No results</div>`
@@ -53,7 +53,7 @@ export const directoryPanel = {
                 return `<div><img class="x-image-zoom-action onclick" loading="lazy" src="blank.jpeg" data-src="${Rest.getShaImageThumbnailUrl(item.sha, item.mimeType)}"/></div>`
             }
             else {
-                return `<div>${Snippets.itemToHtml(item)}</div>`
+                return `<div>${Snippets.itemToHtml(item, values.term)}</div>`
             }
         }).join('')
 
