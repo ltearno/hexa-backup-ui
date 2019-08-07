@@ -366,8 +366,10 @@ export class AudioJukebox {
 
             html += `<div class="mui--text-dark-secondary"><a x-id='clear-playlist' href='#'>clear playlist</a></div>`
             html += `<div class="mui--text-dark-secondary">
-                    <label>Play immediately <input x-id='play-immediately' class="mui-checkbox--inline" ${this.playImmediately ? 'checked' : ''} type="checkbox"/></label>
-                    <label>Insert after playing item <input x-id='insert-after-playing' class="mui-checkbox--inline" ${this.insertAfterPlaying ? 'checked' : ''} type="checkbox"/></label>
+                    <div>
+                        <label>Play immediately <input x-id='play-immediately' class="mui-checkbox--inline" ${this.playImmediately ? 'checked' : ''} type="checkbox"/></label>
+                        <label>Insert after playing item <input x-id='insert-after-playing' class="mui-checkbox--inline" ${this.insertAfterPlaying ? 'checked' : ''} type="checkbox"/></label>
+                    </div>
                 </div>`
         }
         else {
