@@ -1,8 +1,9 @@
 import * as Rest from './rest'
+import * as Locations from './locations'
 
 export function itemToHtml(f: Rest.FileDescriptor, currentName: string) {
     if (f.mimeType == 'application/directory')
-        return `<div class="onclick"><i><a href='#/directories/${f.sha}?name=${encodeURIComponent(currentName ? (currentName + '/' + f.name) : f.name)}'>${f.name}</a> ...</i></div>`
+        return `<div class="onclick"><i><a href='${Locations.getDirectoryUrl(f.sha,f.name,currentName)}'>${f.name}</a> ...</i></div>`
     else if (f.mimeType == 'application/reference')
         return `<div class="onclick"><i>${f.name} ...</i></div>`
     else if (f.mimeType == 'application/playlist')

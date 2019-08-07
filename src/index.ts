@@ -193,11 +193,6 @@ function goSearchItems(term: string) {
     window.location.href = url
 }
 
-function goLoadDirectory(sha: string, name: string) {
-    const url = `#/directories/${sha}?name=${encodeURIComponent(lastSearchTerm ? (lastSearchTerm + '/' + name) : name)}`
-    window.location.href = url
-}
-
 function goReference(name: string) {
     const url = `#/refs/${name}`
     window.location.href = url
@@ -461,7 +456,6 @@ function itemDefaultAction(childIndex: number, event: Event) {
     }
 
     if (item.mimeType == 'application/directory') {
-        //goLoadDirectory(item.sha, item.name)
         return
     }
 

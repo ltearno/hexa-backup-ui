@@ -168,10 +168,6 @@ function goSearchItems(term) {
     const url = `#/search/${term}`;
     window.location.href = url;
 }
-function goLoadDirectory(sha, name) {
-    const url = `#/directories/${sha}?name=${encodeURIComponent(lastSearchTerm ? (lastSearchTerm + '/' + name) : name)}`;
-    window.location.href = url;
-}
 function goReference(name) {
     const url = `#/refs/${name}`;
     window.location.href = url;
@@ -381,7 +377,6 @@ function itemDefaultAction(childIndex, event) {
         return;
     }
     if (item.mimeType == 'application/directory') {
-        //goLoadDirectory(item.sha, item.name)
         return;
     }
     UiTool.stopEvent(event);

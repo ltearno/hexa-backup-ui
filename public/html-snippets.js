@@ -1,9 +1,10 @@
 ﻿"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Rest = require("./rest");
+const Locations = require("./locations");
 function itemToHtml(f, currentName) {
     if (f.mimeType == 'application/directory')
-        return `<div class="onclick"><i><a href='#/directories/${f.sha}?name=${encodeURIComponent(currentName ? (currentName + '/' + f.name) : f.name)}'>${f.name}</a> ...</i></div>`;
+        return `<div class="onclick"><i><a href='${Locations.getDirectoryUrl(f.sha, f.name, currentName)}'>${f.name}</a> ...</i></div>`;
     else if (f.mimeType == 'application/reference')
         return `<div class="onclick"><i>${f.name} ...</i></div>`;
     else if (f.mimeType == 'application/playlist')
