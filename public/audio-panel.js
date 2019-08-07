@@ -6,6 +6,7 @@ const UiTools = require("./ui-tool");
 const MimeTypes = require("./mime-types-module");
 const Messages = require("./messages");
 const Locations = require("./locations");
+const PlayCache = require("./play-cache");
 const templateHtml = `
 <div class="audio-footer mui-panel">
     <h3 class="x-when-large-display">Playlist</h3>
@@ -255,6 +256,7 @@ class AudioJukebox {
             exports.audioPanel.play(this.audioPanel, item.name, item.sha, item.mimeType);
             document.querySelectorAll(`[x-for-sha='${item.sha.substr(0, 5)}']`).forEach(e => e.classList.add('is-weighted'));
             document.title = `${item.name} playing by Raccoon`;
+            PlayCache.setPlayed(item.sha);
         }
         else {
             document.title = `Raccoon`;

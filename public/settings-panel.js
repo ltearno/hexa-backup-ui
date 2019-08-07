@@ -5,6 +5,7 @@ const templates_1 = require("./templates");
 const Rest = require("./rest");
 const Messages = require("./messages");
 const Auth = require("./auth");
+const PlayCache = require("./play-cache");
 const template = `
 <div class='mui-container-fluid'>
     <div class="mui--text-center">
@@ -24,6 +25,11 @@ const template = `
         <div class="mui-panel">
             <pre x-id="runningJobs"></pre>
             <button x-id="refreshJobs" class="mui-btn mui-btn--flat">Refresh</button>
+        </div>
+
+        <h2>Play cache</h2>
+        <div class="mui-panel">
+            <button x-id="clearPlayCache" class="mui-btn mui-btn--flat">Clear played songs cache</button>
         </div>
     </div>    
 </div>`;
@@ -64,6 +70,10 @@ function create() {
     els.refreshJobs.addEventListener('click', event => {
         UiTool.stopEvent(event);
         refreshJobs(els);
+    });
+    els.clearPlayCache.addEventListener('click', event => {
+        UiTool.stopEvent(event);
+        PlayCache.clearCache();
     });
     refreshJobs(els);
     return els;
