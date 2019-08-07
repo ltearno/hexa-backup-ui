@@ -372,8 +372,8 @@ function itemDefaultAction(childIndex, event) {
     else if (item.mimeType == 'application/playlist') {
         return;
     }
-    UiTool.stopEvent(event);
     if (item.mimeType.startsWith('audio/')) {
+        UiTool.stopEvent(event);
         audioJukebox.addAndPlay(item);
         // set an unroller
         if (childIndex >= lastDisplayedFiles.length - 1) {

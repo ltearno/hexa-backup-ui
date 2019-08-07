@@ -448,9 +448,9 @@ function itemDefaultAction(childIndex: number, event: Event) {
         return
     }
 
-    UiTool.stopEvent(event)
-
     if (item.mimeType.startsWith('audio/')) {
+        UiTool.stopEvent(event)
+        
         audioJukebox.addAndPlay(item)
 
         // set an unroller
