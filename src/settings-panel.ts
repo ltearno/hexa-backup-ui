@@ -3,6 +3,7 @@ import { TemplateElements, createTemplateInstance } from './templates'
 import * as Rest from './rest'
 import * as Messages from './messages'
 import * as Auth from './auth'
+import * as PlayCache from './play-cache'
 
 const template = `
 <div class='mui-container-fluid'>
@@ -24,6 +25,11 @@ const template = `
             <pre x-id="runningJobs"></pre>
             <button x-id="refreshJobs" class="mui-btn mui-btn--flat">Refresh</button>
         </div>
+
+        <h2>Play cache</h2>
+        <div class="mui-panel">
+            <button x-id="clearPlayCache" class="mui-btn mui-btn--flat">Clear played songs cache</button>
+        </div>
     </div>    
 </div>`
 
@@ -33,6 +39,7 @@ export interface SettingsPanelElements extends TemplateElements {
     youtubeDlPlaylistLink: HTMLAnchorElement
     runningJobs: HTMLElement
     refreshJobs: HTMLElement
+    clearPlayCache: HTMLElement
 }
 
 async function refreshJobs(els: SettingsPanelElements) {
@@ -81,6 +88,12 @@ export function create(): SettingsPanelElements {
         UiTool.stopEvent(event)
 
         refreshJobs(els)
+    })
+
+    els.clearPlayCache.addEventListener('click', event => {
+        UiTool.stopEvent(event)
+
+        PlayCache.clearCache()
     })
 
     refreshJobs(els)
