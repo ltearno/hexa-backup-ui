@@ -152,7 +152,7 @@ export class AudioJukebox {
 
             let playlists = await Rest.getPlaylists()
 
-            const overlay: { root: HTMLElement; form: HTMLFormElement; playlistInput: HTMLInputElement; existingPlaylists: HTMLElement } = createTemplateInstance(`
+            const overlay: { root: HTMLElement; form: HTMLFormElement; playlistInput: HTMLInputElement; existingPlaylists: HTMLElement; cancel: HTMLElement } = createTemplateInstance(`
                 <div class="mui-container" style="text-align: center;">
                     <div class='mui-panel'>
                         <h2>Choose a playlist to add '${item.name}'</h2>
@@ -168,6 +168,7 @@ export class AudioJukebox {
                             </div>
                             <button role="submit" class="mui-btn mui-btn--flat">Create</button>
                         </form>
+                        <button x-id='cancel' class="mui-btn mui-btn--flat">Cancel</button>
                     </div>
                 </div>`)
             mui.overlay('on', options, overlay.root)
@@ -196,6 +197,12 @@ export class AudioJukebox {
                     return
 
                 await addToPlaylist(playlist)
+            })
+
+            overlay.cancel.addEventListener('click', event => {
+                UiTools.stopEvent(event)
+
+                mui.overlay('off')
             })
         })
 

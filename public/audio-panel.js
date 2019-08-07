@@ -124,6 +124,7 @@ class AudioJukebox {
                             </div>
                             <button role="submit" class="mui-btn mui-btn--flat">Create</button>
                         </form>
+                        <button x-id='cancel' class="mui-btn mui-btn--flat">Cancel</button>
                     </div>
                 </div>`);
             mui.overlay('on', options, overlay.root);
@@ -147,6 +148,10 @@ class AudioJukebox {
                 if (!playlist || playlist.trim() == '')
                     return;
                 await addToPlaylist(playlist);
+            });
+            overlay.cancel.addEventListener('click', event => {
+                UiTools.stopEvent(event);
+                mui.overlay('off');
             });
         });
         this.audioPanel.infoButton.addEventListener('click', async (event) => {
