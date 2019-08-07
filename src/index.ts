@@ -429,11 +429,13 @@ function itemDefaultAction(childIndex: number, event: Event) {
     let item = lastDisplayedFiles[childIndex]
 
     if ((event.target as HTMLElement).classList.contains('x-info-display-action')) {
+        UiTool.stopEvent(event)
         goShaInfo(item)
         return
     }
 
     if ((event.target as HTMLElement).classList.contains('x-image-zoom-action')) {
+        UiTool.stopEvent(event)
         let unrolledItems = lastDisplayedFiles
         let currentPosition = childIndex
 
@@ -462,7 +464,10 @@ function itemDefaultAction(childIndex: number, event: Event) {
         //goLoadDirectory(item.sha, item.name)
         return
     }
-    else if (item.mimeType == 'application/reference') {
+
+    UiTool.stopEvent(event)
+
+    if (item.mimeType == 'application/reference') {
         goReference(item.sha)
     }
     else if (item.mimeType == 'application/playlist') {
@@ -509,7 +514,6 @@ function showInfo(item: Rest.FileDescriptor) {
 
 
 directoryPanel.root.addEventListener('click', async event => {
-    UiTool.stopEvent(event)
     // todo : knownledge to do that is in directoryPanel
     let { element, childIndex } = Templates.templateGetEventLocation(directoryPanel, event)
     if (lastDisplayedFiles && element == directoryPanel.items && childIndex >= 0 && childIndex < lastDisplayedFiles.length) {
