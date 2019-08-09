@@ -1,25 +1,26 @@
 ﻿"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Network = require("./network");
+const authenticationServer = `https://home.lteconsulting.fr`;
+const publicUiServerUrl = `https://${window.location.host}`;
 function wait(duration) {
     return new Promise(resolve => setTimeout(resolve, duration));
 }
 let authenticatedUser = null;
 class Auth {
     onError() {
-        window.location.reload();
     }
     async loop() {
         while (true) {
             try {
-                let response = await Network.postData(`https://home.lteconsulting.fr/auth`);
+                let response = await Network.postData(`${authenticationServer}/auth`);
                 if (response && response.token) {
-                    let res = await Network.getData(`https://home.lteconsulting.fr/well-known/v1/setCookie`, { 'Authorization': `Bearer ${response.token}` });
+                    let res = await Network.getData(`${publicUiServerUrl}/well-known/v1/setCookie`, { 'Authorization': `Bearer ${response.token}` });
                     if (!res || !res.lifetime) {
                         console.error(`cannot setCookie`, res);
                         this.onError();
                     }
-                    authenticatedUser = await Network.getData(`https://home.lteconsulting.fr/well-known/v1/me`);
+                    authenticatedUser = await Network.getData(`${publicUiServerUrl}/well-known/v1/me`);
                 }
                 else {
                     console.error(`cannot obtain auth token`);
@@ -42,7 +43,7 @@ function autoRenewAuth() {
 exports.autoRenewAuth = autoRenewAuth;
 async function me() {
     if (!authenticatedUser)
-        authenticatedUser = await Network.getData(`https://home.lteconsulting.fr/well-known/v1/me`);
+        authenticatedUser = await Network.getData(`${publicUiServerUrl}/well-known/v1/me`);
     return authenticatedUser;
 }
 exports.me = me;

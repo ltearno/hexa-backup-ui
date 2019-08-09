@@ -1,6 +1,7 @@
 async function afterFetch(response: Response) {
     if (!response || !response.ok) {
-        console.error(`bad response : ${JSON.stringify(response)}`)
+        // network errors are logges by the browser
+        //console.error(`bad response : ${JSON.stringify(response)}`)
         return null
     }
     let receivedContentType = response.headers.get('Content-Type') || 'application/json'

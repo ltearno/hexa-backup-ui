@@ -32,7 +32,8 @@ export interface SearchResult {
     items: FileDescriptor[]
 }
 
-export const HEXA_BACKUP_BASE_URL = window.location.hostname == "home.lteconsulting.fr" ? "https://home.lteconsulting.fr" : "https://localhost:5005"
+// by default serves on the same host
+export const HEXA_BACKUP_BASE_URL = `https://${window.location.host}`
 
 export async function search(searchText: string, mimeType: string): Promise<SearchResult> {
     try {

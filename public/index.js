@@ -50,12 +50,15 @@ function readHashAndAct() {
         hash = window.location.hash.substr(1);
     let parsed = parseURL(hash);
     if (parsed.pathname.startsWith('/search/')) {
-        searchItems(parsed.pathname.substr('/search/'.length));
+        const term = parsed.pathname.substr('/search/'.length);
+        searchItems(term);
+        document.title = `Raccoon - Search '${term}'`;
     }
     else if (parsed.pathname == '/settings') {
         setContent(settingsPanel.root);
         showSearch = false;
         showSettings = true;
+        document.title = `Raccoon - Settings`;
     }
     else if (parsed.pathname.startsWith('/directories/')) {
         const sha = parsed.pathname.substring('/directories/'.length);
@@ -67,13 +70,16 @@ function readHashAndAct() {
             sha,
             name
         });
+        document.title = `Raccoon - Directory '${name}'`;
     }
     else if (parsed.pathname == '/browse') {
         loadReferences();
+        document.title = `Raccoon - Browse`;
     }
     else if (parsed.pathname.startsWith('/refs/')) {
         const name = parsed.pathname.substring('/refs/'.length);
         loadReference(name);
+        document.title = `Raccoon - Reference '${name}'`;
     }
     else if (parsed.pathname == '/playlists') {
         loadPlaylists();
@@ -81,18 +87,22 @@ function readHashAndAct() {
     else if (parsed.pathname.startsWith('/playlists/')) {
         const name = parsed.pathname.substring('/playlists/'.length);
         loadPlaylist(name);
+        document.title = `Raccoon - Playlist '${name}'`;
     }
     else if (parsed.pathname == '/slideshow') {
         hideAudioJukebox = true;
         showSlideshow();
+        document.title = `Raccoon - Slideshow`;
     }
     else if (parsed.pathname.startsWith('/info/')) {
         hideInfoPanel = false;
         const item = JSON.parse(parsed.pathname.substring('/info/'.length));
         showInfo(item);
+        document.title = `Raccoon - Information on '${item.name}'`;
     }
     else {
         console.log(`unkown path ${parsed.pathname}`);
+        document.title = `Raccoon`;
     }
     if (hideInfoPanel)
         InfoPanel.hide();
