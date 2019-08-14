@@ -274,12 +274,15 @@ export class AudioJukebox {
     }
 
     playNext() {
-        if (this.currentIndex + 1 < this.queue.length) {
-            this.play(this.currentIndex + 1)
+        for (let nextIndex = this.currentIndex + 1; nextIndex < this.queue.length; nextIndex++) {
+            if (this.skipAlreadyPlayed && PlayCache.hasBeenPlayed(this.queue[nextIndex].sha))
+                continue
+
+            this.play(nextIndex)
+            return
         }
-        else {
-            this.playNextUnrolled()
-        }
+
+        this.playNextUnrolled()
     }
 
     playNextUnrolled() {
