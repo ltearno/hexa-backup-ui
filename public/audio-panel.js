@@ -33,6 +33,7 @@ class AudioJukebox {
         this.audioPanel = audioPanel;
         this.playImmediately = false;
         this.insertAfterPlaying = false;
+        this.skipAlreadyPlayed = false;
         this.largeDisplay = false;
         this.queue = [];
         this.currentIndex = -1;
@@ -41,6 +42,7 @@ class AudioJukebox {
         this.scrollToPlayingItem = true;
         this.playImmediately = localStorage.getItem(`play-immediately`) == 'true';
         this.insertAfterPlaying = localStorage.getItem('insert-after-playing') == 'true';
+        this.skipAlreadyPlayed = localStorage.getItem('skip-already-played') == 'true';
         try {
             let queue = JSON.parse(localStorage.getItem('playlist-backup'));
             if (queue && queue instanceof Array)
@@ -101,6 +103,11 @@ class AudioJukebox {
                     let checkbox = this.audioPanel.playlist.querySelector(`[x-id='insert-after-playing']`);
                     this.insertAfterPlaying = !!checkbox.checked;
                     localStorage.setItem(`insert-after-playing`, this.insertAfterPlaying ? 'true' : 'false');
+                }
+                else if (event.target == this.audioPanel.playlist.querySelector(`[x-id='skip-already-played']`)) {
+                    let checkbox = this.audioPanel.playlist.querySelector(`[x-id='skip-already-played']`);
+                    this.skipAlreadyPlayed = !!checkbox.checked;
+                    localStorage.setItem(`skip-already-played`, this.skipAlreadyPlayed ? 'true' : 'false');
                 }
             }
         });
@@ -203,24 +210,38 @@ class AudioJukebox {
         this.pushQueueAndPlay(item);
     }
     playNext() {
-        if (this.currentIndex + 1 < this.queue.length) {
-            this.play(this.currentIndex + 1);
+        for (let nextIndex = this.currentIndex + 1; nextIndex < this.queue.length; nextIndex++) {
+            if (this.skipAlreadyPlayed && PlayCache.hasBeenPlayed(this.queue[nextIndex].sha)) {
+                Messages.displayMessage(`skip ${this.queue[nextIndex].name} because it has already been played`, 0);
+                continue;
+            }
+            this.play(nextIndex);
+            return;
         }
-        else {
-            this.playNextUnrolled();
-        }
+        this.playNextUnrolled();
     }
     playNextUnrolled() {
-        if (this.itemUnroller) {
-            let item = this.itemUnroller.unroll();
-            if (item) {
-                if (!this.itemUnroller.hasNext())
+        while (true) {
+            if (this.itemUnroller) {
+                let item = this.itemUnroller.unroll();
+                if (item) {
+                    if (!this.itemUnroller.hasNext())
+                        this.itemUnroller = null;
+                    if (this.skipAlreadyPlayed && PlayCache.hasBeenPlayed(item.sha)) {
+                        Messages.displayMessage(`skip ${item.name} because it has already been played`, 0);
+                        continue;
+                    }
+                    this.pushQueueAndPlay(item);
+                    return;
+                }
+                else {
                     this.itemUnroller = null;
-                this.pushQueueAndPlay(item);
+                    this.refreshPlaylist();
+                    return;
+                }
             }
             else {
-                this.itemUnroller = null;
-                this.refreshPlaylist();
+                return;
             }
         }
     }
@@ -288,6 +309,7 @@ class AudioJukebox {
             html += `<div class="mui--text-dark-secondary">
                     <div><label><input x-id='play-immediately' class="mui-checkbox--inline" ${this.playImmediately ? 'checked' : ''} type="checkbox"/> Play immediately</label></div>
                     <div><label><input x-id='insert-after-playing' class="mui-checkbox--inline" ${this.insertAfterPlaying ? 'checked' : ''} type="checkbox"/> Insert after playing item</label></div>
+                    <div><label><input x-id='skip-already-played' class="mui-checkbox--inline" ${this.skipAlreadyPlayed ? 'checked' : ''} type="checkbox"/> Skip played items</label></div>
                 </div>`;
         }
         else {

@@ -275,8 +275,10 @@ export class AudioJukebox {
 
     playNext() {
         for (let nextIndex = this.currentIndex + 1; nextIndex < this.queue.length; nextIndex++) {
-            if (this.skipAlreadyPlayed && PlayCache.hasBeenPlayed(this.queue[nextIndex].sha))
+            if (this.skipAlreadyPlayed && PlayCache.hasBeenPlayed(this.queue[nextIndex].sha)) {
+                Messages.displayMessage(`skip ${this.queue[nextIndex].name} because it has already been played`, 0)
                 continue
+            }
 
             this.play(nextIndex)
             return
@@ -286,16 +288,29 @@ export class AudioJukebox {
     }
 
     playNextUnrolled() {
-        if (this.itemUnroller) {
-            let item = this.itemUnroller.unroll()
-            if (item) {
-                if (!this.itemUnroller.hasNext())
+        while (true) {
+            if (this.itemUnroller) {
+                let item = this.itemUnroller.unroll()
+                if (item) {
+                    if (!this.itemUnroller.hasNext())
+                        this.itemUnroller = null
+
+                    if (this.skipAlreadyPlayed && PlayCache.hasBeenPlayed(item.sha)) {
+                        Messages.displayMessage(`skip ${item.name} because it has already been played`, 0)
+                        continue
+                    }
+
+                    this.pushQueueAndPlay(item)
+                    return
+                }
+                else {
                     this.itemUnroller = null
-                this.pushQueueAndPlay(item)
+                    this.refreshPlaylist()
+                    return
+                }
             }
             else {
-                this.itemUnroller = null
-                this.refreshPlaylist()
+                return
             }
         }
     }
