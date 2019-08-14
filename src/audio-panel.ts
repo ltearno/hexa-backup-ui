@@ -57,6 +57,7 @@ export interface JukeboxItemUnroller {
 export class AudioJukebox {
     private playImmediately: boolean = false
     private insertAfterPlaying: boolean = false
+    private skipAlreadyPlayed: boolean = false
     private largeDisplay: boolean = false
     private queue: JukeboxItem[] = []
     private currentIndex: number = -1
@@ -70,6 +71,7 @@ export class AudioJukebox {
     constructor(private audioPanel: AudioPanelElements) {
         this.playImmediately = localStorage.getItem(`play-immediately`) == 'true'
         this.insertAfterPlaying = localStorage.getItem('insert-after-playing') == 'true'
+        this.skipAlreadyPlayed = localStorage.getItem('skip-already-played') == 'true'
 
         try {
             let queue = JSON.parse(localStorage.getItem('playlist-backup'))
@@ -141,6 +143,12 @@ export class AudioJukebox {
 
                     this.insertAfterPlaying = !!checkbox.checked
                     localStorage.setItem(`insert-after-playing`, this.insertAfterPlaying ? 'true' : 'false')
+                }
+                else if (event.target == this.audioPanel.playlist.querySelector(`[x-id='skip-already-played']`)) {
+                    let checkbox = this.audioPanel.playlist.querySelector(`[x-id='skip-already-played']`) as HTMLInputElement
+
+                    this.skipAlreadyPlayed = !!checkbox.checked
+                    localStorage.setItem(`skip-already-played`, this.skipAlreadyPlayed ? 'true' : 'false')
                 }
             }
         })
@@ -371,6 +379,7 @@ export class AudioJukebox {
             html += `<div class="mui--text-dark-secondary">
                     <div><label><input x-id='play-immediately' class="mui-checkbox--inline" ${this.playImmediately ? 'checked' : ''} type="checkbox"/> Play immediately</label></div>
                     <div><label><input x-id='insert-after-playing' class="mui-checkbox--inline" ${this.insertAfterPlaying ? 'checked' : ''} type="checkbox"/> Insert after playing item</label></div>
+                    <div><label><input x-id='skip-already-played' class="mui-checkbox--inline" ${this.skipAlreadyPlayed ? 'checked' : ''} type="checkbox"/> Skip played items</label></div>
                 </div>`
         }
         else {
